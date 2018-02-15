@@ -1,0 +1,22 @@
+{
+  "name": "ext-framework-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^2.7.1"
+  },
+  "dependencies": {
+    "elasticsearch": "^14.1.0",
+    "express-cassandra": "^2.2.0"
+  }
+}
