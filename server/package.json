@@ -1,40 +1,42 @@
 {
-  "name": "ext-framework-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "scripts": {
-    "prepublish": "npm run build",
-    "build": "tsc",
-    "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
-  },
-  "keywords": [],
-  "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint-plugin-typescript": "^0.8.1",
-    "standard": "^10.0.3",
-    "typescript": "^2.7.1",
-    "typescript-eslint-parser": "^13.0.0"
-  },
-  "dependencies": {
-    "@types/elasticsearch": "^5.0.19",
-    "@types/express": "^4.11.1",
-    "@types/harmony-proxy": "^1.0.29",
-    "elasticsearch": "^14.1.0",
-    "express": "^4.16.2",
-    "express-cassandra": "^2.2.0",
-    "harmony-proxy": "^1.0.1",
-    "short-hash": "^1.0.0"
-  },
-  "standard": {
-    "parser": "typescript-eslint-parser",
-    "plugins": [
-      "typescript"
-    ],
-    "ignore": [
-      "dist/**"
-    ]
-  }
+    "name": "ext-framework-server",
+    "version": "1.0.0",
+    "description": "",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "start": "npm run build:live",
+        "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
+        "prepublish": "npm run build",
+        "build": "tsc",
+        "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
+    },
+    "keywords": [],
+    "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
+    "license": "ISC",
+    "devDependencies": {
+        "eslint-plugin-typescript": "^0.8.1",
+        "standard": "^10.0.3",
+        "typescript": "^2.7.1",
+        "typescript-eslint-parser": "^13.0.0"
+    },
+    "dependencies": {
+        "@types/elasticsearch": "^5.0.19",
+        "@types/express": "^4.11.1",
+        "@types/harmony-proxy": "^1.0.29",
+        "elasticsearch": "^14.1.0",
+        "express": "^4.16.2",
+        "express-cassandra": "^2.2.0",
+        "harmony-proxy": "^1.0.1",
+        "short-hash": "^1.0.0"
+    },
+    "standard": {
+        "parser": "typescript-eslint-parser",
+        "plugins": [
+            "typescript"
+        ],
+        "ignore": [
+            "dist/**"
+        ]
+    }
 }
