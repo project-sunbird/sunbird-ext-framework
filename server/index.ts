@@ -32,7 +32,7 @@ export class Framework {
 
 		if(!Framework._initialized) {
 			Framework._instance = new Framework(config, cb, app);
-			console.log('Framework initialized!');
+			console.log('=====> Framework initialized!');
 		}
 		return Framework._instance;
 		
