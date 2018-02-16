@@ -1,6 +1,6 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
-*/
+ */
 
 import {ISchemaLoader} from '../ISchemaLoader'
 import {SchemaLoader} from '../SchemaLoader'

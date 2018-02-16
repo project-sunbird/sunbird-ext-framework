@@ -1,9 +1,11 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
-*/
+ */
 
 export class FrameworkAPI {
+    constructor(config: object) {
 
+    }
 }
 
-export const api = new FrameworkAPI();
+export const api = FrameworkAPI;

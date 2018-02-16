@@ -1,6 +1,6 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
-*/
+ */
 
 export interface ISchemaLoader {
 
