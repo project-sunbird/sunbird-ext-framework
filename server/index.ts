@@ -1,13 +1,15 @@
-import {db} from './db';
-import {FrameworkAPI} from './api';
-import { Application } from 'express';
+import { db } from './db';
+import { FrameworkAPI } from './api';
+import { Express } from 'express';
 
 export class Framework {
 
 	private _db: db;
 	private _api: FrameworkAPI;
+	private static _initialized = false;
+	private static _instance: Framework;
 
-	constructor(config: object, app?: Application) {
+	constructor(config: object, cb: (...args: any[]) => void, app?: Express) {
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
 
@@ -15,6 +17,7 @@ export class Framework {
 		//		PluginRegistry.initialize();
 		// 2. load plugins
 		//		PluginManager.load()
+		cb();
 	}
 
 	get db(): db {
@@ -24,4 +27,14 @@ export class Framework {
 	get api(): FrameworkAPI {
 		return this._api;
 	}
+
+	static initialize(config: object, cb: (...args: any[]) => void, app?: Express) : Framework {
+
+		if(!Framework._initialized) {
+			Framework._instance = new Framework(config, cb, app);
+		}
+		return Framework._instance;
+		
+	}
+
 }

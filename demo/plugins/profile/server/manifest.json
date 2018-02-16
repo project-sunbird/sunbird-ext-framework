@@ -1,0 +1,23 @@
+{
+	"id": "profile-server",
+	"version": "1.0",
+	"name": "",
+	"description": "",
+	"api": {
+		"prefix": "learner"
+	},
+	"schemas": [
+		{
+			"type": "Cassandra",
+			"path": "db/cassandra",
+			"compatibility": "~1.0" 
+		},
+		{
+			"type": "ES",
+			"path": "db/es",
+			"compatibility": "~1.0"
+		}
+	],
+	"config": {},
+	"dependencies": []
+}

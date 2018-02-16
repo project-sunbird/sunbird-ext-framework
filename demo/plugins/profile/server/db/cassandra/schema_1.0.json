@@ -1,0 +1,33 @@
+{
+	
+	"db": "profile", // converts to key space
+	"dbConfig": { // Config specific to Cassandra
+		// Defaults to below
+		// "replication": {
+			// "class": "SimpleStrategy",
+  			// "replication_factor": "1"
+		//}
+	},
+	"tables": [{
+		"table": "profile",
+		"fields": [
+			{
+				"key": "user_id",
+				"type": "String",
+				"nullable": false
+			},
+			{
+				"key": "first_name",
+				"type": "String",
+				"nullable": false
+			},
+			{
+				"key": "last_name",
+				"type": "String",
+				"nullable": true
+			}
+		],
+		"primary_key": ["user_id"], // this converts to primary index
+		"index": ["user_id", "first_name"] // this will be added as secondary indexes
+	}]
+}

@@ -1,0 +1,20 @@
+[
+	{
+		"table": "profile", // this becomes type in ES 
+		"db": "profile", // becomes index in ES
+		"fields": [
+			{
+				"key": "user_id",
+				"type": "String",
+				"nullable": false
+			},
+			{
+				"key": "first_name",
+				"type": "String",
+				"nullable": false
+			}
+		],
+		"primary_key": ["user_id"],
+		"index": ["user_id", "first_name"]
+	}
+]

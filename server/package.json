@@ -7,13 +7,16 @@
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
   },
   "keywords": [],
   "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^2.7.1"
+    "eslint-plugin-typescript": "^0.8.1",
+    "standard": "^10.0.3",
+    "typescript": "^2.7.1",
+    "typescript-eslint-parser": "^13.0.0"
   },
   "dependencies": {
     "@types/elasticsearch": "^5.0.19",
@@ -24,5 +27,14 @@
     "express-cassandra": "^2.2.0",
     "harmony-proxy": "^1.0.1",
     "short-hash": "^1.0.0"
+  },
+  "standard": {
+    "parser": "typescript-eslint-parser",
+    "plugins": [
+      "typescript"
+    ],
+    "ignore": [
+      "dist/**"
+    ]
   }
 }

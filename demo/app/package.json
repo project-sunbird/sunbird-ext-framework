@@ -1,0 +1,21 @@
+{
+  "name": "demo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "rm-local-modules",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "ext-framework-server": "file:../../server",
+    "rm-local-modules": "0.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

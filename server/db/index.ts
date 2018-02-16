@@ -2,8 +2,8 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 
-import {CassandraDB} from './cassandra';
-import {ElasticSearchDB} from './elasticsearch';
+import { CassandraDB } from './cassandra';
+import { ElasticSearchDB } from './elasticsearch';
 
 export class db {
 
@@ -14,7 +14,7 @@ export class db {
 		this._elasticsearch = new ElasticSearchDB(config);
 		this._cassandra = new CassandraDB(config);
 	}
-	
+
 	get elasticsearch(): ElasticSearchDB {
 		return this._elasticsearch;
 	}
