@@ -1,6 +1,7 @@
 import { db } from './db';
 import { FrameworkAPI } from './api';
 import { Express } from 'express';
+import {RouterRegistry} from './managers/routing';
 
 export class Framework {
 
@@ -12,7 +13,7 @@ export class Framework {
 	constructor(config: object, cb: (...args: any[]) => void, app?: Express) {
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
-
+		RouterRegistry.initialize(app);
 		// 1. create plugin_registry table
 		//		PluginRegistry.initialize();
 		// 2. load plugins
