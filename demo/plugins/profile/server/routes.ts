@@ -8,15 +8,15 @@ import FrameworkAPI from 'ext-framework/api';
 // 	}
 // }
 
-let router = FrameworkAPI.routerRegistry.create({
+let routingObj = FrameworkAPI.routerRegistry.create({
 	basePath: '/org.sunbird.profile',
 	prefix: '/public',
 	id: 'org.sunbird.profile'
 });
 
-router.get('/', (req,res, next) => {
+routingObj.router.get('/', (req,res, next) => {
 	res.send('Home')
 })
 
-router.register(router)
+routingObj.register()
 

@@ -23,10 +23,11 @@ export class RouterRegistry {
         return instance;
     }
 
-    public register(route: Router) {
+    public register() {
+        if(!this.router) throw new Error('noting to register!')
         //default
-        RouterRegistry.routerInstances.push({ [this.config.id]: route})
+        RouterRegistry.routerInstances.push({ [this.config.id]: this.router})
         //TODO: foreach route object register it in cassandra
-        RouterRegistry.rootApp.use(this.config.prefix || '' + this.config.basePath, route);
+        RouterRegistry.rootApp.use(this.config.prefix || '' + this.config.basePath, this.router);
     }
 }
