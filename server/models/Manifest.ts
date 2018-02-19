@@ -1,14 +1,42 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
+export interface IRouteSchema {
+    basepath: string;
+    prefix: string;
+}
+
+export interface IServerSchema {
+    routes: IRouteSchema;
+}
+
+export interface IPluginManifest {
+    id: string;
+    name: string;
+    version: string;
+    author: string;
+    description?: string;
+    server: IServerSchema;
+}
 
 export class Manifest {
 
-    private _id: string = '';
-    private _name: string = '';
-    private _version: string = '';
-    private _author: string = '';
-    private _description: string = '';
+    private _id: string;
+    private _name: string;
+    private _version: string;
+    private _author: string;
+    private _description: string;
+    private _server: IServerSchema;
+    private json: IPluginManifest;
+    
+	constructor(manifest: IPluginManifest) {
+		this.json = manifest;
+        this.id = manifest.id;
+        this.version =  manifest.version;
+        this.author = manifest.author;
+        this.description = manifest.description;
+        this.server = manifest.server;
+	}
 
     public get id(): string {
         return this._id;
@@ -48,5 +76,26 @@ export class Manifest {
 
     public set description(description: string) {
         this._description = description;
+    }
+
+    public get server(): IServerSchema {
+		return this._server;
+	}
+
+	public set server(value: IServerSchema) {
+		this._server = value;
+	}
+
+    public validate() {
+        //TODO: validate schema structure;
+    }
+
+    public static fromJSON(json: IPluginManifest | string): Manifest {
+        let instance: Manifest;
+        if (typeof json === "string") {
+            json = <IPluginManifest>JSON.parse(json);
+        }
+        instance = new Manifest(json);
+        return instance;
     }
 }
