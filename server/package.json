@@ -29,15 +29,18 @@
         "express": "^4.16.2",
         "express-cassandra": "^2.2.0",
         "harmony-proxy": "^1.0.1",
+        "node-eval": "^2.0.0",
+        "shelljs": "^0.8.1",
         "short-hash": "^1.0.0"
     },
-    "standard": {
+    "standard.options": {
         "parser": "typescript-eslint-parser",
         "plugins": [
             "typescript"
         ],
         "ignore": [
-            "dist/**"
+            "dist/**",
+            "node_modules/**"
         ]
     }
 }
