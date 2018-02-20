@@ -2,7 +2,6 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 export interface IRouteSchema {
-    basePath: string;
     prefix: string;
 }
 export interface IDatabaseType {
@@ -13,8 +12,8 @@ export interface IDatabaseType {
 
 export interface IServerSchema {
     routes: IRouteSchema;
-    dependencies: { nodeModules: boolean },
-    databases: Array<IDatabaseType>
+    dependencies: { nodeModules: boolean };
+    databases: Array<IDatabaseType>;
 }
 
 export interface IPluginManifest {

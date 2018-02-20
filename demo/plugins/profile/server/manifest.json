@@ -1,20 +1,19 @@
 {
-    "id": "org.sunbird.profile",
+    "id": "profile-server",
     "name": "sunbird profile",
     "author": "sunil<sunils@ilimi.in>",
     "version": "1.0",
     "server": {
         "routes": {
-            "basepath": "/org-sunbird-profile",
-            "prefix": "/api"
+            "prefix": "/profile"
         },
         "databases": [{
-                "type": "Cassandra",
+                "type": "cassandra",
                 "path": "db/cassandra",
                 "compatibility": "~1.0"
             },
             {
-                "type": "ES",
+                "type": "es",
                 "path": "db/es",
                 "compatibility": "~1.0"
             }

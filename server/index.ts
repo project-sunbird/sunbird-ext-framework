@@ -1,16 +1,22 @@
+/**
+ * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
+ */
 import { db } from './db';
 import { FrameworkAPI } from './api';
 import { Express } from 'express';
-import {RouterRegistry} from './managers/routing';
+import {RouterRegistry} from './managers/RouterRegistry';
+import * as defaultConfig from './config.json';
 
 export class Framework {
 
+	private _config: object;
 	private _db: db;
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
 
-	constructor(config: object, cb: (...args: any[]) => void, app?: Express) {
+	constructor(config: object, cb: (...args: any[]) => void, app: Express) {
+		this._config = {defaultConfig, config};
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
 		RouterRegistry.initialize(app);

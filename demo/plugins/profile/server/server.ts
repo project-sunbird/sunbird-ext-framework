@@ -1,13 +1,19 @@
 import cassandraDB from 'ext-framework-server/db/cassandra';
 import searchDB from 'ext-framework-server/db/elasticsearch';
-import util from 'ext-framework/util';
+import util from 'ext-framework-server/util';
+import {IServer} from 'ext-framework-server/interfaces';
+import {Manifest} from 'ext-framework-server/models/manifest';
 
-export class ProfileService {
+export interface IProfileService extends IServer {
+	new(config: object, manifest: Manifest): IServer;
+}
 
-	private config: IConfig = null;
+export class ProfileService implements IProfileService {
+
+	private config: object = null;
 	private manifest: Manifest = null;
 
-	constructor(private config: IConfig, manifest: Manifest) {
+	constructor(config: object, manifest: Manifest) {
 		this.config = config;
 		this.manifest = manifest;
 	}
