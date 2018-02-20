@@ -16,6 +16,9 @@
     "typescript": "^2.7.1"
   },
   "dependencies": {
+    "@angular/core": "^5.0.0",
+    "@angular/common": "^5.0.0",
+    "@angular/compiler": "^5.0.0",
     "angular2-uuid": "^1.1.1",
     "moment-es6": "^1.0.0",
     "rxjs": "^5.5.6",
