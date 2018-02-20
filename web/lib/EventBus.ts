@@ -43,7 +43,7 @@ export class EventBus {
         }
         return false;
     }
-    public dispatch(type: any, target: any) {
+    public dispatch(type: any, target?: any) {
         let event = {
             type: type,
             target: target
