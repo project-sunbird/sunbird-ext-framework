@@ -34,7 +34,7 @@ export class ElasticSearchDB {
     }
 
     getConnection(manifest: Manifest): any {
-        let client = new elasticsearch.Client(this._config.db.es || {});
+        let client = new elasticsearch.Client(this._config.db.elasticsearch || {});
         return proxyMethodCalls(client, Util.hash(manifest.id));
     }
 }

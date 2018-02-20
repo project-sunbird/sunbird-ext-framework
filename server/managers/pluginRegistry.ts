@@ -1,6 +1,6 @@
 import {Registry, PluginStatusEnum } from './RegistryInterface';
 import * as _ from 'lodash';
-import {ManifestInterface} from '../interfaces/ManifestInterface';
+import {Manifest} from '../models/Manifest';
 import {ElasticsearchStore} from '../database/elasticsearch/ElasticsearchStore'
 
 class PluginRegistry {
@@ -21,7 +21,7 @@ class PluginRegistry {
         return PluginRegistry.instance;
     }
 
-	public register(manifest: ManifestInterface) {
+	public register(manifest: Manifest) {
 		const registryObject: Registry = this.registryBuilder(manifest);
 		this.getRegisteredPlugin(registryObject.id, (err, res) => {
 			if (res) console.log(`Plugin: ${registryObject.id} is already registered!`);
@@ -71,7 +71,7 @@ class PluginRegistry {
 		this.ESSessionInstance.updateOne({type: this.ES_REGISTRY_TYPE, id: pluginId, body: { status }});
 	}
 
-	public registryBuilder(data: ManifestInterface): Registry {
+	public registryBuilder(data: Manifest): Registry {
 		return {
 			name: data.name,
 			type: data.type,

@@ -1,23 +1,26 @@
 {
-	"id": "profile-server",
-	"version": "1.0",
-	"name": "",
-	"description": "",
-	"api": {
-		"prefix": "learner"
-	},
-	"schemas": [
-		{
-			"type": "Cassandra",
-			"path": "db/cassandra",
-			"compatibility": "~1.0" 
-		},
-		{
-			"type": "ES",
-			"path": "db/es",
-			"compatibility": "~1.0"
-		}
-	],
-	"config": {},
-	"dependencies": []
+    "id": "org.sunbird.profile",
+    "name": "sunbird profile",
+    "author": "sunil<sunils@ilimi.in>",
+    "version": "1.0",
+    "server": {
+        "routes": {
+            "basepath": "/org-sunbird-profile",
+            "prefix": "/api"
+        },
+        "databases": [{
+                "type": "Cassandra",
+                "path": "db/cassandra",
+                "compatibility": "~1.0"
+            },
+            {
+                "type": "ES",
+                "path": "db/es",
+                "compatibility": "~1.0"
+            }
+        ],
+        "dependencies": {
+            "nodeModules": true
+        }
+    }
 }
