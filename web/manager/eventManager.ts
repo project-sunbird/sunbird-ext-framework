@@ -15,4 +15,4 @@ export class EventManager {
     }
 }
 
-export const em = new EventManager();
+export const eventManager = new EventManager();
