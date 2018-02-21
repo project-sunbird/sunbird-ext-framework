@@ -7,7 +7,8 @@
         "start": "npm run build:live",
         "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "preinstall": "rm-local-modules"
+        "preinstall": "rm-local-modules",
+        "build": "tsc"
     },
     "dependencies": {
         "@types/body-parser": "^1.16.8",
@@ -15,7 +16,8 @@
         "body-parser": "^1.18.2",
         "express": "^4.16.2",
         "rm-local-modules": "0.0.2",
-        "ext-framework-server": "file:../../server"
+        "ext-framework-server": "file:../../server",
+        "profile-server": "file:../plugins/profile/server"
     },
     "keywords": [],
     "author": "",

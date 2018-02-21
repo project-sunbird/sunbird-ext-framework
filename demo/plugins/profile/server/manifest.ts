@@ -1,4 +1,4 @@
-{
+export const manifest = {
     "id": "profile-server",
     "name": "sunbird profile",
     "author": "sunil<sunils@ilimi.in>",

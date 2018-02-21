@@ -5,8 +5,8 @@ import { db } from './db';
 import { FrameworkAPI } from './api';
 import { Express } from 'express';
 import {RouterRegistry} from './managers/RouterRegistry';
-import * as defaultConfig from './config.json';
-import { PluginManager } from './managers/pluginManager';
+import { defaultConfig } from './config';
+import { PluginManager } from './managers/PluginManager';
 
 export * from './interfaces'
 
@@ -18,15 +18,19 @@ export class Framework {
 	private static _initialized = false;
 	private static _instance: Framework;
 
-	constructor(config: object, cb: (...args: any[]) => void, app: Express) {
-		this._config = {defaultConfig, config};
+	public get config(): object {
+		return this._config;
+	}
+
+	public static instance(): Framework {
+		return this._instance;
+	}
+
+	constructor(config: object, app: Express) {
+		this._config = Object.assign(defaultConfig, config);
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
 		RouterRegistry.initialize(app);
-		// 1. create plugin_registry table
-		//		PluginRegistry.initialize();
-		// 2. load plugins
-		//		PluginManager.load()
 		console.log('=====> Framework initialized!');
 	}
 
@@ -39,20 +43,13 @@ export class Framework {
 		return Framework._instance._api;
 	}
 
-	public static initialize(config: any, cb: (...args: any[]) => void, app?: Express) : Framework {
+	public static async initialize(config: any, app: Express) {
 
 		if(!Framework._initialized) {
-			Framework._instance = new Framework(config, cb, app);
+			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
-
-			config.plugins.forEach((plugin) => {
-				PluginManager.loadPlugin(plugin).then(() => {
-					console.log(' ===> Plugins Loaded!');
-					cb();
-				});
-			})
-			console.log(' ===> Loading plugins .... ');
+			await PluginManager.load(Framework._instance.config);
+			console.log('=====> Plugins Loaded!');
 		}
-		return Framework._instance;
 	}
 }

@@ -9,7 +9,7 @@
         "build:live": "nodemon --exec ts-node -- ./index.ts",
         "prepublish": "npm run build",
         "test": "mocha -r ts-node/register ./**/*.test.ts --reporter mochawesome",
-        "build": "tsc",
+        "build": "tsc --noImplicitUseStrict",
         "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
     },
     "keywords": [],
@@ -38,7 +38,6 @@
         "express-cassandra": "^2.2.0",
         "harmony-proxy": "^1.0.1",
         "node-eval": "^2.0.0",
-        "profile-server": "file:../demo/plugins/profile/server",
         "shelljs": "^0.8.1",
         "short-hash": "^1.0.0"
     },

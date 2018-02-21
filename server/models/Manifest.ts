@@ -37,11 +37,11 @@ export class Manifest {
     
 	constructor(manifest: IPluginManifest) {
 		this.json = manifest;
-        this.id = manifest.id;
-        this.version =  manifest.version;
-        this.author = manifest.author;
-        this.description = manifest.description;
-        this.server = manifest.server;
+        this._id = manifest.id;
+        this._version =  manifest.version;
+        this._author = manifest.author;
+        this._description = manifest.description;
+        this._server = manifest.server;
 	}
 
     public get id(): string {
