@@ -3,3 +3,4 @@ demo/app/node_modules
 server/dist/**
 server/node_modules
 server/mochawesome-report
+demo/plugins/profile/server/dist

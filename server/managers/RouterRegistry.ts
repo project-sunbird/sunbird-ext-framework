@@ -5,7 +5,7 @@ export class RouterRegistry {
     private static rootApp: Express;
     private manifest: Manifest;
     private router: Router;
-    private static routerInstances: Array<{[key:string]: Router}>;
+    private static routerInstances: Array<{[key:string]: Router}> = [];
 
     static initialize(app: Express) {
         RouterRegistry.rootApp = app;

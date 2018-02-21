@@ -1,7 +1,7 @@
 import {RouterRegistry} from './RouterRegistry'
 import {Manifest} from '../models/Manifest'
 import {ExtPlugin} from '../models/Plugin'
-import { IRouter } from '../interfaces';
+import { IRouterConstructor } from '../interfaces';
  
 
 export class PluginManager {
@@ -17,12 +17,16 @@ export class PluginManager {
 	}
 
 	public static async loadPlugin(plugin: any) {
-		const pluginManifest = await import(plugin.id + '/server/manifest.json')
-		const manifest = Manifest.fromJSON(JSON.stringify(pluginManifest))
-		let router = RouterRegistry.getRouter(manifest);
-		let pluginRouter = <IRouter> await import(plugin.id + '/server/routes');
-		const routerInstance = new pluginRouter();
-		routerInstance.init(router, {}, manifest);
+		try {
+			const pluginManifest = await import(plugin.id + '/manifest.json');
+			const manifest = Manifest.fromJSON(JSON.stringify(pluginManifest));
+			let router = RouterRegistry.getRouter(manifest);
+			let pluginRouter = await import(plugin.id + '/dist/routes.js');
+			pluginRouter = <IRouterConstructor>pluginRouter.Router;
+			const routerInstance = new pluginRouter();
+			routerInstance.init(router, {}, manifest);
+		} catch(e) {
+			console.log(e);
+		}
 	}
-
 }
