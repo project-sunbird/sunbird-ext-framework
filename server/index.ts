@@ -7,6 +7,8 @@ import { Express } from 'express';
 import {RouterRegistry} from './managers/RouterRegistry';
 import * as defaultConfig from './config.json';
 
+export * from './interfaces'
+
 export class Framework {
 
 	private _config: object;
