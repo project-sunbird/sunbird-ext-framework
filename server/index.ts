@@ -6,6 +6,7 @@ import { FrameworkAPI } from './api';
 import { Express } from 'express';
 import {RouterRegistry} from './managers/RouterRegistry';
 import * as defaultConfig from './config.json';
+import { PluginManager } from './managers/pluginManager';
 
 export * from './interfaces'
 
@@ -27,7 +28,6 @@ export class Framework {
 		// 2. load plugins
 		//		PluginManager.load()
 		console.log('=====> Framework initialized!');
-		cb();
 	}
 
 	get db(): db {
@@ -38,10 +38,15 @@ export class Framework {
 		return this._api;
 	}
 
-	static initialize(config: object, cb: (...args: any[]) => void, app?: Express) : Framework {
+	static initialize(config: any, cb: (...args: any[]) => void, app?: Express) : Framework {
 
 		if(!Framework._initialized) {
 			Framework._instance = new Framework(config, cb, app);
+			PluginManager.loadPlugin(config.plugins[0]).then(() => {
+				console.log(' ===> Plugins Loaded!');
+				cb();
+			});
+			console.log(' ===> Loading plugins .... ');
 		}
 		return Framework._instance;
 		

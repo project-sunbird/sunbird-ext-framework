@@ -6,7 +6,7 @@ export interface IRouter {
 }
 
 export interface IRouterConstructor {
-    new() : IRouter;
+    new () : IRouter;
 }
 
 export interface IServer {

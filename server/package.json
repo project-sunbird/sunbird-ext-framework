@@ -6,8 +6,9 @@
     "types": "dist/index.d.ts",
     "scripts": {
         "start": "npm run build:live",
-        "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
+        "build:live": "nodemon --exec ts-node -- ./index.ts",
         "prepublish": "npm run build",
+        "test": "mocha -r ts-node/register ./**/*.test.ts --reporter mochawesome",
         "build": "tsc",
         "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
     },
@@ -15,7 +16,14 @@
     "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
     "license": "ISC",
     "devDependencies": {
+        "@types/chai": "^4.1.2",
+        "@types/mocha": "^2.2.48",
+        "@types/sinon": "^4.1.3",
+        "chai": "^4.1.2",
         "eslint-plugin-typescript": "^0.8.1",
+        "mocha": "^5.0.1",
+        "mochawesome": "^3.0.2",
+        "sinon": "^4.3.0",
         "standard": "^10.0.3",
         "ts-node": "^4.1.0",
         "typescript": "^2.7.1",
@@ -30,6 +38,7 @@
         "express-cassandra": "^2.2.0",
         "harmony-proxy": "^1.0.1",
         "node-eval": "^2.0.0",
+        "profile-server": "file:../demo/plugins/profile/server",
         "shelljs": "^0.8.1",
         "short-hash": "^1.0.0"
     },
