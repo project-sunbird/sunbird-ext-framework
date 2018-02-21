@@ -15,11 +15,11 @@ export class db {
 		this._cassandra = new CassandraDB(config);
 	}
 
-	get elasticsearch(): ElasticSearchDB {
+	public elasticsearch(): ElasticSearchDB {
 		return this._elasticsearch;
 	}
 
-	get cassandra(): CassandraDB {
+	public cassandra(): CassandraDB {
 		return this._cassandra;
 	}
 }

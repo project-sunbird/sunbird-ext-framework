@@ -39,7 +39,3 @@ export class CassandraDB {
 		return proxyMethodCalls(client, Util.hash(manifest.id));
 	}
 }
-
-//export const cassandraDB = new CassandraDB(10);
-
-export const cassandraDB = CassandraDB;

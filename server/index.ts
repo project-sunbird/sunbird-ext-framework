@@ -30,26 +30,29 @@ export class Framework {
 		console.log('=====> Framework initialized!');
 	}
 
-	get db(): db {
-		return this._db;
+	public static db(): db {
+		console.log('Framework._instance', Framework._instance);
+		return Framework._instance._db;
 	}
 
-	get api(): FrameworkAPI {
-		return this._api;
+	public static api(): FrameworkAPI {
+		return Framework._instance._api;
 	}
 
-	static initialize(config: any, cb: (...args: any[]) => void, app?: Express) : Framework {
+	public static initialize(config: any, cb: (...args: any[]) => void, app?: Express) : Framework {
 
 		if(!Framework._initialized) {
 			Framework._instance = new Framework(config, cb, app);
-			PluginManager.loadPlugin(config.plugins[0]).then(() => {
-				console.log(' ===> Plugins Loaded!');
-				cb();
-			});
+			Framework._initialized = true;
+
+			config.plugins.forEach((plugin) => {
+				PluginManager.loadPlugin(plugin).then(() => {
+					console.log(' ===> Plugins Loaded!');
+					cb();
+				});
+			})
 			console.log(' ===> Loading plugins .... ');
 		}
 		return Framework._instance;
-		
 	}
-
 }
