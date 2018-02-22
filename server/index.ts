@@ -49,7 +49,7 @@ export class Framework {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
 			await PluginManager.load(Framework._instance.config);
-			console.log('=====> Plugins Loaded!');
+			console.log('=====> Plugins load complete. ');
 		}
 	}
 }
