@@ -18,8 +18,6 @@ export const manifest = {
                 "compatibility": "~1.0"
             }
         ],
-        "dependencies": {
-            "nodeModules": true
-        }
+        "dependencies": []
     }
 }

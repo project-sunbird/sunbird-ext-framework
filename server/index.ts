@@ -7,18 +7,19 @@ import { Express } from 'express';
 import { RouterRegistry } from './managers/RouterRegistry';
 import { defaultConfig } from './config';
 import { PluginManager } from './managers/PluginManager';
+import { FrameworkConfig } from './interfaces';
 
 export * from './interfaces'
 
 export class Framework {
 
-	private _config: object;
+	private _config: FrameworkConfig;
 	private _db: db;
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
 
-	public get config(): object {
+	public get config(): FrameworkConfig {
 		return this._config;
 	}
 
@@ -26,7 +27,7 @@ export class Framework {
 		return this._instance;
 	}
 
-	constructor(config: object, app: Express) {
+	constructor(config: FrameworkConfig, app: Express) {
 		this._config = Object.assign(defaultConfig, config);
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
@@ -43,7 +44,7 @@ export class Framework {
 		return Framework._instance._api;
 	}
 
-	public static async initialize(config: any, app: Express) {
+	public static async initialize(config: FrameworkConfig, app: Express) {
 
 		if (!Framework._initialized) {
 			Framework._instance = new Framework(config, app);

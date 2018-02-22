@@ -6,8 +6,6 @@ const expressApp  = express()
 const PORT: number = 9000
 expressApp.use(bodyParser.json({limit: '50mb'}))
 
-console.log('currdir', __dirname);
-
 const framework = Framework.initialize({
     plugins: [{id: 'profile-server', ver: '1.0'}],
     pluginBasePath: __dirname + '/node_modules/'

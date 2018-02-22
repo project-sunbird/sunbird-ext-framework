@@ -7,6 +7,7 @@ import { Manifest } from '../../models/Manifest';
 import * as elasticsearch from 'elasticsearch';
 import * as Proxy from 'harmony-proxy';
 import { Util } from '../../util';
+import { FrameworkConfig } from "../../interfaces";
 
 function proxyMethodCalls(obj: any, indexPrefix: string) {
     let handler = {
@@ -27,9 +28,9 @@ function proxyMethodCalls(obj: any, indexPrefix: string) {
 
 export class ElasticSearchDB {
 
-    private _config: any;
+    private _config: FrameworkConfig;
 
-    constructor(config: any) {
+    constructor(config: FrameworkConfig) {
         this._config = config;
     }
 

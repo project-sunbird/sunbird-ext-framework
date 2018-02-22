@@ -4,13 +4,14 @@
 
 import { CassandraDB } from './cassandra';
 import { ElasticSearchDB } from './elasticsearch';
+import { FrameworkConfig } from '../interfaces';
 
 export class db {
 
 	private _elasticsearch: ElasticSearchDB;
 	private _cassandra: CassandraDB;
 
-	constructor(config: object) {
+	constructor(config: FrameworkConfig) {
 		this._elasticsearch = new ElasticSearchDB(config);
 		this._cassandra = new CassandraDB(config);
 	}

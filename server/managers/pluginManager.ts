@@ -1,7 +1,12 @@
+/**
+ * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
+ */
+
 import { RouterRegistry } from './RouterRegistry'
 import { Manifest, IPluginManifest } from '../models/Manifest'
-import { ExtPlugin } from '../models/Plugin'
-import { IRouterConstructor, IServerConstructor } from '../interfaces';
+import { IRouterConstructor, IServerConstructor, IPlugin, FrameworkConfig } from '../interfaces';
+import { PluginLoader } from './PluginLoader';
+import { FrameworkError } from '../util';
 
 export class PluginManager {
 	private static instance: PluginManager;
@@ -9,7 +14,11 @@ export class PluginManager {
 	private readonly pluginClassName = 'ExtPlugin';
 	private readonly pluginFilePath = 'server/plugin.js';
 
-	public static async load(config: any) {
+	public static get instances() : any {
+		return this._pluginInstances;
+	}
+
+	public static async load(config: FrameworkConfig) {
 		for (let plugin of config.plugins) {
 			await PluginManager.loadPlugin(plugin, config);
 			console.log('=====> ' + plugin.id + ' plugin loaded');
@@ -26,27 +35,16 @@ export class PluginManager {
 		return PluginManager._pluginInstances[pluginId];
 	}
 
-	public static async loadPlugin(plugin: any, config: any) {
+	public static async loadPlugin(plugin: IPlugin, config: FrameworkConfig) {
 
 		try {
-			const pluginId = plugin.id;
-			const pluginManifest = await import(config.pluginBasePath + pluginId + '/manifest');
-			const manifest = Manifest.fromJSON(<IPluginManifest> pluginManifest.manifest);
-			
-			let pluginFile = await import(config.pluginBasePath + pluginId + '/server');
-			
-			let pluginClass = <IServerConstructor> pluginFile.Server;
-			let pluginInstance = new pluginClass(config, manifest);
-			PluginManager._pluginInstances[pluginId] = pluginInstance;
-			
-			let router = RouterRegistry.getRouter(manifest);
-			let pluginRouter = await import(config.pluginBasePath + pluginId + '/routes');
-			pluginRouter = <IRouterConstructor>pluginRouter.Router;
-			const routerInstance = new pluginRouter();
-			routerInstance.init(router, manifest);
-
+			let pluginLoader = new PluginLoader(config);
+			await pluginLoader.loadPlugin(plugin);
 		} catch (e) {
-			console.log(e);
+			if(e instanceof FrameworkError) {
+				console.error('=====> ' + (<FrameworkError> e).print());
+			}
+			
 		}
 	}
 }

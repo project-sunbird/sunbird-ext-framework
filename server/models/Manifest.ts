@@ -1,9 +1,13 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
+
+import { IPlugin } from "../interfaces";
+
 export interface IRouteSchema {
     prefix: string;
 }
+
 export interface IDatabaseType {
     type: string;
     path: string;
@@ -12,7 +16,7 @@ export interface IDatabaseType {
 
 export interface IServerSchema {
     routes: IRouteSchema;
-    dependencies: { nodeModules: boolean };
+    dependencies: Array<IPlugin>;
     databases: Array<IDatabaseType>;
 }
 
@@ -34,15 +38,15 @@ export class Manifest {
     private _description: string;
     private _server: IServerSchema;
     private json: IPluginManifest;
-    
-	constructor(manifest: IPluginManifest) {
-		this.json = manifest;
+
+    constructor(manifest: IPluginManifest) {
+        this.json = manifest;
         this._id = manifest.id;
-        this._version =  manifest.version;
+        this._version = manifest.version;
         this._author = manifest.author;
         this._description = manifest.description;
         this._server = manifest.server;
-	}
+    }
 
     public get id(): string {
         return this._id;
@@ -85,12 +89,12 @@ export class Manifest {
     }
 
     public get server(): IServerSchema {
-		return this._server;
-	}
+        return this._server;
+    }
 
-	public set server(value: IServerSchema) {
-		this._server = value;
-	}
+    public set server(value: IServerSchema) {
+        this._server = value;
+    }
 
     public getDependencies() {
         return this.server.dependencies;

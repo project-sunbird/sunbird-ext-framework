@@ -8,7 +8,7 @@
         "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
         "test": "echo \"Error: no test specified\" && exit 1",
         "preinstall": "rm-local-modules",
-        "build": "tsc"
+        "build": "tsc --noImplicitUseStrict"
     },
     "dependencies": {
         "@types/body-parser": "^1.16.8",

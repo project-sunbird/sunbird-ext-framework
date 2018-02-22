@@ -1,3 +1,8 @@
+/**
+ * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
+ */
+import { FrameworkConfig } from "./interfaces";
+
 let config = {
     db: {
         cassandra: {
@@ -19,4 +24,4 @@ let config = {
     pluginBasePath: ""
 };
 
-export const defaultConfig = config;
+export const defaultConfig = <FrameworkConfig> config;

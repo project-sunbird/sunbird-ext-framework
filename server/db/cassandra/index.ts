@@ -8,6 +8,7 @@ import { CassandraConnection } from './CassandraConnection';
 import * as Proxy from 'harmony-proxy';
 import * as expressCassandra from 'express-cassandra';
 import {Util} from '../../util';
+import { FrameworkConfig } from "../../interfaces";
 
 function proxyMethodCalls(obj: any, indexPrefix: string) {
     let handler = {
@@ -28,9 +29,9 @@ function proxyMethodCalls(obj: any, indexPrefix: string) {
 
 export class CassandraDB {
 
-	private _config: any;
+	private _config: FrameworkConfig;
 
-	constructor(config: any) {
+	constructor(config: FrameworkConfig) {
 		this._config = config;
 	}
 

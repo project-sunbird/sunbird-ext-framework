@@ -9,7 +9,15 @@ export class Util {
     }
 }
 
-/*
+export enum FrameworkErrors {
+    MANIFEST_NOT_FOUND,
+    MANIFEST_NOT_PARSEABLE,
+    METHOD_NOT_IMPLEMENTED,
+    PLUGIN_LOAD_FAILED,
+    ROUTE_REGISTRY_FAILED,
+    UNKNOWN_ERROR
+}
+
 export interface ErrorSubclass extends Error {
 }
 
@@ -19,21 +27,22 @@ export class ErrorSubclass {
     public message: string;
     public stack: string;
 
-    constructor( message: string ) {
+    constructor(message: string) {
 
         this.name = "ErrorSubclass";
         this.message = message;
-        this.stack = ( new Error( message ) ).stack;
+        this.stack = (new Error(message)).stack;
     }
 }
 
-ErrorSubclass.prototype = <any>Object.create( Error.prototype );
+//ErrorSubclass.prototype = <any>Object.create( Error.prototype );
+Object.defineProperty(ErrorSubclass, 'prototype', <any>Object.create(Error.prototype));
 
 export interface FrameworkErrorOptions {
-    message: string;
+    message?: string;
     detail?: string;
     extendedInfo?: string;
-    code?: string;
+    code: FrameworkErrors;
     rootError?: any;
 }
 
@@ -42,25 +51,24 @@ export class FrameworkError extends ErrorSubclass {
     public name: string;
     public detail: string;
     public extendedInfo: string;
-    public code: string;
+    public code: FrameworkErrors;
     public rootError: any;
 
-    constructor( options: FrameworkErrorOptions ) {
+    constructor(options: FrameworkErrorOptions) {
 
-        super( options.message );
+        super(options.message);
         this.name = "FrameworkError";
-        this.detail = ( options.detail || "" );
-        this.extendedInfo = ( options.extendedInfo || "" );
-        this.code = ( options.code || "" );
-        this.rootError = ( options.rootError || null );
+        this.detail = (options.detail || "");
+        this.extendedInfo = (options.extendedInfo || "");
+        this.code = (options.code || FrameworkErrors.UNKNOWN_ERROR);
+        this.rootError = (options.rootError || null);
 
     }
 
-    public print() : string {
+    public print(): string {
 
-        return( "FrameworkError:: " + this.code + " | " + this.message );
+        return ("FrameworkError:: code:" + this.code + " | message:" + this.message + " | rootErr:" + this.rootError);
 
     }
 
 }
-*/

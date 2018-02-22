@@ -1,16 +1,17 @@
-import {CassandraDB} from 'ext-framework-server/db/cassandra';
-import {ElasticSearchDB} from 'ext-framework-server/db/elasticsearch';
-import {Manifest} from 'ext-framework-server/models/manifest';
+import { CassandraDB } from 'ext-framework-server/db/cassandra';
+import { ElasticSearchDB } from 'ext-framework-server/db/elasticsearch';
+import { Manifest } from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
+import { FrameworkConfig } from 'ext-framework-server/interfaces';
 
 export class Server implements IProfileService {
 
-	private config: object = null;
+	private config: FrameworkConfig = null;
 	private manifest: Manifest = null;
 	private cassandraDB: CassandraDB;
 
-	constructor(config: object, manifest: Manifest) {
+	constructor(config: FrameworkConfig, manifest: Manifest) {
 		this.config = config;
 		this.manifest = manifest;
 		this.cassandraDB = new CassandraDB(config);
@@ -18,7 +19,7 @@ export class Server implements IProfileService {
 
 	public getUser(req: Request, res: Response) {
 		let id = req.params['userId'];
-		res.send({user: {name: 'Santhosh', id: '123'}});
+		res.send({ user: { name: 'Santhosh', id: '123' } });
 		/*
 		let connection = this.cassandraDB.getConnection(this.manifest);
 		cassandraDB.findOne({tableName: "profile", where: {"user_id": id}}, function(err, user) {
