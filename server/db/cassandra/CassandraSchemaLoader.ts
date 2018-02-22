@@ -36,14 +36,15 @@ class CassandraSchemaLoader implements ISchemaLoader {
 		await this.createTables(manifest, schemaData);		
 	}
 
-	async createTables(manifest: Manifest, schemaData: any) {
+	private async createTables(manifest: Manifest, schemaData: any) {
 		this.dbConnection = this.cassandraDB.getConnection(manifest);
 		let keyspaceName = schemaData.db + '_' + Util.hash(manifest.id);
-		await schemaData.tables.forEach(async (table) => {
+		let noOfTables = schemaData.tables.length;
+		schemaData.tables.forEach(async (table, index) => {
 			await this.dbConnection.connect()
 			.then(() => {
 				const query = `CREATE KEYSPACE IF NOT EXISTS ${keyspaceName} WITH replication = ` + "{'class': 'SimpleStrategy', 'replication_factor': '1' }"; 
-				//JSON.stringify(this._config.defaultKeyspaceSettings.replication)//
+				//+ JSON.stringify(this._config.defaultKeyspaceSettings.replication);
 				return this.dbConnection.execute(query);
 			})
 			.then(() => {
@@ -54,11 +55,13 @@ class CassandraSchemaLoader implements ISchemaLoader {
 			})
 			.catch((err) => {
 				console.log(err);
-				return this.dbConnection.shutdown();
-				//throw new FrameworkError​​({message: 'Error while creating schema in cassandra!', code: FrameworkErrors.DB_ERROR, rootError: err});
+				this.dbConnection.shutdown();
+				throw new FrameworkError​​({message: 'Error while creating schema in cassandra!', code: FrameworkErrors.DB_ERROR, rootError: err});
 			})
+
+			if(index === noOfTables -1) console.log(`====> Tables created for plugin "${manifest.id}": keyspace: "${keyspaceName}"`)
 		})
-		console.log(`====> Tables created for plugin "${manifest.id}": keyspace: "${keyspaceName}"`)
+		
 	}
 
     async alter(pluginId: string, schemaData: object) {
