@@ -1,24 +1,23 @@
 {
-	"db": "profile",
-	"dbConfig": {
-	},
-	"tables": [{
-		"table": "profile",
-		"fields": [
-			{
-				"key": "user_id",
-				"type": "String"
-			},
-			{
-				"key": "first_name",
-				"type": "String"
-			},
-			{
-				"key": "last_name",
-				"type": "String"
-			}
-		],
-		"primary_key": ["user_id"],
-		"index": ["user_id", "first_name", "last_name"]
-	}]
+    "db": "profile",
+    "type": "elasticsearch",
+    "dbConfig": {},
+    "tables": [{
+        "table": "profile",
+        "fields": [{
+                "key": "user_id",
+                "type": "String"
+            },
+            {
+                "key": "first_name",
+                "type": "String"
+            },
+            {
+                "key": "last_name",
+                "type": "String"
+            }
+        ],
+        "primary_key": ["user_id"],
+        "index": ["user_id", "first_name", "last_name"]
+    }]
 }

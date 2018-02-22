@@ -27,3 +27,5 @@ export class db {
 
 export * from './cassandra';
 export * from './elasticsearch';
+export * from './SchemaLoader';
+export * from './ISchemaLoader';

@@ -34,6 +34,7 @@ export class Server implements IProfileService {
 	public searchUsers(req: Request, res: Response) {
 		let body = req.body;
 		let searchQuery = {}; // create searchQuery from body json
+		res.send('search result api working!');
 		/*
 		searchDB.search(searchQuery, function(err, results) {
 			if(err) {
