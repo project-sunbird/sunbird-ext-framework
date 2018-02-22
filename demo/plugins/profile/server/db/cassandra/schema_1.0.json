@@ -2,6 +2,7 @@
     "db": "profile",
     "type": "cassandra",
     "dbConfig": {},
+    "keyspace": "org_sunbird_profle",
     "tables": [{
         "name": "profile",
         "fields": [{

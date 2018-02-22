@@ -15,7 +15,7 @@ class ESSchemaLoader implements ISchemaLoader {
 
 	}
 
-	async create(pluginId: string, schemaData: object) {
+	async create(schemaData: object) {
 		console.log('create schema for elasticsearch invoked!');
 	}
 

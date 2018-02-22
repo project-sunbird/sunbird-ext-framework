@@ -32,7 +32,7 @@ export interface ICassandraConfig extends ClientOptions {
 
 }
 
-export interface ICassandraConnection extends Client {
+export interface ICassandraConnector extends Client {
 
 }
 

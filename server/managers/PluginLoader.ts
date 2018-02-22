@@ -106,7 +106,7 @@ export class PluginLoader {
 				try {
 					let schema = await import(path);
 					let schemaLoader = SchemaLoader.getLoader(schema.type);
-					await schemaLoader.create(manifest.id, schema);
+					await schemaLoader.create(schema);
 				} catch(e) {
 					console.log(e);
 				}

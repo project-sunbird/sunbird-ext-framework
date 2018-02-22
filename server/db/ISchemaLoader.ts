@@ -8,7 +8,7 @@ export interface ISchemaLoader {
 
 	exists(pluginId: string, db: string, table: string);
 
-	create(pluginId: string, schemaData: object);
+	create(schemaData: object);
 
     alter(pluginId: string, schemaData: object);
 

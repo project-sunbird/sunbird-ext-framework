@@ -20,7 +20,6 @@ class CassandraSchemaLoader implements ISchemaLoader {
 	constructor(config: ICassandraConfig) {
 		this._config = config;
 		this.cassandraDB = new CassandraDB(config);
-		this.dbConnection = this.cassandraDB.getConnection(Manifest.fromJSON(JSON.stringify({ id: "core.famework.schema"})))
 		this.queryBuilder = new CassandraQueryBuilder();
 	}
 
@@ -32,15 +31,16 @@ class CassandraSchemaLoader implements ISchemaLoader {
 
 	}
 
-	async create(pluginId: string, schemaData: any) {
+	async create(schemaData: any) {
+		this.dbConnection = this.cassandraDB.getConnection(Manifest.fromJSON(JSON.stringify({ id: schemaData.keyspace })))
 		return new Promise((resolve, reject) => {
-				schemaData.tables.forEach((table) => {
-				this.dbConnection.execute(this.queryBuilder.createTable(table), (err, result) => {
-					if(result) resolve(result);
-					if(err) reject(err);
+					schemaData.tables.forEach((table) => {
+					this.dbConnection.execute(this.queryBuilder.createTable(table), (err, result) => {
+						if(result) resolve(result);
+						if(err) reject(err);
+					})
 				})
 			})
-		})
 	}
 
     async alter(pluginId: string, schemaData: object) {
