@@ -9,7 +9,7 @@ import { PluginRegistry } from "./PluginRegistry";
 import { PluginManager } from "./PluginManager";
 import { RouterRegistry } from "./RouterRegistry";
 import * as _ from 'lodash';
-import {SchemaLoader} from '../db';
+import { SchemaLoader, ISchemaLoader } from '../db';
 import * as glob from 'glob';
 
 export class PluginLoader {
@@ -105,8 +105,8 @@ export class PluginLoader {
 			files.forEach(async (path) => {
 				try {
 					let schema = await import(path);
-					let schemaLoader = SchemaLoader.getLoader(schema.type);
-					await schemaLoader.create(schema);
+					let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
+					await schemaLoader.create(manifest, schema);
 				} catch(e) {
 					console.log(e);
 				}

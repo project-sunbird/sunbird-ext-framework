@@ -4,6 +4,7 @@
 
 import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
+import { Manifest } from '../../models/Manifest';
 
 class ESSchemaLoader implements ISchemaLoader {
 
@@ -15,7 +16,7 @@ class ESSchemaLoader implements ISchemaLoader {
 
 	}
 
-	async create(schemaData: object) {
+	async create(manifest: Manifest, schemaData: object) {
 		console.log('create schema for elasticsearch invoked!');
 	}
 

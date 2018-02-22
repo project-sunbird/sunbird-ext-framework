@@ -15,7 +15,8 @@ export enum FrameworkErrors {
     METHOD_NOT_IMPLEMENTED,
     PLUGIN_LOAD_FAILED,
     ROUTE_REGISTRY_FAILED,
-    UNKNOWN_ERROR
+    UNKNOWN_ERROR,
+    DB_ERROR
 }
 
 export interface ErrorSubclass extends Error {

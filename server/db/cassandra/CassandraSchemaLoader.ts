@@ -9,6 +9,7 @@ import { CassandraDB } from './index';
 import { Manifest } from '../../models/Manifest';
 import {ICassandraConfig, ICassandraConnector} from '../../interfaces';
 import {CassandraQueryBuilder} from './CassandraQueryBuilder';
+import { Util, FrameworkError, FrameworkErrors } from '../../util';
 
 class CassandraSchemaLoader implements ISchemaLoader {
 	
@@ -31,16 +32,33 @@ class CassandraSchemaLoader implements ISchemaLoader {
 
 	}
 
-	async create(schemaData: any) {
-		this.dbConnection = this.cassandraDB.getConnection(Manifest.fromJSON(JSON.stringify({ id: schemaData.keyspace })))
-		return new Promise((resolve, reject) => {
-					schemaData.tables.forEach((table) => {
-					this.dbConnection.execute(this.queryBuilder.createTable(table), (err, result) => {
-						if(result) resolve(result);
-						if(err) reject(err);
-					})
-				})
+	async create(manifest: Manifest, schemaData: any) {
+		await this.createTables(manifest, schemaData);		
+	}
+
+	async createTables(manifest: Manifest, schemaData: any) {
+		this.dbConnection = this.cassandraDB.getConnection(manifest);
+		let keyspaceName = schemaData.db + '_' + Util.hash(manifest.id);
+		await schemaData.tables.forEach(async (table) => {
+			await this.dbConnection.connect()
+			.then(() => {
+				const query = `CREATE KEYSPACE IF NOT EXISTS ${keyspaceName} WITH replication = ` + "{'class': 'SimpleStrategy', 'replication_factor': '1' }"; 
+				//JSON.stringify(this._config.defaultKeyspaceSettings.replication)//
+				return this.dbConnection.execute(query);
 			})
+			.then(() => {
+				return this.dbConnection.execute(this.queryBuilder.createTable(schemaData, table, keyspaceName));
+			})
+			.then(() => {
+				return this.dbConnection.shutdown();
+			})
+			.catch((err) => {
+				console.log(err);
+				return this.dbConnection.shutdown();
+				//throw new FrameworkError​​({message: 'Error while creating schema in cassandra!', code: FrameworkErrors.DB_ERROR, rootError: err});
+			})
+		})
+		console.log(`====> Tables created for plugin "${manifest.id}": keyspace: "${keyspaceName}"`)
 	}
 
     async alter(pluginId: string, schemaData: object) {

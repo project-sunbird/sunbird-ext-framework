@@ -7,7 +7,13 @@ let config = {
     db: {
         cassandra: {
             contactPoints: ['127.0.0.1'],
-            keyspace: 'core_framework_schema'
+            keyspace: 'core_framework_schema',
+            defaultKeyspaceSettings: {
+                replication: {
+			        'class': 'SimpleStrategy',
+  			        'replication_factor': '1'
+		        }
+            }
         },
         elasticsearch: {
             host: "localhost:9200",

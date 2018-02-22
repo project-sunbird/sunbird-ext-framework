@@ -1,21 +1,19 @@
 export class CassandraQueryBuilder {
 
-    public createTable(tableData: any) {
-        let columns = "", queryString = "", primaryKeys = "", keyspace = "";
+    public createTable(schemaData: any, table: any, keyspace: string = "") {
+        let columns = "", primaryKeys = "";
 
-        tableData.fields.forEach((field) => {
+        table.fields.forEach((field) => {
             columns += `${field.key} ${field.type},`;
         })
 
-        if(tableData.keyspace) keyspace = tableData.keyspace + ".";
+        if(keyspace != "") keyspace += ".";
     
-        if(tableData.primary_key) {
-            primaryKeys = tableData.primary_key.reduce((acc, curr) => { return acc = acc + ',' + curr});
+        if(table.primary_key) {
+            primaryKeys = table.primary_key.reduce((acc, curr) => { return acc = acc + ',' + curr});
             primaryKeys = 'PRIMARY KEY (' + primaryKeys + ')';
         }
 
-        queryString = `CREATE TABLE ${keyspace}${tableData.name} ( ${columns} ${primaryKeys} )`
-        console.log('creating table =====> ', queryString);
-        return queryString
+        return `CREATE TABLE IF NOT EXISTS ${keyspace}${table.name} ( ${columns} ${primaryKeys} )`
     }
 }

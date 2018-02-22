@@ -29,7 +29,12 @@ export interface IPlugin {
 }
 
 export interface ICassandraConfig extends ClientOptions {
-
+    defaultKeyspaceSettings: {
+        replication: {
+            class: string,
+            replication_factor: string
+        }
+    }
 }
 
 export interface ICassandraConnector extends Client {
