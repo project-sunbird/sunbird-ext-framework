@@ -11,19 +11,19 @@ class ESSchemaLoader implements ISchemaLoader {
 		return 'elasticsearch';
 	}
 
-	exists(pluginId: string, db: string, table: string, cb: (err: object, res: object) => void): void {
+	async exists(pluginId: string, db: string, table: string) {
 
 	}
 
-	create(pluginId: string, schemaData: object, cb: (err: object, res: object) => void): void {
+	async create(pluginId: string, schemaData: object) {
+		console.log('create schema for elasticsearch invoked!');
+	}
+
+	async alter(pluginId: string, schemaData: object) {
 
 	}
 
-	alter(pluginId: string, schemaData: object, cb: (err: object, res: object) => void): void {
-
-	}
-
-	migrate(pluginId: string, schemaData: object, cb: (err: object, res: object) => void): void {
+	async migrate(pluginId: string, schemaData: object) {
 
 	}
 }

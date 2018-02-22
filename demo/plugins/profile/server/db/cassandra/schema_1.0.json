@@ -1,27 +1,26 @@
 {
-	"db": "profile",
-	"dbConfig": {
-	},
-	"tables": [{
-		"table": "profile",
-		"fields": [
-			{
-				"key": "user_id",
-				"type": "String",
-				"nullable": false
-			},
-			{
-				"key": "first_name",
-				"type": "String",
-				"nullable": false
-			},
-			{
-				"key": "last_name",
-				"type": "String",
-				"nullable": true
-			}
-		],
-		"primary_key": ["user_id"],
-		"index": ["user_id", "first_name"]
-	}]
+    "db": "profile",
+    "type": "cassandra",
+    "dbConfig": {},
+    "tables": [{
+        "table": "profile",
+        "fields": [{
+                "key": "user_id",
+                "type": "String",
+                "nullable": false
+            },
+            {
+                "key": "first_name",
+                "type": "String",
+                "nullable": false
+            },
+            {
+                "key": "last_name",
+                "type": "String",
+                "nullable": true
+            }
+        ],
+        "primary_key": ["user_id"],
+        "index": ["user_id", "first_name"]
+    }]
 }

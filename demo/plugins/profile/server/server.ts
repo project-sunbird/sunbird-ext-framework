@@ -1,5 +1,5 @@
-import {CassandraDB} from 'ext-framework-server/db/cassandra';
-import {ElasticSearchDB} from 'ext-framework-server/db/elasticsearch';
+import {CassandraDB} from 'ext-framework-server/db';
+import {ElasticSearchDB} from 'ext-framework-server/db';
 import {Manifest} from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
@@ -33,6 +33,7 @@ export class Server implements IProfileService {
 	public searchUsers(req: Request, res: Response) {
 		let body = req.body;
 		let searchQuery = {}; // create searchQuery from body json
+		res.send('search result api working!');
 		/*
 		searchDB.search(searchQuery, function(err, results) {
 			if(err) {

@@ -35,7 +35,6 @@ export class Framework {
 	}
 
 	public static get db(): db {
-		console.log('Framework._instance', Framework._instance);
 		return Framework._instance._db;
 	}
 

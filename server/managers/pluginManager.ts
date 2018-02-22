@@ -2,6 +2,8 @@ import { RouterRegistry } from './RouterRegistry'
 import { Manifest, IPluginManifest } from '../models/Manifest'
 import { ExtPlugin } from '../models/Plugin'
 import { IRouterConstructor, IServerConstructor } from '../interfaces';
+import * as glob from 'glob';
+import {SchemaLoader} from '../db';
 
 export class PluginManager {
 	private static instance: PluginManager;
@@ -44,9 +46,23 @@ export class PluginManager {
 			pluginRouter = <IRouterConstructor>pluginRouter.Router;
 			const routerInstance = new pluginRouter();
 			routerInstance.init(router, manifest);
-
+			PluginManager.loadDBSchema(plugin, config);
 		} catch (e) {
 			console.log(e);
 		}
+	}
+
+	public static async loadDBSchema(plugin: any, config: any) {
+		glob(config.pluginBasePath + plugin.id + '/db/**/schema*.json', {}, (err, files) => {
+			files.forEach(async (path) => {
+				let schema = await PluginManager.importFile(path);
+				let schemaLoader = SchemaLoader.getLoader(schema.type);
+				await schemaLoader.create(plugin.id, schema);
+			})
+		})	
+	}
+
+	private static async importFile(path: string) {
+		return await import(path);
 	}
 }
