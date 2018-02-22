@@ -4,7 +4,7 @@
 import { db } from './db';
 import { FrameworkAPI } from './api';
 import { Express } from 'express';
-import {RouterRegistry} from './managers/RouterRegistry';
+import { RouterRegistry } from './managers/RouterRegistry';
 import { defaultConfig } from './config';
 import { PluginManager } from './managers/PluginManager';
 
@@ -22,7 +22,7 @@ export class Framework {
 		return this._config;
 	}
 
-	public static instance(): Framework {
+	public static get instance(): Framework {
 		return this._instance;
 	}
 
@@ -34,18 +34,18 @@ export class Framework {
 		console.log('=====> Framework initialized!');
 	}
 
-	public static db(): db {
+	public static get db(): db {
 		console.log('Framework._instance', Framework._instance);
 		return Framework._instance._db;
 	}
 
-	public static api(): FrameworkAPI {
+	public static get api(): FrameworkAPI {
 		return Framework._instance._api;
 	}
 
 	public static async initialize(config: any, app: Express) {
 
-		if(!Framework._initialized) {
+		if (!Framework._initialized) {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
 			await PluginManager.load(Framework._instance.config);

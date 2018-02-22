@@ -9,6 +9,7 @@ export class Util {
     }
 }
 
+/*
 export interface ErrorSubclass extends Error {
 }
 
@@ -62,3 +63,4 @@ export class FrameworkError extends ErrorSubclass {
     }
 
 }
+*/

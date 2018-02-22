@@ -14,5 +14,5 @@ export interface IServer {
 }
 
 export interface IServerConstructor {
-    new() : IServer;
+    new(config: object, manifest: Manifest) : IServer;
 }

@@ -1,11 +1,11 @@
 import { RouterRegistry } from './RouterRegistry'
 import { Manifest, IPluginManifest } from '../models/Manifest'
 import { ExtPlugin } from '../models/Plugin'
-import { IRouterConstructor } from '../interfaces';
+import { IRouterConstructor, IServerConstructor } from '../interfaces';
 
 export class PluginManager {
 	private static instance: PluginManager;
-	private static _pluginInstances: Array<any> = [];
+	private static _pluginInstances: any = {};
 	private readonly pluginClassName = 'ExtPlugin';
 	private readonly pluginFilePath = 'server/plugin.js';
 
@@ -22,25 +22,28 @@ export class PluginManager {
 		});
 	}
 
+	public static getPlugin(pluginId: string) : any {
+		return PluginManager._pluginInstances[pluginId];
+	}
+
 	public static async loadPlugin(plugin: any, config: any) {
 
 		try {
-			const pluginManifest = await import(config.pluginBasePath + plugin.id + '/manifest');
+			const pluginId = plugin.id;
+			const pluginManifest = await import(config.pluginBasePath + pluginId + '/manifest');
 			const manifest = Manifest.fromJSON(<IPluginManifest> pluginManifest.manifest);
-			/*
-			let pluginFile = await import(plugin.id + '/server');
-			let pluginClass = pluginFile.ExtPlugin;
-			let pluginInstance = new pluginClass();
-			pluginInstance.onLoad();
-			PluginManager._pluginInstances.push({ id: plugin.id, manifest, class: pluginClass });
-			*/
+			
+			let pluginFile = await import(config.pluginBasePath + pluginId + '/server');
+			
+			let pluginClass = <IServerConstructor> pluginFile.Server;
+			let pluginInstance = new pluginClass(config, manifest);
+			PluginManager._pluginInstances[pluginId] = pluginInstance;
 			
 			let router = RouterRegistry.getRouter(manifest);
-			let pluginRouter = await import(config.pluginBasePath + plugin.id + '/routes');
+			let pluginRouter = await import(config.pluginBasePath + pluginId + '/routes');
 			pluginRouter = <IRouterConstructor>pluginRouter.Router;
 			const routerInstance = new pluginRouter();
-			routerInstance.init(router, {}, manifest);
-
+			routerInstance.init(router, manifest);
 
 		} catch (e) {
 			console.log(e);

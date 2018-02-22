@@ -1,16 +1,10 @@
 import {CassandraDB} from 'ext-framework-server/db/cassandra';
 import {ElasticSearchDB} from 'ext-framework-server/db/elasticsearch';
-import * as util from 'ext-framework-server/util';
-import {IServer} from 'ext-framework-server/interfaces';
 import {Manifest} from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
+import { IProfileService } from './interfaces';
 
-export interface IProfileService extends IServer {
-	getUser(req: Request, res: Response): void;
-	searchUsers(req: Request, res: Response): void;
-}
-
-export class ProfileService implements IProfileService {
+export class Server implements IProfileService {
 
 	private config: object = null;
 	private manifest: Manifest = null;
@@ -24,8 +18,9 @@ export class ProfileService implements IProfileService {
 
 	public getUser(req: Request, res: Response) {
 		let id = req.params['userId'];
-		let connection = this.cassandraDB.getConnection(this.manifest);
+		res.send({user: {name: 'Santhosh', id: '123'}});
 		/*
+		let connection = this.cassandraDB.getConnection(this.manifest);
 		cassandraDB.findOne({tableName: "profile", where: {"user_id": id}}, function(err, user) {
 			if(err) {
 				res.send(util.error(err));
