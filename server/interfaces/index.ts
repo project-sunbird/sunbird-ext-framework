@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { Manifest } from "../models/Manifest";
+import {ClientOptions, Client} from 'cassandra-driver';
 
 export interface IRouter {
     init(app: Router, auth: any, manifest: Manifest): void
@@ -27,10 +28,12 @@ export interface IPlugin {
     ver: string;
 }
 
-export interface ICassandraConfig {
-    contactPoint: string;
-    port: number;
-    defaultKeyspaceSettings: object;
+export interface ICassandraConfig extends ClientOptions {
+
+}
+
+export interface ICassandraConnection extends Client {
+
 }
 
 export interface IDatabaseConfig {
@@ -43,3 +46,4 @@ export interface FrameworkConfig {
     plugins: Array<IPlugin>;
     pluginBasePath: string;
 }
+

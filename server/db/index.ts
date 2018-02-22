@@ -5,6 +5,7 @@
 import { CassandraDB } from './cassandra';
 import { ElasticSearchDB } from './elasticsearch';
 import { FrameworkConfig } from '../interfaces';
+import './cassandra/CassandraSchemaLoader';
 
 export class db {
 

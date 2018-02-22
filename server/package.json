@@ -16,6 +16,7 @@
     "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
     "license": "ISC",
     "devDependencies": {
+        "@types/cassandra-driver": "^3.2.3",
         "@types/chai": "^4.1.2",
         "@types/glob": "^5.0.35",
         "@types/mocha": "^2.2.48",
@@ -35,9 +36,9 @@
         "@types/express": "^4.11.1",
         "@types/harmony-proxy": "^1.0.29",
         "@types/lodash": "^4.14.104",
+        "cassandra-driver": "^3.4.1",
         "elasticsearch": "^14.1.0",
         "express": "^4.16.2",
-        "express-cassandra": "^2.2.0",
         "glob": "^7.1.2",
         "harmony-proxy": "^1.0.1",
         "lodash": "^4.17.5",

@@ -6,14 +6,8 @@ import { FrameworkConfig } from "./interfaces";
 let config = {
     db: {
         cassandra: {
-            contactPoint: "127.0.0.1",
-            port: 9042,
-            defaultKeyspaceSettings: {
-                replication: {
-			        class: "SimpleStrategy",
-  			        "replication_factor": "1"
-		        }
-            }
+            contactPoints: ['127.0.0.1'],
+            keyspace: 'core_framework_schema'
         },
         elasticsearch: {
             host: "localhost:9200",

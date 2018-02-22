@@ -3,20 +3,20 @@
     "type": "cassandra",
     "dbConfig": {},
     "tables": [{
-        "table": "profile",
+        "name": "profile",
         "fields": [{
                 "key": "user_id",
-                "type": "String",
+                "type": "text",
                 "nullable": false
             },
             {
                 "key": "first_name",
-                "type": "String",
+                "type": "text",
                 "nullable": false
             },
             {
                 "key": "last_name",
-                "type": "String",
+                "type": "text",
                 "nullable": true
             }
         ],
