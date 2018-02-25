@@ -1,11 +1,12 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
-import * as shortHash from 'short-hash';
+import * as hashids from 'hashids';
 
 export class Util {
-    static hash(text: string) {
-        return shortHash(text);
+    public static hash(text: string): string {
+        let hash = new hashids(text, 5, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
+        return hash.encode(1);
     }
 }
 

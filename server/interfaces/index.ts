@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { Manifest } from "../models/Manifest";
 import {ClientOptions, Client} from 'cassandra-driver';
-
+import {ConfigOptions, Client as ESClient} from 'elasticsearch';
 export interface IRouter {
     init(app: Router, auth: any, manifest: Manifest): void
 }
@@ -18,7 +18,7 @@ export interface IServerConstructor {
     new(config: object, manifest: Manifest) : IServer;
 }
 
-export interface IElasticSearchConfig {
+export interface IElasticSearchConfig extends ConfigOptions{
     host: string;
     disabledApis: Array<string>;
 }
@@ -38,6 +38,10 @@ export interface ICassandraConfig extends ClientOptions {
 }
 
 export interface ICassandraConnector extends Client {
+
+}
+
+export interface IElasticSearchConnector extends ESClient {
 
 }
 

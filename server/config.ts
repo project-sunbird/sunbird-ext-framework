@@ -16,7 +16,7 @@ let config = {
             }
         },
         elasticsearch: {
-            host: "localhost:9200",
+            host: "127.0.0.1:9200",
             disabledApis: ["cat", "cluster", "indices", "ingest", "nodes", "remote", "snapshot", "tasks"]
         }
     },

@@ -2,12 +2,11 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 
-import './ESSchemaLoader';
 import { Manifest } from '../../models/Manifest';
 import * as elasticsearch from 'elasticsearch';
 import * as Proxy from 'harmony-proxy';
 import { Util } from '../../util';
-import { FrameworkConfig } from "../../interfaces";
+import { IElasticSearchConfig } from "../../interfaces";
 
 function proxyMethodCalls(obj: any, indexPrefix: string) {
     let handler = {
@@ -28,14 +27,15 @@ function proxyMethodCalls(obj: any, indexPrefix: string) {
 
 export class ElasticSearchDB {
 
-    private _config: FrameworkConfig;
+    private _config: IElasticSearchConfig;
 
-    constructor(config: FrameworkConfig) {
+    constructor(config: IElasticSearchConfig) {
         this._config = config;
     }
 
-    getConnection(manifest: Manifest): any {
-        let client = new elasticsearch.Client(this._config.db.elasticsearch || {});
-        return proxyMethodCalls(client, Util.hash(manifest.id));
+    getConnection(manifest: Manifest, proxy?: boolean): any {
+        let client = new elasticsearch.Client(this._config);
+        if (proxy) return proxyMethodCalls(client, Util.hash(manifest.id));
+        return client;
     }
 }
