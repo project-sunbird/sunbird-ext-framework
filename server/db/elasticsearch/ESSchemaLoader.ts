@@ -41,7 +41,7 @@ class ESSchemaLoader implements ISchemaLoader {
 			console.log(`=====> Index Alias: "${this.generateESIndexAlias(manifest.id)}"`);
 			await this.createMapping(manifest, schemaData);
 		} else {
-			console.log(`====> index: "${indexName}" already defined!`);
+			console.log(`=====> index: "${indexName}" already defined!`);
 		}
 	}
 
@@ -50,7 +50,7 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	private generateESIndex(manifestId: string, db: string): string {
-		return <string>(Util.hash(manifestId) + '_' + db).toLowerCase();
+		return Util.generateId(manifestId, db);
 	}
 
 	private generateESIndexAlias(manifestId: string): string {

@@ -37,7 +37,7 @@ class CassandraSchemaLoader implements ISchemaLoader {
 	}
 
 	private async createTables(manifest: Manifest, schemaData: any) {
-		this.dbConnection = this.cassandraDB.getConnection(manifest);
+		this.dbConnection = this.cassandraDB.getConnection(manifest, schemaData.db);
 		let keyspaceName = this.generateKeyspaceName(manifest.id, schemaData.db);
 		let noOfTables = schemaData.tables.length;
 		schemaData.tables.forEach(async (table, index) => {
@@ -63,7 +63,7 @@ class CassandraSchemaLoader implements ISchemaLoader {
 	}
 
 	private generateKeyspaceName(manifestId: string, db: string): string {
-		return (Util.hash(manifestId) + '_' + db).toLowerCase();
+		return Util.generateId(manifestId, db);
 	}
 
 

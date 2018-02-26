@@ -8,6 +8,10 @@ export class Util {
         let hash = new hashids(text, 5, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
         return (<string>hash.encode(1)).toLowerCase();
     }
+
+    public static generateId(prefix: string, id: string): string {
+		return (Util.hash(prefix) + '_' + id).toLowerCase();
+    }
 }
 
 export enum FrameworkErrors {
