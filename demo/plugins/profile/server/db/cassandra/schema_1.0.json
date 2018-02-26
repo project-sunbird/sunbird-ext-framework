@@ -3,20 +3,40 @@
     "type": "cassandra",
     "dbConfig": {},
     "tables": [{
-        "table": "profile",
+        "name": "profile",
         "fields": [{
                 "key": "user_id",
-                "type": "String",
+                "type": "text",
                 "nullable": false
             },
             {
                 "key": "first_name",
-                "type": "String",
+                "type": "text",
                 "nullable": false
             },
             {
                 "key": "last_name",
-                "type": "String",
+                "type": "text",
+                "nullable": true
+            }
+        ],
+        "primary_key": ["user_id"],
+        "index": ["user_id", "first_name"]
+    }, {
+        "name": "profile2",
+        "fields": [{
+                "key": "user_id",
+                "type": "text",
+                "nullable": false
+            },
+            {
+                "key": "first_name",
+                "type": "text",
+                "nullable": false
+            },
+            {
+                "key": "last_name",
+                "type": "text",
                 "nullable": true
             }
         ],

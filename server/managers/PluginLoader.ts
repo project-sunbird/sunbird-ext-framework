@@ -9,6 +9,8 @@ import { PluginRegistry } from "./PluginRegistry";
 import { PluginManager } from "./PluginManager";
 import { RouterRegistry } from "./RouterRegistry";
 import * as _ from 'lodash';
+import { SchemaLoader, ISchemaLoader } from '../db';
+import * as glob from 'glob';
 
 export class PluginLoader {
 
@@ -51,7 +53,7 @@ export class PluginLoader {
         if(typeof(manifest.server.dependencies) !== undefined) { // Step 3
             await this.loadDependencies(pluginManifest);
         }
-        await PluginRegistry.register(pluginManifest); // Step 4
+        //await PluginRegistry.register(pluginManifest); // Step 4
         await this.preparePlugin(pluginManifest) // Step 5
         await this.instantiatePlugin(pluginManifest) // Step 6
         await this.registerRoutes(pluginManifest) // Step 7
@@ -69,7 +71,10 @@ export class PluginLoader {
     }
 
     private async preparePlugin(manifest: Manifest) {
-
+        // PluginRegistry checks if database schema is created for the plugin
+        // if migration, do migration
+        // if not, db schema for the plugin should be created
+        await this.loadDBSchema(manifest);
     }
 
     private async instantiatePlugin(manifest: Manifest) {
@@ -94,4 +99,18 @@ export class PluginLoader {
             throw new FrameworkError({code: FrameworkErrors.ROUTE_REGISTRY_FAILED, rootError: err});
         }
     }
+
+    private async loadDBSchema(manifest: Manifest) {
+		glob(this.config.pluginBasePath + manifest.id + '/db/**/schema*.json', {}, (err, files) => {
+			files.forEach(async (path) => {
+				try {
+					let schema = await import(path);
+					let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
+					await schemaLoader.create(manifest, schema);
+				} catch(e) {
+					console.log(e);
+				}
+			})
+		})	
+	}
 }

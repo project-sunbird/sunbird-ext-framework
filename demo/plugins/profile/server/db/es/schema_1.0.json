@@ -6,15 +6,15 @@
         "table": "profile",
         "fields": [{
                 "key": "user_id",
-                "type": "String"
+                "type": "text"
             },
             {
                 "key": "first_name",
-                "type": "String"
+                "type": "text"
             },
             {
                 "key": "last_name",
-                "type": "String"
+                "type": "text"
             }
         ],
         "primary_key": ["user_id"],

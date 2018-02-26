@@ -11,8 +11,6 @@ import { FrameworkError } from '../util';
 export class PluginManager {
 	private static instance: PluginManager;
 	private static _pluginInstances: any = {};
-	private readonly pluginClassName = 'ExtPlugin';
-	private readonly pluginFilePath = 'server/plugin.js';
 
 	public static get instances() : any {
 		return this._pluginInstances;
@@ -35,7 +33,6 @@ export class PluginManager {
 	}
 
 	public static async loadPlugin(plugin: IPlugin, config: FrameworkConfig) {
-
 		try {
 			let pluginLoader = new PluginLoader(config);
 			await pluginLoader.loadPlugin(plugin);
