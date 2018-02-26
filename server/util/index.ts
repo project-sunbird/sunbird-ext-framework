@@ -6,7 +6,7 @@ import * as hashids from 'hashids';
 export class Util {
     public static hash(text: string): string {
         let hash = new hashids(text, 5, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ");
-        return hash.encode(1);
+        return (<string>hash.encode(1)).toLowerCase();
     }
 }
 

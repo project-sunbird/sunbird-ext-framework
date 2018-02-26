@@ -27,20 +27,19 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	async exists(pluginId: string, db: string, table: string) {
+		await this.isIndexDefined(this.generateESIndex(pluginId, db));
 	}
 
 	async create(manifest: Manifest, schemaData: any) {
 		this.dbConnection = this.elasticSearchDB.getConnection(manifest);
-		let indexName = (Util.hash(manifest.id) + '_' + schemaData.db).toLowerCase();
+		let indexName = this.generateESIndex(manifest.id, schemaData.db);
 		let indexDefined = await this.isIndexDefined(indexName);
 		if (!indexDefined) {
 			await this.createIndex(indexName);
 			console.log(`=====> Index: "${indexName}" :New Index has been created in Elasticsearch`);
-			//creates index alias with '_' prefix. e.g: _AsRtZ
-			await this.createIndexAlias(indexName, Util.hash(manifest.id).toLowerCase());
-			console.log(`=====> Index Alias: "${Util.hash(manifest.id).toLowerCase()}"`);
+			await this.createIndexAlias(indexName, this.generateESIndexAlias(manifest.id));
+			console.log(`=====> Index Alias: "${this.generateESIndexAlias(manifest.id)}"`);
 			await this.createMapping(manifest, schemaData);
-			
 		} else {
 			console.log(`====> index: "${indexName}" already defined!`);
 		}
@@ -50,12 +49,20 @@ class ESSchemaLoader implements ISchemaLoader {
 		return await this.dbConnection.indices.create({index});
 	}
 
+	private generateESIndex(manifestId: string, index: string): string {
+		return <string>(Util.hash(manifestId) + '_' + index).toLowerCase();
+	}
+
+	private generateESIndexAlias(manifestId: string): string {
+		return Util.hash(manifestId).toLowerCase();
+	}
+
 	private async isIndexDefined(index: string) {
 		return await this.dbConnection.indices.exists({index})
 	}
 
 	private async createMapping(manifest: Manifest, schemaData: any) {
-		let indexName = (Util.hash(manifest.id) + '_' + schemaData.db).toLowerCase();
+		let indexName = this.generateESIndex(manifest.id, schemaData.db);
 		schemaData.tables.forEach(async (table) => {
 			let body = ESSchemaMapper.getFieldsfromJSON(table);
 			console.log(`====> creating mappings for type: "${table.table}" under index: "${indexName}"`);
@@ -66,8 +73,6 @@ class ESSchemaLoader implements ISchemaLoader {
 	private async createIndexAlias(index: string, alias: string) {
 		return await this.dbConnection.indices.putAlias({ index, name: alias })
 	}
-
-
 
 	async alter(pluginId: string, schemaData: object) {
 
