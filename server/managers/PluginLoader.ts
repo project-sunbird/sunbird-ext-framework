@@ -107,8 +107,8 @@ export class PluginLoader {
 					let schema = await import(path);
 					let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
 					await schemaLoader.create(manifest, schema);
-				} catch(e) {
-					console.log(e);
+				} catch(error) {
+					throw new FrameworkError({code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error});
 				}
 			})
 		})	

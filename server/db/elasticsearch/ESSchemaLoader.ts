@@ -49,12 +49,12 @@ class ESSchemaLoader implements ISchemaLoader {
 		return await this.dbConnection.indices.create({index});
 	}
 
-	private generateESIndex(manifestId: string, index: string): string {
-		return <string>(Util.hash(manifestId) + '_' + index).toLowerCase();
+	private generateESIndex(manifestId: string, db: string): string {
+		return <string>(Util.hash(manifestId) + '_' + db).toLowerCase();
 	}
 
 	private generateESIndexAlias(manifestId: string): string {
-		return Util.hash(manifestId).toLowerCase();
+		return Util.hash(manifestId);
 	}
 
 	private async isIndexDefined(index: string) {
