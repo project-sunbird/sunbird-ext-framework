@@ -29,7 +29,7 @@ export interface IPlugin {
 }
 
 export interface ICassandraConfig extends ClientOptions {
-    defaultKeyspaceSettings: {
+    defaultKeyspaceSettings?: {
         replication: {
             class: string,
             replication_factor: string
@@ -56,3 +56,30 @@ export interface FrameworkConfig {
     pluginBasePath: string;
 }
 
+export enum PluginStatusEnum {
+	unknown,
+    created,
+    registered,
+	installed,
+	resolved,
+	started,
+	stopped,
+	active,
+	uninstalled
+}
+
+export interface PluginMeta {
+    id: string;
+    uuid: string;
+    class?: IServerConstructor;
+    status: PluginStatusEnum;
+    manifest: Manifest;
+    instance?: IServer;
+}
+
+export interface IMetaDataProvider {
+    getMeta(id: string);
+    updateMeta(id: string, meta: PluginMeta);
+    createMeta(meta: PluginMeta);
+    deleteMeta(id: string);
+}

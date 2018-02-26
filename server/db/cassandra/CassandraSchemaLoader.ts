@@ -17,7 +17,7 @@ class CassandraSchemaLoader implements ISchemaLoader {
 	private cassandraDB: CassandraDB;
 	private dbConnection: ICassandraConnector;
 	private queryBuilder: CassandraQueryBuilder;
-
+	
 	constructor(config: ICassandraConfig) {
 		this._config = config;
 		this.cassandraDB = new CassandraDB(config);
@@ -37,14 +37,15 @@ class CassandraSchemaLoader implements ISchemaLoader {
 	}
 
 	private async createTables(manifest: Manifest, schemaData: any) {
-		this.dbConnection = this.cassandraDB.getConnection(manifest, schemaData.db);
+		// get connection from framework keyspace to create new keyspace/table for plugins
+		this.dbConnection = this.cassandraDB.getConnection(this._config.keyspace);
 		let keyspaceName = this.generateKeyspaceName(manifest.id, schemaData.db);
 		let noOfTables = schemaData.tables.length;
 		schemaData.tables.forEach(async (table, index) => {
 			await this.dbConnection.connect()
 				.then(() => {
 					const query = `CREATE KEYSPACE IF NOT EXISTS ${keyspaceName} WITH replication = ` + "{'class': 'SimpleStrategy', 'replication_factor': '1' }";
-					//+ JSON.stringify(this._config.defaultKeyspaceSettings.replication);
+					//+ JSON.stringify(schemaData.dbConfig.defaultKeyspaceSettings.replication);
 					return this.dbConnection.execute(query);
 				})
 				.then(() => {

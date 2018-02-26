@@ -3,7 +3,7 @@
  */
 import { FrameworkConfig } from "./interfaces";
 
-let config = {
+export const defaultConfig: FrameworkConfig = {
     db: {
         cassandra: {
             contactPoints: ['127.0.0.1'],
@@ -23,5 +23,3 @@ let config = {
     plugins: [],
     pluginBasePath: ""
 };
-
-export const defaultConfig = <FrameworkConfig> config;

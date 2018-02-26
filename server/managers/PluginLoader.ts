@@ -11,14 +11,17 @@ import { RouterRegistry } from "./RouterRegistry";
 import * as _ from 'lodash';
 import { SchemaLoader, ISchemaLoader } from '../db';
 import * as glob from 'glob';
+import {cassandraMetaDataProvider} from '../meta/CassandraMetaDataProvider';
 
 export class PluginLoader {
 
     private _config: FrameworkConfig;
     private _pluginsLoaded: Array<string> = [];
+    private _registry: PluginRegistry;
 
     constructor(config: FrameworkConfig) {
         this._config = _.cloneDeep(config);
+        this._registry = new PluginRegistry(cassandraMetaDataProvider);
     }
 
     get config(): FrameworkConfig {
@@ -53,7 +56,7 @@ export class PluginLoader {
         if(typeof(manifest.server.dependencies) !== undefined) { // Step 3
             await this.loadDependencies(pluginManifest);
         }
-        //await PluginRegistry.register(pluginManifest); // Step 4
+        //await this._registry(pluginManifest); // Step 4
         await this.preparePlugin(pluginManifest) // Step 5
         await this.instantiatePlugin(pluginManifest) // Step 6
         await this.registerRoutes(pluginManifest) // Step 7
@@ -74,7 +77,8 @@ export class PluginLoader {
         // PluginRegistry checks if database schema is created for the plugin
         // if migration, do migration
         // if not, db schema for the plugin should be created
-        await this.loadDBSchema(manifest);
+        let schemaPath = this.config.pluginBasePath + manifest.id + '/db/**/schema*.json';
+        await PluginLoader.loadDBSchema(manifest, schemaPath);
     }
 
     private async instantiatePlugin(manifest: Manifest) {
@@ -100,8 +104,8 @@ export class PluginLoader {
         }
     }
 
-    private async loadDBSchema(manifest: Manifest) {
-		glob(this.config.pluginBasePath + manifest.id + '/db/**/schema*.json', {}, (err, files) => {
+    public static async loadDBSchema(manifest: Manifest, path: string) {
+		glob(path, {}, (err, files) => {
 			files.forEach(async (path) => {
 				try {
 					let schema = await import(path);

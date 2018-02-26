@@ -1,0 +1,42 @@
+{
+    "db": "core_framework_schema",
+    "type": "cassandra",
+    "dbConfig": {},
+    "tables": [{
+        "name": "registry",
+        "fields": [{
+                "key": "id",
+                "type": "text"
+            },
+            {
+                "key": "name",
+                "type": "text"
+            },
+            {
+                "key": "version",
+                "type": "text"
+            },
+            {
+                "key": "repo",
+                "type": "text"
+            },
+            {
+                "key": "status",
+                "type": "text"
+            },
+            {
+                "key": "registeredOn",
+                "type": "text"
+            },
+            {
+                "key": "cassandraKeyspaceName",
+                "type": "text"
+            },
+            {
+                "key": "elasticsearchIndexName",
+                "type": "text"
+            }
+        ],
+        "primary_key": ["id"]
+    }]
+}

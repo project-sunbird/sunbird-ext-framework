@@ -1,13 +1,17 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
-import { db } from './db';
+import { db, ISchemaLoader, SchemaLoader } from './db';
 import { FrameworkAPI } from './api';
 import { Express } from 'express';
 import { RouterRegistry } from './managers/RouterRegistry';
 import { defaultConfig } from './config';
 import { PluginManager } from './managers/PluginManager';
 import { FrameworkConfig } from './interfaces';
+import {Manifest} from './models/Manifest';
+import { PluginLoader } from './managers/PluginLoader';
+import { CoreManifest } from './CoreManifest';
+import * as RegistrySchema from './meta/RegistrySchema.json';
 
 export * from './interfaces'
 
@@ -44,12 +48,22 @@ export class Framework {
 	}
 
 	public static async initialize(config: FrameworkConfig, app: Express) {
-
+		let coreManifest: Manifest = Manifest.fromJSON(CoreManifest);
 		if (!Framework._initialized) {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
+			await Framework.createPluginRegistrySchema(coreManifest, RegistrySchema);
 			await PluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
+		}
+	}
+
+	public static async createPluginRegistrySchema(manifest: Manifest, schema: any) {
+		try {
+			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
+			await schemaLoader.create(manifest, schema);
+		} catch(e) {
+			console.log(e);
 		}
 	}
 }

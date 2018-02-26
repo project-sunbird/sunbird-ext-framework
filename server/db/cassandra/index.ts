@@ -16,14 +16,14 @@ export class CassandraDB {
 		this._config = config;
 	}
 
-	getConnection(manifest: Manifest, db: string): any {
-		return new cassandraDriver.Client(this.getNewClient(manifest, db));
+	public getConnection(keyspace: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]): any {
+		return new cassandraDriver.Client(this.getNewClient(keyspace, defaultSettings));
 	}
 
-	private getNewClient(manifest: Manifest, db: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]): ICassandraConfig {
+	private getNewClient(keyspace: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]): ICassandraConfig {
 		return {
 			contactPoints: this._config.contactPoints,
-			keyspace: Util.generateId(manifest.id, db),
+			keyspace,
 			defaultKeyspaceSettings: defaultSettings || this._config.defaultKeyspaceSettings,	
 		}
 	}
