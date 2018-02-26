@@ -4,7 +4,6 @@
 
 import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
-import { Manifest } from '../../models/Manifest';
 import { IElasticSearchConfig, IElasticSearchConnector } from '../../interfaces';
 import { ElasticSearchDB } from './index';
 import {defaultConfig} from '../../config';
@@ -30,16 +29,16 @@ class ESSchemaLoader implements ISchemaLoader {
 		await this.isIndexDefined(this.generateESIndex(pluginId, db));
 	}
 
-	async create(manifest: Manifest, schemaData: any) {
-		this.dbConnection = this.elasticSearchDB.getConnection(manifest);
-		let indexName = this.generateESIndex(manifest.id, schemaData.db);
+	async create(pluginId: string, schemaData: any) {
+		this.dbConnection = this.elasticSearchDB.getConnection(pluginId);
+		let indexName = this.generateESIndex(pluginId, schemaData.db);
 		let indexDefined = await this.isIndexDefined(indexName);
 		if (!indexDefined) {
 			await this.createIndex(indexName);
 			console.log(`=====> Index: "${indexName}" :New Index has been created in Elasticsearch`);
-			await this.createIndexAlias(indexName, this.generateESIndexAlias(manifest.id));
-			console.log(`=====> Index Alias: "${this.generateESIndexAlias(manifest.id)}"`);
-			await this.createMapping(manifest, schemaData);
+			await this.createIndexAlias(indexName, this.generateESIndexAlias(pluginId));
+			console.log(`=====> Index Alias: "${this.generateESIndexAlias(pluginId)}"`);
+			await this.createMapping(pluginId, schemaData);
 		} else {
 			console.log(`=====> index: "${indexName}" already defined!`);
 		}
@@ -49,20 +48,20 @@ class ESSchemaLoader implements ISchemaLoader {
 		return await this.dbConnection.indices.create({index});
 	}
 
-	private generateESIndex(manifestId: string, db: string): string {
-		return Util.generateId(manifestId, db);
+	private generateESIndex(pluginId: string, db: string): string {
+		return Util.generateId(pluginId, db);
 	}
 
-	private generateESIndexAlias(manifestId: string): string {
-		return Util.hash(manifestId);
+	private generateESIndexAlias(pluginId: string): string {
+		return Util.hash(pluginId);
 	}
 
 	private async isIndexDefined(index: string) {
 		return await this.dbConnection.indices.exists({index})
 	}
 
-	private async createMapping(manifest: Manifest, schemaData: any) {
-		let indexName = this.generateESIndex(manifest.id, schemaData.db);
+	private async createMapping(pluginId: string, schemaData: any) {
+		let indexName = this.generateESIndex(pluginId, schemaData.db);
 		schemaData.tables.forEach(async (table) => {
 			let body = ESSchemaMapper.getFieldsfromJSON(table);
 			console.log(`====> creating mappings for type: "${table.table}" under index: "${indexName}"`);

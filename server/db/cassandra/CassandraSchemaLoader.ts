@@ -6,7 +6,6 @@ import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
 import { defaultConfig } from '../../config';
 import { CassandraDB } from './index';
-import { Manifest } from '../../models/Manifest';
 import { ICassandraConfig, ICassandraConnector } from '../../interfaces';
 import { CassandraQueryBuilder } from './CassandraQueryBuilder';
 import { Util, FrameworkError, FrameworkErrors } from '../../util';
@@ -32,14 +31,14 @@ class CassandraSchemaLoader implements ISchemaLoader {
 
 	}
 
-	async create(manifest: Manifest, schemaData: any) {
-		await this.createTables(manifest, schemaData);
+	async create(pluginId: string, schemaData: any) {
+		await this.createTables(pluginId, schemaData);
 	}
 
-	private async createTables(manifest: Manifest, schemaData: any) {
+	private async createTables(pluginId: string, schemaData: any) {
 		// get connection from framework keyspace to create new keyspace/table for plugins
 		this.dbConnection = this.cassandraDB.getConnection(this._config.keyspace);
-		let keyspaceName = this.generateKeyspaceName(manifest.id, schemaData.db);
+		let keyspaceName = this.generateKeyspaceName(pluginId, schemaData.db);
 		let noOfTables = schemaData.tables.length;
 		schemaData.tables.forEach(async (table, index) => {
 			await this.dbConnection.connect()
@@ -59,12 +58,12 @@ class CassandraSchemaLoader implements ISchemaLoader {
 					this.dbConnection.shutdown();
 					throw new FrameworkError({code: FrameworkErrors.DB_ERROR, rootError: err})
 				});
-				if (index === noOfTables - 1) console.log(`====> Tables created for plugin "${manifest.id}": keyspace: "${keyspaceName}"`)
+				if (index === noOfTables - 1) console.log(`====> Tables created for plugin "${pluginId}": keyspace: "${keyspaceName}"`)
 		})
 	}
 
-	private generateKeyspaceName(manifestId: string, db: string): string {
-		return Util.generateId(manifestId, db);
+	private generateKeyspaceName(pluginId: string, db: string): string {
+		return Util.generateId(pluginId, db);
 	}
 
 

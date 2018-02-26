@@ -10,7 +10,6 @@ import { PluginManager } from './managers/PluginManager';
 import { FrameworkConfig } from './interfaces';
 import {Manifest} from './models/Manifest';
 import { PluginLoader } from './managers/PluginLoader';
-import { CoreManifest } from './CoreManifest';
 import * as RegistrySchema from './meta/RegistrySchema.json';
 
 export * from './interfaces'
@@ -22,6 +21,7 @@ export class Framework {
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
+	private static _FRAMEWORK_ID: string = "core_framework_schema";
 
 	public get config(): FrameworkConfig {
 		return this._config;
@@ -48,20 +48,20 @@ export class Framework {
 	}
 
 	public static async initialize(config: FrameworkConfig, app: Express) {
-		let coreManifest: Manifest = Manifest.fromJSON(CoreManifest);
+		
 		if (!Framework._initialized) {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
-			await Framework.createPluginRegistrySchema(coreManifest, RegistrySchema);
+			await Framework.createPluginRegistrySchema();
 			await PluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
 		}
 	}
 
-	public static async createPluginRegistrySchema(manifest: Manifest, schema: any) {
+	public static async createPluginRegistrySchema() {
 		try {
-			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
-			await schemaLoader.create(manifest, schema);
+			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(RegistrySchema.type);
+			await schemaLoader.create(Framework._FRAMEWORK_ID, RegistrySchema);
 		} catch(e) {
 			console.log(e);
 		}

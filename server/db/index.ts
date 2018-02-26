@@ -14,8 +14,8 @@ export class db {
 	private _cassandra: CassandraDB;
 
 	constructor(config: FrameworkConfig) {
-		this._elasticsearch = new ElasticSearchDB(config);
-		this._cassandra = new CassandraDB(config);
+		this._elasticsearch = new ElasticSearchDB(config.db.elasticsearch);
+		this._cassandra = new CassandraDB(config.db.cassandra);
 	}
 
 	public elasticsearch(): ElasticSearchDB {

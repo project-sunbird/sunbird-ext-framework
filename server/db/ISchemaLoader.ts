@@ -1,5 +1,3 @@
-import { Manifest } from "../models/Manifest";
-
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
@@ -10,7 +8,7 @@ export interface ISchemaLoader {
 
 	exists(pluginId: string, db: string, table: string);
 
-	create(manifest: Manifest, schemaData: object);
+	create(pluginId: string, schemaData: object);
 
     alter(pluginId: string, schemaData: object);
 
