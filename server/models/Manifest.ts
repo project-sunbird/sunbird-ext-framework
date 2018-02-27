@@ -3,6 +3,7 @@
  */
 
 import { IPlugin } from "../interfaces";
+import * as _ from 'lodash';
 
 export interface IRouteSchema {
     prefix: string;
@@ -109,5 +110,9 @@ export class Manifest {
             json = <IPluginManifest>JSON.parse(json);
         }
         return new Manifest(json);
+    }
+
+    public toJSON(): IPluginManifest {
+        return _.cloneDeep(this.json);
     }
 }

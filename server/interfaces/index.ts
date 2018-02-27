@@ -65,7 +65,8 @@ export enum PluginStatusEnum {
 	started,
 	stopped,
 	active,
-	uninstalled
+	uninstalled,
+    unregistered,
 }
 
 export interface PluginMeta {
@@ -74,11 +75,11 @@ export interface PluginMeta {
     name: string;
     version: string;
     repo: string;
-    registeredOn: string;
-    cassandraKeyspace: string;
-    elasticsearchIndex: string;    
+    registered_on: Date;
+    cassandra_keyspace: string;
+    elasticsearch_index: string;    
     status: PluginStatusEnum;
-    manifest: IPluginManifest;
+    manifest: string;
 }
 
 export interface IMetaDataProvider {

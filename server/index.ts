@@ -10,7 +10,7 @@ import { PluginManager } from './managers/PluginManager';
 import { FrameworkConfig } from './interfaces';
 import {Manifest} from './models/Manifest';
 import { PluginLoader } from './managers/PluginLoader';
-import * as RegistrySchema from './meta/RegistrySchema.json';
+import {RegistrySchema} from './meta/RegistrySchema';
 
 export * from './interfaces'
 

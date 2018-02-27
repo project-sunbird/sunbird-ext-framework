@@ -10,7 +10,7 @@ import { ICassandraConfig, ICassandraConnector } from '../../interfaces';
 import { CassandraQueryBuilder } from './CassandraQueryBuilder';
 import { Util, FrameworkError, FrameworkErrors } from '../../util';
 
-class CassandraSchemaLoader implements ISchemaLoader {
+export class CassandraSchemaLoader implements ISchemaLoader {
 
 	private _config: ICassandraConfig;
 	private cassandraDB: CassandraDB;

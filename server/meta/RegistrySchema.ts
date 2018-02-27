@@ -1,4 +1,4 @@
-{
+export const RegistrySchema = {
     "db": "core_framework_schema",
     "type": "cassandra",
     "dbConfig": {},
@@ -26,18 +26,18 @@
             },
             {
                 "key": "status",
+                "type": "int"
+            },
+            {
+                "key": "registered_on",
+                "type": "date"
+            },
+            {
+                "key": "cassandra_keyspace",
                 "type": "text"
             },
             {
-                "key": "registeredOn",
-                "type": "text"
-            },
-            {
-                "key": "cassandraKeyspace",
-                "type": "text"
-            },
-            {
-                "key": "elasticsearchIndex",
+                "key": "elasticsearch_index",
                 "type": "text"
             },
             {

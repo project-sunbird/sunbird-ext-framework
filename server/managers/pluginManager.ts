@@ -7,6 +7,7 @@ import { Manifest, IPluginManifest } from '../models/Manifest'
 import { IRouterConstructor, IServerConstructor, IPlugin, FrameworkConfig } from '../interfaces';
 import { PluginLoader } from './PluginLoader';
 import { FrameworkError } from '../util';
+import winston from 'winston';
 
 export class PluginManager {
 	private static instance: PluginManager;
@@ -36,10 +37,10 @@ export class PluginManager {
 		try {
 			let pluginLoader = new PluginLoader(config);
 			await pluginLoader.loadPlugin(plugin);
-			console.log('=====> ' + plugin.id + ' plugin loaded');
+			winston.log('info', '=====> ' + plugin.id + ' plugin loaded');
 		} catch (e) {
 			if(e instanceof FrameworkError) {
-				console.error('=====> ' + plugin.id + ' plugin load failed due to ' + (<FrameworkError> e).print());
+				winston.log('info', '=====> ' + plugin.id + ' plugin load failed due to ' + (<FrameworkError> e).print());
 			}	
 		}
 	}
