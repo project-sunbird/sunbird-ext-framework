@@ -105,16 +105,15 @@ export class PluginLoader {
     }
 
     public static async loadDBSchema(manifest: Manifest, path: string) {
-		glob(path, {}, (err, files) => {
-			files.forEach(async (path) => {
-				try {
-					let schema = await import(path);
-					let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
-					await schemaLoader.create(manifest, schema);
-				} catch(error) {
-					throw new FrameworkError({code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error});
-				}
-			})
-		})	
+		let files = glob.sync(path, {});
+        for (let path of files) {
+            try {
+                let schema = await import(path);
+                let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
+                await schemaLoader.create(manifest.id, schema);
+            } catch(error) {
+                throw new FrameworkError({code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error});
+            }
+        }
 	}
 }
