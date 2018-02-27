@@ -1,4 +1,4 @@
-import { IMetaDataProvider } from "../interfaces";
+import { IMetaDataProvider,PluginMeta } from "../interfaces";
 
 export class CassandraMetaDataProvider implements IMetaDataProvider {
     getMeta(id: string) {

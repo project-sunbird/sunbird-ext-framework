@@ -21,7 +21,7 @@ export class Framework {
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
-	private static _FRAMEWORK_ID: string = "core_framework_schema";
+	private static _FRAMEWORK_DB_SCHEMA: string = "core_framework_schema";
 
 	public get config(): FrameworkConfig {
 		return this._config;
@@ -52,16 +52,16 @@ export class Framework {
 		if (!Framework._initialized) {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
-			await Framework.createPluginRegistrySchema();
+			await Framework.laodPluginRegistrySchema();
 			await PluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
 		}
 	}
 
-	public static async createPluginRegistrySchema() {
+	public static async laodPluginRegistrySchema() {
 		try {
 			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(RegistrySchema.type);
-			await schemaLoader.create(Framework._FRAMEWORK_ID, RegistrySchema);
+			await schemaLoader.create(Framework._FRAMEWORK_DB_SCHEMA, RegistrySchema);
 		} catch(e) {
 			console.log(e);
 		}
