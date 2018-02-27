@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Manifest } from "../models/Manifest";
+import { Manifest, IPluginManifest } from "../models/Manifest";
 import {ClientOptions, Client} from 'cassandra-driver';
 import {ConfigOptions, Client as ESClient} from 'elasticsearch';
 export interface IRouter {
@@ -71,10 +71,14 @@ export enum PluginStatusEnum {
 export interface PluginMeta {
     id: string;
     uuid: string;
-    class?: IServerConstructor;
+    name: string;
+    version: string;
+    repo: string;
+    registeredOn: string;
+    cassandraKeyspace: string;
+    elasticsearchIndex: string;    
     status: PluginStatusEnum;
-    manifest: Manifest;
-    instance?: IServer;
+    manifest: IPluginManifest;
 }
 
 export interface IMetaDataProvider {

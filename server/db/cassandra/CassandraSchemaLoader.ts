@@ -39,8 +39,7 @@ class CassandraSchemaLoader implements ISchemaLoader {
 		// get connection from framework keyspace to create new keyspace/table for plugins
 		this.dbConnection = this.cassandraDB.getConnection(this._config.keyspace);
 		let keyspaceName = this.generateKeyspaceName(pluginId, schemaData.db);
-		let noOfTables = schemaData.tables.length;
-		schemaData.tables.forEach(async (table, index) => {
+		for(let table of schemaData.tables) {
 			await this.dbConnection.connect()
 				.then(() => {
 					const query = `CREATE KEYSPACE IF NOT EXISTS ${keyspaceName} WITH replication = ` + "{'class': 'SimpleStrategy', 'replication_factor': '1' }";
@@ -50,16 +49,12 @@ class CassandraSchemaLoader implements ISchemaLoader {
 				.then(() => {
 					return this.dbConnection.execute(this.queryBuilder.createTable(schemaData, table, keyspaceName));
 				})
-				.then(() => {
-					return this.dbConnection.shutdown();
-				})
 				.catch((err) => {
 					console.log(err);
-					this.dbConnection.shutdown();
 					throw new FrameworkError({code: FrameworkErrors.DB_ERROR, rootError: err})
 				});
-				if (index === noOfTables - 1) console.log(`====> Tables created for plugin "${pluginId}": keyspace: "${keyspaceName}"`)
-		})
+		}
+		console.log(`====> Tables created for "${pluginId}": keyspace: "${keyspaceName}"`)
 	}
 
 	private generateKeyspaceName(pluginId: string, db: string): string {

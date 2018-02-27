@@ -13,6 +13,10 @@
                 "type": "text"
             },
             {
+                "key": "uuid",
+                "type": "text"
+            },
+            {
                 "key": "version",
                 "type": "text"
             },
@@ -29,11 +33,15 @@
                 "type": "text"
             },
             {
-                "key": "cassandraKeyspaceName",
+                "key": "cassandraKeyspace",
                 "type": "text"
             },
             {
-                "key": "elasticsearchIndexName",
+                "key": "elasticsearchIndex",
+                "type": "text"
+            },
+            {
+                "key": "manifest",
                 "type": "text"
             }
         ],
