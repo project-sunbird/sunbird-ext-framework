@@ -1,0 +1,30 @@
+<div class="ui grid">
+  <div class="center aligned twelve column row padding-top-2rem headerBackground">
+    <div class="one wide column"></div>
+    <div class="one wide column">
+      <a href="/">
+        <img class="image centered header-logoBeforeLogin" src="{{orgLogo || './assets/images/sunbird_logo.png'}}">
+
+      </a>
+    </div>
+    <div class="one wide column"></div>
+    <div class="six wide column">
+      <div class="beforelogin ui secondary pointing menu padding-top-1rem">
+        <a *ngFor="let item of menu.items" class="item" routerLink="{{item.routePath}}">
+          {{item.name}}
+        </a>
+      </div>
+
+    </div>
+    <div class="one wide column"></div>
+    <div class="one wide column">
+
+    </div>
+    <div class="one wide column"></div>
+  </div>
+
+</div>
+<div>
+  <router-outlet></router-outlet>
+  <!-- <ng-container #appContainer></ng-container> -->
+</div>

@@ -5,20 +5,22 @@ import 'rxjs/add/observable/throw';
 import moment from 'moment-es6';
 import { UUID } from 'angular2-uuid';
 import { HttpClient } from '@angular/common/http'
-
-interface RequestParam {
+import { Injectable } from '@angular/core';
+import { urlConfig } from './url.config';
+export interface RequestParam {
     url: string;
     param?: object;
     header?: object;
     data?: object;
 }
+@Injectable()
 export class HttpService {
     headers: object = {};
     rootOrgId = '';
-    http: HttpClient;
     httpOptions: any = {};
+    constructor(private http: HttpClient) { }
     getBaseUrl(): string {
-        return "";
+        return urlConfig.URLS.LEARNER_PREFIX;
     }
     _call(url: string, httpOptions: object, type: string): Observable<any> {
         let instance = this;

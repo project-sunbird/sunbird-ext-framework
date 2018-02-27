@@ -3,7 +3,7 @@
  */
 import { eventManager } from './eventManager';
 import * as _ from 'lodash';
-interface Manifest {
+export interface Manifest {
     id: string,
     ver: string,
     statePath: string

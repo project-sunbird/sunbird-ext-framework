@@ -1,7 +1,7 @@
 /**
  * @author Rajeev Sathish <rajeev.sathish@tarento.com>
  */
-import { eb } from '../lib/EventBus'
+import { eb } from '../lib/EventBus';
 export class EventManager {
     private enableEvents: boolean = true;
     addEventListener(type: string, callback: any, scope: any) {
