@@ -4,6 +4,7 @@
 import { eventManager } from './eventManager';
 import { PluginLoader } from './PluginLoader';
 import * as _ from 'lodash';
+
 export interface Manifest {
     id: string,
     ver: string,
@@ -17,11 +18,9 @@ export class PluginManager {
     static pluginInstances: object = {};
     static errors: any = [];
     public static registerPlugin(manifest: Manifest, config: any) {
-        debugger;
         PluginManager._registerPlugin(manifest.id, manifest.ver, config, manifest);
     }
     public static async _registerPlugin(pluginId: string, pluginVer: string, config: any, manifest: Manifest) {
-        debugger;
         PluginManager.plugins[pluginId] = { c: config, m: manifest };
         if (manifest) {
             PluginManager.pluginManifests[manifest.id] = { m: manifest };

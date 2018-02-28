@@ -13,7 +13,6 @@ export class PluginLoader {
     }
     public async instantiatePlugin(manifest: Manifest) {
         try {
-            debugger;
             let pluginFile = await import(this.config.pluginBasePath + manifest.id + '/');
             let pluginClass = pluginFile.Server;
             let pluginInstance = new pluginClass(this.config, manifest);
