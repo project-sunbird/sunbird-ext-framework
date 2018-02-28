@@ -4,16 +4,19 @@ import { ProfileComponent } from './profile.component';
 import { ProfileHeaderComponent } from './profile-header/profile-header.component';
 import { UserAvtarComponent } from './user-avtar/user-avtar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { UserProfileService } from './service/user-profile.service';
+//import { UserProfileService } from './service/user-profile.service';
+import { FrameworkAPI } from 'extframework/webFramework';
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule
   ],
-  providers: [UserProfileService],
+  providers: [],
   declarations: [ProfileComponent, ProfileHeaderComponent, UserAvtarComponent],
   exports: [
     ProfileComponent
   ]
 })
-export class ProfileModule { }
+export class ProfileModule {
+
+}
