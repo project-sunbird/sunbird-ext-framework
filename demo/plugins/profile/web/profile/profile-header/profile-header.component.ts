@@ -6,12 +6,12 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./profile-header.component.css']
 })
 export class ProfileHeaderComponent implements OnInit {
-  @Input() userProfile:any
+  @Input() userProfile: any
   avator: string = "";
   constructor() { }
 
   ngOnInit() {
-    this.avator= this.userProfile.avator;
+    this.avator = this.userProfile.avator;
   }
 
 }
