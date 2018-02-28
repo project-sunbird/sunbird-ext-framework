@@ -30,7 +30,7 @@
     "@angular/language-service": "^5.0.0",
     "ng-packagr": "^2.0.0",
     "typescript": "^2.7.1",
-    "extframework": "file:../../../framework"
+    "web-framework": "file:../../../../web/dist/web-framework.tgz"
   },
   "devDependencies": {
     "@angular/cli": "^1.6.2",
