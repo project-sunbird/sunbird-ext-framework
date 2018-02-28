@@ -1,6 +1,4 @@
-node_modules
-demo/app/node_modules
 **/dist/**
-server/node_modules
-server/mochawesome-report
+**/node_modules
+**/mochawesome-report
 **/package-lock.json

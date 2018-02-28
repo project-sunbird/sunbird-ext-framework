@@ -3,7 +3,6 @@
  */
 import { eventManager } from './eventManager';
 import { PluginLoader } from './PluginLoader';
-import * as _ from 'lodash';
 
 export interface Manifest {
     id: string,
@@ -17,29 +16,29 @@ export class PluginManager {
     //static pluginObjs: object = {};
     static pluginInstances: object = {};
     static errors: any = [];
-    public static registerPlugin(manifest: Manifest, config: any) {
-        PluginManager._registerPlugin(manifest.id, manifest.ver, config, manifest);
-    }
-    public static async _registerPlugin(pluginId: string, pluginVer: string, config: any, manifest: Manifest) {
-        PluginManager.plugins[pluginId] = { c: config, m: manifest };
+
+    public static async registerPlugin(manifest: Manifest, config: any) {
+        PluginManager.plugins[manifest.id] = { c: config, m: manifest };
         if (manifest) {
             PluginManager.pluginManifests[manifest.id] = { m: manifest };
         }
-        eventManager.dispatchEvent('plugin:load', { plugin: pluginId, version: pluginVer });
-        eventManager.dispatchEvent(pluginId + ':load');
-        let pluginLoader = new PluginLoader(config);
-        await pluginLoader.instantiatePlugin(manifest);
-        console.log('=====> ' + pluginId + ' plugin loaded');
+        eventManager.dispatchEvent('plugin:load', { plugin: manifest.id, version: manifest.ver });
+        eventManager.dispatchEvent(manifest.id + ':load');
+        await PluginManager.instantiate();
+        console.log('=====> ' + manifest.id + ' plugin loaded');
         // let p = new plugin(manifest);
         // if (manifest) {
         //     PluginManager.pluginInstances[manifest.id] = p;
         // }
     }
-    public checkForDuplicateState(pluginId: string, pluginVer: string, plugin: any, manifest: Manifest) {
-        if (manifest.statePath) {
-            //TODO check for Duplicate path/state 
-        }
+
+    public static async instantiate() {
+        let pluginFile = await import(this._config.pluginBasePath + manifest.id + '/Client');
+        let pluginClass = <IClientPluginConstructor>pluginFile.ClientPlugin;
+        let pluginInstance = new pluginClass(this._config, manifest);
+        PluginManager.pluginInstances[manifest.id] = pluginInstance;
     }
+   
     public static getPluginInstance(pluginId): object {
         return PluginManager.pluginInstances[pluginId];
     }

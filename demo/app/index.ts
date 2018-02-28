@@ -28,6 +28,8 @@ const expressApp  = express()
 const PORT: number = 9000
 expressApp.use(bodyParser.json({limit: '50mb'}))
 
+expressApp.use(express.static('public'));
+
 Framework.initialize(config, expressApp).then(()=> {
     console.log(`=====> Application running on port: ${PORT}`);
     expressApp.listen(PORT);
