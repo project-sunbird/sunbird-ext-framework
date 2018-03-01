@@ -1,8 +1,5 @@
 //export * from './src/app/modules/header/header.module';
-export { ProfileModule } from './profile/profile.module';
-export { ProfileComponent } from './profile/profile.component';
-export { ProfileHeaderComponent } from './profile/profile-header/profile-header.component';
-export { UserAvtarComponent } from './profile/user-avtar/user-avtar.component';
-//export { UserProfileService } from './profile/service/user-profile.service';
+export { UserProfileComponent } from './user-profile.component';
 export { ClientPlugin } from './Client';
-export {manifest} from './manifest';
+export { manifest } from './manifest';
+export { UserProfileModule } from './user-profile.module';

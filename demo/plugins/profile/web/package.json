@@ -1,5 +1,5 @@
 {
-  "name": "profile",
+  "name": "userProfile",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
@@ -21,16 +21,9 @@
     "core-js": "^2.4.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
-    "moment-es6": "^1.0.0",
-    "ng2-semantic-ui": "^0.9.6",
     "rxjs": "^5.5.2",
-    "zone.js": "^0.8.14",
-    "@angular/cli": "^1.6.2",
-    "@angular/compiler-cli": "^5.0.0",
-    "@angular/language-service": "^5.0.0",
-    "ng-packagr": "^2.0.0",
-    "typescript": "^2.7.1",
-    "web-framework": "file:../../../../web/dist/web-framework.tgz"
+    "web-framework": "file:///E:\\work\\EkStep\\ext-framework\\web\\dist\\web-framework.tgz",
+    "zone.js": "^0.8.14"
   },
   "devDependencies": {
     "@angular/cli": "^1.6.2",
@@ -54,6 +47,8 @@
     "protractor": "^5.1.2",
     "ts-node": "^3.2.0",
     "tslint": "^5.7.0",
-    "typescript": "^2.4.2"
+    "typescript": "^2.4.2",
+    "moment-es6": "^1.0.0",
+    "ng2-semantic-ui": "^0.9.6"
   }
 }

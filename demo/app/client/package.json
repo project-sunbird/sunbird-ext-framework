@@ -24,6 +24,7 @@
     "core-js": "^2.4.1",
     "profile": "file:../../plugins/profile/web/dist",
     "rxjs": "^5.5.6",
+    "userProfile": "file:///E:\\work\\EkStep\\ext-framework\\demo\\plugins\\profile\\web\\dist\\userProfile.tgz",
     "web-framework": "file:../../../web/dist",
     "zone.js": "^0.8.19"
   },
