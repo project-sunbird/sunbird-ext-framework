@@ -23,6 +23,9 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "gulp": "^3.9.1",
+        "gulp-install": "^1.1.0",
+        "gulp-rename": "^1.2.2",
         "nodemon": "^1.15.0",
         "ts-node": "^4.1.0",
         "typescript": "^2.7.2"

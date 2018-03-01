@@ -5,3 +5,4 @@ export { ProfileHeaderComponent } from './profile/profile-header/profile-header.
 export { UserAvtarComponent } from './profile/user-avtar/user-avtar.component';
 //export { UserProfileService } from './profile/service/user-profile.service';
 export { ClientPlugin } from './Client';
+export {manifest} from './manifest';

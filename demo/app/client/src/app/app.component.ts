@@ -8,7 +8,7 @@ import { Framework } from 'web-framework';
 export class AppComponent implements OnInit {
   title = 'app';
   ngOnInit() {
-    let obj = Framework.getPluginInstance('profile');
+    let obj = <any>Framework.getPluginInstance('profile');
     obj.callMe();
   }
 }

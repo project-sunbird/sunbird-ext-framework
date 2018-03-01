@@ -14,5 +14,8 @@
   "devDependencies": {
     "typescript": "^2.7.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@akanass/rx-http-request": "^2.7.1",
+    "rxjs": "^5.5.6"
+  }
 }
