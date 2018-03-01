@@ -4,4 +4,4 @@ export { ProfileComponent } from './profile/profile.component';
 export { ProfileHeaderComponent } from './profile/profile-header/profile-header.component';
 export { UserAvtarComponent } from './profile/user-avtar/user-avtar.component';
 //export { UserProfileService } from './profile/service/user-profile.service';
-export { Plugin } from './profile/Plugin';
+export { ClientPlugin } from './Client';

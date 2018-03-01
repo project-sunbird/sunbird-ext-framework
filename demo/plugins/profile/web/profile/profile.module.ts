@@ -5,7 +5,7 @@ import { ProfileHeaderComponent } from './profile-header/profile-header.componen
 import { UserAvtarComponent } from './user-avtar/user-avtar.component';
 import { HttpClientModule } from '@angular/common/http';
 //import { UserProfileService } from './service/user-profile.service';
-import { FrameworkAPI } from 'extframework/webFramework';
+import { FrameworkAPI } from 'web-framework';
 @NgModule({
   imports: [
     CommonModule,
