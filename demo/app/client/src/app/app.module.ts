@@ -3,18 +3,18 @@ import { NgModule } from '@angular/core';
 
 
 import { AppComponent } from './app.component';
-
-import { config } from './config';
+import { UserProfileModule } from 'userProfile';
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    UserProfileModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  
+
 }

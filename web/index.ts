@@ -12,7 +12,7 @@ export class Framework {
             console.log(plugin.manifest.id + "was Registered Successfully");
         }
     }
-    public static getPluginInstance(pluginId): object {
+    public static getPluginInstance(pluginId): any {
         return PluginManager.getPluginInstance(pluginId);
     }
 }

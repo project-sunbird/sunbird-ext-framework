@@ -2,11 +2,11 @@
  * @author Rajeev Sathish <rajeev.sathish@tarento.com>
  */
 import { eventManager } from './eventManager';
-import {HTTPService} from '../services/HTTPService';
+import { HTTPService } from '../services/HTTPService';
 
 export interface Manifest {
     id: string;
-    ver: string;
+    version: string;
 }
 export interface FrameworkConfig {
     pluginBasePath: string;
@@ -29,7 +29,7 @@ export class PluginManager {
         if (manifest) {
             PluginManager.pluginManifests[manifest.id] = { m: manifest };
         }
-        eventManager.dispatchEvent('plugin:load', { plugin: manifest.id, version: manifest.ver });
+        eventManager.dispatchEvent('plugin:load', { plugin: manifest.id, version: manifest.version });
         eventManager.dispatchEvent(manifest.id + ':load');
         console.log('=====> ' + manifest.id + ' plugin loaded');
     }
@@ -37,7 +37,7 @@ export class PluginManager {
         PluginManager.pluginInstances[manifest.id] = new plugin();
     }
 
-    public static getPluginInstance(pluginId): object {
+    public static getPluginInstance(pluginId): any {
         return PluginManager.pluginInstances[pluginId];
     }
 }
