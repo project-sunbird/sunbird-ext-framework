@@ -22,7 +22,7 @@ export class Server implements IProfileService {
 		let id = req.params['userId'];
 		if (!this.userDetails) {
 			this.userDetails = {};
-			this.userDetails.avator = "https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png";
+			this.userDetails.avatar = "https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png";
 			this.userDetails.firstName = "John";
 			this.userDetails.lastName = "Doe";
 			this.userDetails.department = "Science";

@@ -6,7 +6,7 @@ export class ClientPlugin {
     }
 
     public setUserProfile(profile: any): any {
-        this.userProfile.avator = profile.avatar;
+        this.userProfile.avatar = profile.avatar;
         this.userProfile.firstName = profile.firstName;
         this.userProfile.lastName = profile.lastName;
         this.userProfile.department = profile.department;
