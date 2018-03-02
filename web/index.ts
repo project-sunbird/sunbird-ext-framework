@@ -1,4 +1,5 @@
 import { PluginManager, Manifest } from './manager/PluginManager'
+export * from './services/HTTPService';
 
 export interface IFrameworkConfig {
     manifest: Manifest;

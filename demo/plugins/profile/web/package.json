@@ -22,7 +22,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "rxjs": "^5.5.2",
-    "web-framework": "file:///E:\\work\\EkStep\\ext-framework\\web\\dist\\web-framework.tgz",
+    "web-framework": "file:../../../../web/dist",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

@@ -35,7 +35,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\r\n", ""]);
 
 // exports
 
@@ -378,7 +378,7 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 2:
+/***/ 5:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__("../../../../../src/styles.css");
@@ -386,5 +386,5 @@ module.exports = __webpack_require__("../../../../../src/styles.css");
 
 /***/ })
 
-},[2]);
+},[5]);
 //# sourceMappingURL=styles.bundle.js.map

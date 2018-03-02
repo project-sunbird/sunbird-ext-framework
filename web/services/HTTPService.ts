@@ -1,4 +1,4 @@
-import {RxHR, CoreOptions, RequestResponse, RxHttpRequestResponse} from "@akanass/rx-http-request";
+import { RxHR, CoreOptions, RequestResponse, RxHttpRequestResponse } from "@akanass/rx-http-request";
 import { Observable } from 'rxjs/Observable';
 
 export interface HTTPResponse extends RxHttpRequestResponse {

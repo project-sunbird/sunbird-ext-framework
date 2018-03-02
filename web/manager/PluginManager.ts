@@ -8,21 +8,14 @@ export interface Manifest {
     id: string;
     version: string;
 }
-export interface FrameworkConfig {
-    pluginBasePath: string;
-}
 export interface IClientPluginConstructor {
     new(config: any, manifest: Manifest)
 }
 export class PluginManager {
-    private _config: FrameworkConfig;
-    static pluginManifests: object = {};
-    static plugins: object = {};
-    static pluginInstances: object = {};
-    static errors: any = [];
-    constructor(config: FrameworkConfig) {
-        this._config = { ...config };
-    }
+    private static pluginManifests: object = {};
+    private static plugins: object = {};
+    private static pluginInstances: object = {};
+    private static errors: any = [];
 
     public static async registerPlugin(manifest: Manifest, config: any) {
         PluginManager.plugins[manifest.id] = { c: config, m: manifest };

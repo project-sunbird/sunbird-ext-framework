@@ -1,17 +1,31 @@
+import { HTTPService } from 'web-framework'
 export class ClientPlugin {
     private userProfile: any = {}
     public constructor() {
-        this.userProfile.avator = "https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png";
-        this.userProfile.firstName = "John";
-        this.userProfile.lastName = "Doe";
-        this.userProfile.department = "Science";
-        this.userProfile.hireDate = "12/11/2010";
-        this.userProfile.dob = "14/4/1978";
-        this.userProfile.gender = "Male";
-        this.userProfile.email = "john.doe@test.com";
-        this.userProfile.phone = "9876543210";
+
     }
-    public getUserProfile(): object {
-        return this.userProfile
+
+    public setUserProfile(profile: any): any {
+        this.userProfile.avator = profile.avatar;
+        this.userProfile.firstName = profile.firstName;
+        this.userProfile.lastName = profile.lastName;
+        this.userProfile.department = profile.department;
+        this.userProfile.hireDate = profile.hireDate;
+        this.userProfile.dob = profile.dob;
+        this.userProfile.gender = profile.gender;
+        this.userProfile.email = profile.email;
+        this.userProfile.phone = profile.phone;
+
+        HTTPService.post('http://localhost:9000/profile/user/v1/add', { body: this.userProfile, json: true }).subscribe((data) => {
+            console.log('user profile saved!')
+        })
+    }
+
+    public getUserProfile(): Promise<any> {
+        return new Promise((resolve, reject) => {
+            HTTPService.get('http://localhost:9000/profile/user/v1/read/123').subscribe((data) => {
+                resolve(data);
+            })
+        })
     }
 }
