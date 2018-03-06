@@ -1,5 +1,5 @@
-import { IRouter } from 'ext-framework-server/interfaces';
-import { Manifest } from 'ext-framework-server/models/Manifest';
+import { IRouter } from 'ext-framework-server/src/interfaces';
+import { Manifest } from 'ext-framework-server/src/models/Manifest';
 import { Framework } from 'ext-framework-server';
 import { IProfileService } from './interfaces';
 

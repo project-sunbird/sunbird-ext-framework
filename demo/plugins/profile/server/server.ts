@@ -1,9 +1,9 @@
-import { CassandraDB } from 'ext-framework-server/db/cassandra';
-import { ElasticSearchDB } from 'ext-framework-server/db/elasticsearch';
-import { Manifest } from 'ext-framework-server/models/manifest';
+import { CassandraDB } from 'ext-framework-server/src/db/cassandra';
+import { ElasticSearchDB } from 'ext-framework-server/src/db/elasticsearch';
+import { Manifest } from 'ext-framework-server/src/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
-import { FrameworkConfig } from 'ext-framework-server/interfaces';
+import { FrameworkConfig } from 'ext-framework-server/src/interfaces';
 
 export class Server implements IProfileService {
 
