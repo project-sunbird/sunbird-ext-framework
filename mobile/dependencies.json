@@ -1,0 +1,6 @@
+{
+	"cordova" : [
+		"cordova-plugin-camera",
+		"cordova-sqlite-storage"
+	]
+}
