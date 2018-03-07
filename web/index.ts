@@ -1,5 +1,7 @@
 import { PluginManager, Manifest } from './manager/PluginManager'
+import { IMenu, MenuManager } from './manager/MenuManager';
 export * from './services/HTTPService';
+export * from './manager/EventManager';
 
 export interface IFrameworkConfig {
     manifest: Manifest;
@@ -15,5 +17,8 @@ export class Framework {
     }
     public static getPluginInstance(pluginId): any {
         return PluginManager.getPluginInstance(pluginId);
+    }
+    public static registerMenu(menu: IMenu) {
+        MenuManager.registerMenu(menu);
     }
 }
