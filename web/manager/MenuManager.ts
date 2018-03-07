@@ -2,11 +2,8 @@
  * @author Rajeev Sathish <rajeev.sathish@tarento.com>
  */
 import { eventManager } from '..';
-export interface IMenu {
-    id: string,
-    name: string,
-    displayName: string
-}
+import { IMenu } from './PluginManager';
+
 export class MenuManager {
     private static menuObject: any = {}
     public static registerMenu(menu: IMenu) {
