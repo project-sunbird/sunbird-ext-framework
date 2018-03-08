@@ -1,5 +1,5 @@
-import { PluginManager, Manifest } from './manager/PluginManager'
-import { IMenu, MenuManager } from './manager/MenuManager';
+import { PluginManager, Manifest, IMenu } from './manager/PluginManager'
+import { MenuManager } from './manager/MenuManager';
 export * from './services/HTTPService';
 export * from './manager/EventManager';
 
@@ -13,6 +13,9 @@ export class Framework {
         for (let plugin of config) {
             await PluginManager.setPluginInstance(plugin.manifest, plugin.pluginClass);
             console.log(plugin.manifest.id + "was Registered Successfully");
+            if (plugin.manifest.menu) {
+                MenuManager.registerMenu(plugin.manifest.menu);
+            }
         }
     }
     public static getPluginInstance(pluginId): any {
