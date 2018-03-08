@@ -12,7 +12,8 @@ import {Manifest} from './models/Manifest';
 import { PluginLoader } from './managers/PluginLoader';
 import {RegistrySchema} from './meta/RegistrySchema';
 
-export * from './interfaces'
+export * from './interfaces';
+export * from './test-framework';
 
 export class Framework {
 

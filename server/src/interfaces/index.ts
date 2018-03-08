@@ -52,7 +52,7 @@ export interface IDatabaseConfig {
 }
 
 export interface FrameworkConfig {
-    db: IDatabaseConfig;
+    db?: IDatabaseConfig;
     plugins: Array<IPlugin>;
     pluginBasePath: string;
 }

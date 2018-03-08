@@ -68,8 +68,8 @@ export class PluginLoader {
             const pluginManifest = await import(this.config.pluginBasePath + pluginId + '/manifest');
 		    return Manifest.fromJSON(<IPluginManifest>pluginManifest.manifest);
         } catch(err) {
-    throw new FrameworkError({ code: FrameworkErrors.MANIFEST_NOT_FOUND, rootError: err });
-}
+            throw new FrameworkError({ code: FrameworkErrors.MANIFEST_NOT_FOUND, rootError: err });
+        }
     }
 
     private async preparePlugin(manifest: Manifest) {

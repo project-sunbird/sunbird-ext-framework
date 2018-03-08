@@ -62,9 +62,7 @@ export class PluginRegistry {
         if(result) {
             let plugin = result.rows.find((row) => row.id === id);
             plugin.status = status;
-            let results = await PluginRegistry.metaDataProvider.updateMeta(id, plugin);
-            console.log('result', results);
-            return result;
+            return await PluginRegistry.metaDataProvider.updateMeta(id, plugin);
         } else return;
     }
 }

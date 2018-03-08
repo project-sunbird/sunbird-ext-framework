@@ -10,7 +10,7 @@ export class FrameworkAPI {
     }
 
     public getPlugin(pluginId: string): any {
-        return PluginManager.getPlugin(pluginId);
+        return PluginManager.getPluginInstance(pluginId);
     }
 }
 
