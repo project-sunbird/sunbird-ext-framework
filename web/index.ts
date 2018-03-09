@@ -13,7 +13,7 @@ export class Framework {
     public static async initialize(config: Array<IFrameworkConfig>) {
         for (let plugin of config) {
             await PluginManager.setPluginInstance(plugin.manifest, plugin.pluginClass);
-            console.log(plugin.manifest.id + "was Registered Successfully");
+            console.log(plugin.manifest.id + " was Registered Successfully");
             if (plugin.manifest.menu) {
                 MenuManager.registerMenu(plugin.manifest.menu);
             }
@@ -21,8 +21,5 @@ export class Framework {
     }
     public static getPluginInstance(pluginId): any {
         return PluginManager.getPluginInstance(pluginId);
-    }
-    public static registerMenu(menu: IMenu) {
-        MenuManager.registerMenu(menu);
     }
 }
