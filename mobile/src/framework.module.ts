@@ -8,15 +8,14 @@ import { IonicStorageModule } from "@ionic/storage";
 import { TelemetryService } from "./services/telemetry/telemetry.service";
 import { TelemetryServiceFactory } from "./services/telemetry/factory";
 import { GenieSDKServiceFactory } from "./services/telemetry/geniesdk.service";
-import { Session } from "./services/auth/session";
 import { OAuthService } from "./services/auth/oauth.service";
 import { TabsPage } from "./container/tabs/tabs";
 import { BasePlugin } from "./plugin.base";
-import { PBHorizontal } from "./component/pbhorizontal/pb-horizontal";
+import { AuthService } from "./services/auth/auth.service";
+import { ProfileService } from "./services/profile/profile.service";
 
 @NgModule({
     declarations: [
-       PBHorizontal 
     ],
     imports: [
         IonicStorageModule.forRoot()
@@ -27,13 +26,13 @@ import { PBHorizontal } from "./component/pbhorizontal/pb-horizontal";
         Camera,
         ContentService,
         EventService,
-        Session,
         OAuthService,
+        AuthService,
+        ProfileService,
         { provide: TelemetryServiceFactory, useClass: GenieSDKServiceFactory },
         TelemetryService
     ],
     exports: [
-        PBHorizontal
     ]
 })
 export class FrameworkModule {

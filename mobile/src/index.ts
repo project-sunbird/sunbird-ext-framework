@@ -1,20 +1,19 @@
 export * from "./plugin.base";
 export * from "./framework.module";
 
-export * from "./component/pbhorizontal/pb-horizontal";
-
 export * from "./container/tabs/tabs";
 export * from "./container/container.services";
 
-export * from "./services/auth/session";
 export * from "./services/auth/oauth.service";
 export * from "./services/auth/auth.service";
 
 export * from "./services/content/bean";
 export * from "./services/content/content.service";
 
-export * from "./services/event/bean"
-export * from "./services/event/event.service"
+export * from "./services/event/bean";
+export * from "./services/event/event.service";
+
+export * from "./services/profile/profile.service";
 
 export * from "./services/telemetry/bean";
 export * from "./services/telemetry/telemetry.service";
