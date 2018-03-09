@@ -1,7 +1,7 @@
 /**
  * @author Rajeev Sathish <rajeev.sathish@tarento.com>
  */
-import { eventManager } from '..';
+import { EventManager } from "./EventManager";
 import { IMenu } from './PluginManager';
 
 export class MenuManager {
@@ -17,7 +17,7 @@ export class MenuManager {
             console.log(menu.name + " is already Added to the Menu");
         } else {
             MenuManager.menuObject[menu.id] = menu;
-            eventManager.dispatchEvent("MenuUpdated");
+            EventManager.dispatchEvent("MenuUpdated");
         }
     }
 }

@@ -1,7 +1,7 @@
 import { PluginManager, Manifest, IMenu } from './manager/PluginManager'
 import { MenuManager } from './manager/MenuManager';
 export * from './services/HTTPService';
-export * from './manager/EventManager';
+export { EventManager } from './manager/EventManager';
 
 export interface IFrameworkConfig {
     manifest: Manifest;
@@ -9,6 +9,7 @@ export interface IFrameworkConfig {
 }
 
 export class Framework {
+    private static EventBus;
     public static async initialize(config: Array<IFrameworkConfig>) {
         for (let plugin of config) {
             await PluginManager.setPluginInstance(plugin.manifest, plugin.pluginClass);

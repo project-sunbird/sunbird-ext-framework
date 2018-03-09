@@ -1,7 +1,7 @@
 /**
  * @author Rajeev Sathish <rajeev.sathish@tarento.com>
  */
-import { eventManager } from './eventManager';
+import { EventManager } from './EventManager';
 import { HTTPService } from '../services/HTTPService';
 
 export interface IMenu {
@@ -22,7 +22,7 @@ export interface IMenu {
 export interface Manifest {
     id: string;
     version: string;
-    menu: IMenu;
+    menu?: IMenu;
 }
 export interface IClientPluginConstructor {
     new(config: any, manifest: Manifest)
@@ -38,8 +38,6 @@ export class PluginManager {
         if (manifest) {
             PluginManager.pluginManifests[manifest.id] = { m: manifest };
         }
-        eventManager.dispatchEvent('plugin:load', { plugin: manifest.id, version: manifest.version });
-        eventManager.dispatchEvent(manifest.id + ':load');
         console.log('=====> ' + manifest.id + ' plugin loaded');
     }
     public static setPluginInstance(manifest: Manifest, plugin: any) {
