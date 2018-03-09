@@ -4,14 +4,14 @@ export interface SyncStat {
   syncedFileSize: String;
 }
 
-export interface Actor {
-   // readonly TYPE_SYSTEM = "System";
-   // readonly TYPE_USER = "User";
+export class Actor {
+  static readonly TYPE_SYSTEM = "System";
+  static readonly TYPE_USER = "User";
   id: string;
   type: string;
 }
 
-export interface Audit {
+export class Audit {
   env: string;
   props: Array<string>;
   currentState: string;
@@ -19,7 +19,7 @@ export interface Audit {
   actorType: string;
 }
 
-export interface Context {
+export class Context {
   channel: string;
   pdata: ProducerData;
   env: string;
@@ -28,21 +28,21 @@ export interface Context {
   cdata: Array<CorrelationData>;
 }
 
-export interface DeviceSpecification {
-  os: string ;
-  make: string ;
-  id: string ;
-  mem: number ;
-  idisk: number ;
-  edisk: number ;
-  scrn: number ;
+export class DeviceSpecification {
+  os: string = "";
+  make: string = "";
+  id: string = "";
+  mem: number = -1.0;
+  idisk: number = -1.0;
+  edisk: number = -1.0;
+  scrn: number = -1.0;
   camera: string;
-  cpu: string ;
-  sims: number ;
-  cap: Array<String> ;
+  cpu: string = "";
+  sims: number = -1;
+  cap: Array<String> = [];
 }
 
-export interface End {
+export class End {
   env: string;
   type: string;
   mode: string;
@@ -55,7 +55,7 @@ export interface End {
   summaryList: Array<{ [index: string]: any }>;
 }
 
-export interface Error {
+export class Error {
   errorCode: string;
   errorType: string;
   stacktrace: string;
@@ -63,19 +63,19 @@ export interface Error {
   env: string;
 }
 
-export interface Etags {
+export class Etags {
   app: Array<string>;
   partner: Array<string>;
   dims: Array<string>;
 }
 
-export interface ExData {
+export class ExData {
   type: string;
   data: string;
 
 }
 
-export interface Feedback {
+export class Feedback {
   env: string;
   rating: number;
   comments: string;
@@ -84,24 +84,24 @@ export interface Feedback {
   type: string;
 }
 
-export interface GameData {
+export class GameData {
   id: string;
   ver: string;
 }
 
-export interface CorrelationData {
+export class CorrelationData {
   id: string;
   type: string;
 }
 
-export interface Rollup {
+export class Rollup {
   l1: string;
   l2: string;
   l3: string;
   l4: string;
 }
 
-export interface Visit {
+export class Visit {
   objid: string;
   objtype: string;
   objver: string;
@@ -109,7 +109,7 @@ export interface Visit {
   index: number;
 }
 
-export interface Impression {
+export class Impression {
   type: string;
   pageId: string;
   subType: string;
@@ -122,14 +122,14 @@ export interface Impression {
 }
 
 
-export interface Interact {
+export class Interact {
   env: string;
   type: string;
   subType: string;
   id: string;
   pageId: string;
-  pos: Array<{ [index: string]: string }> ;
-  values: Array<{ [index: string]: any }> ;
+  pos: Array<{ [index: string]: string }> = [];
+  values: Array<{ [index: string]: any }> = [];
   valueMap: { [index: string]: any };
   correlationData: Array<CorrelationData>;
   objId: string;
@@ -138,13 +138,13 @@ export interface Interact {
   rollup: Rollup;
 }
 
-export interface Interrupt {
+export class Interrupt {
   env: string;
   type: string;
   pageId: string;
 }
 
-export interface Log {
+export class Log {
   env: string;
   type: string;
   level: string;
@@ -154,13 +154,13 @@ export interface Log {
   actorType: string;
 }
 
-export interface ProducerData {
+export class ProducerData {
   id: string;
   pid: string;
   ver: string;
 }
 
-export interface Search {
+export class Search {
   type: string;
   query: string;
   filters: { [index: string]: any };
@@ -169,7 +169,7 @@ export interface Search {
   size: number;
 }
 
-export interface Share {
+export class Share {
   env: string;
   direction: string;
   dataType: string;
@@ -177,7 +177,7 @@ export interface Share {
 
 }
 
-export interface Start {
+export class Start {
   env: string;
   type: string;
   deviceSpecification: DeviceSpecification;
@@ -191,7 +191,7 @@ export interface Start {
   rollup: Rollup;
 }
 
-export interface TelemetryObject {
+export class TelemetryObject {
   id: string;
   type: string;
   version: string;

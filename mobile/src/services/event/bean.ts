@@ -1,13 +1,13 @@
-export interface ImportContentProgress {
+export class ImportContentProgress {
   currentCount: number;
   totalCount: number;
 }
 
 
-export interface DownloadProgress {
+export class DownloadProgress {
   downloadId: number;
   identifier: string;
-  downloadProgress: number;
-  status: number;
+  downloadProgress: number = -1;
+  status: number = -1;
 }
 

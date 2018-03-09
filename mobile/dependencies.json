@@ -1,6 +1,7 @@
 {
 	"cordova" : [
 		"cordova-plugin-camera",
-		"cordova-sqlite-storage"
+		"cordova-sqlite-storage",
+		"file:cordova-plugin-genie-sdk"
 	]
 }

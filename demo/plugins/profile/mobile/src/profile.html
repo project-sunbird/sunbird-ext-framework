@@ -1,0 +1,148 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Profile
+    </ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only>
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+
+  <ion-list>
+
+    <p class="profile-last-login-text">{{lastLoginTime}}</p>
+
+    <div ion-item text-center>
+      <img class="custom-avatar" [src]="imageUri" (click)="editPicture()" />
+      <p class="profile-name">{{profileName}}</p>
+      <p class="p-padding">
+        <span class="grey-bg">{{userName}}</span>
+      </p>
+      <p class="p-padding">
+        <span class="grey-bg">{{sunbird}}
+          <ion-icon name="mail"></ion-icon>
+        </span>
+      </p>
+
+      <ion-row class="profile-completed-ion-row">
+        <ion-col class="profile-completed-ion-col">
+          <p class="profile-completed-text">{{profileCompletionText}}</p>
+        </ion-col>
+        <ion-col class="profile-completed-ion-col">
+          <p class="profile-add-exp-text">{{uncompletedDetails}}</p>
+        </ion-col>
+      </ion-row>
+
+      <pb-horizontal progress={{progValue}}></pb-horizontal>
+
+    </div>
+
+    <div ion-item text-wrap>
+      <p class="description">Description</p>
+
+      <p>{{profDesc}}</p>
+
+    </div>
+
+    <ion-list-header class="list-header" no-lines>
+      Education
+
+      <span float-right (click)="editEduDetails()">Add</span>
+    </ion-list-header>
+
+
+    <ion-item>
+      <ion-row justify-content-start>
+        <ion-col col-2>
+          <div class="image-holder"></div>
+        </ion-col>
+        <ion-col col-9>
+          <span>SXC1</span>
+          <span>B.Sc</span>
+          <span>Year of Passing : 2014</span>
+          <span>Grade: Grade(90%)</span>
+          <span>SXC</span>
+        </ion-col>
+        <ion-col col-1>
+          <ion-icon name="md-create" class="edit-icon" (click)="editEduDetails()"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-item>
+      <ion-row justify-content-start>
+        <ion-col col-2>
+          <div class="image-holder"></div>
+        </ion-col>
+        <ion-col col-9>
+          <span>SXC1</span>
+          <span>B.Sc</span>
+          <span>Year of Passing : 2014</span>
+          <span>Grade: Grade(90%)</span>
+          <span>SXC</span>
+        </ion-col>
+        <ion-col col-1>
+          <ion-icon name="md-create" class="edit-icon" (click)="editEduDetails()"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-list-header class="list-header">
+      Experience
+      <span float-right (click)="editExperience()">Add</span>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-row justify-content-start>
+        <ion-col col-2>
+          <div class="image-holder"></div>
+        </ion-col>
+        <ion-col col-9>
+          <span>Teacher</span>
+          <span>Tarento school</span>
+          <span>Subject: English</span>
+          <span>Feb 18-Preset</span>
+        </ion-col>
+        <ion-col col-1>
+          <ion-icon name="md-create" class="edit-icon"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-list-header class="list-header">
+      Address
+      <span float-right (click)="editAddress()">Add</span>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-row justify-content-start>
+        <ion-col col-2>
+          <div class="image-holder"></div>
+        </ion-col>
+        <ion-col col-9>
+          <span>Current</span>
+          <span style="text-overflow: ellipsis;">4th Main Rd, Bangalure, Karanataka, Bangalure, Karanataka, Bangalure, Karanataka</span>
+          <span>Bangalure, Karanataka</span>
+        </ion-col>
+        <ion-col col-1>
+          <ion-icon name="md-create" class="edit-icon" (click)="editAddress()"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+
+    <ion-list-header class="list-header">
+      Skills
+
+      <span float-right>Add</span>
+    </ion-list-header>
+
+    <ion-list-header class="list-header">
+      Additional Information
+    </ion-list-header>
+
+  </ion-list>
+</ion-content>

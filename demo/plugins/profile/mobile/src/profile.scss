@@ -1,0 +1,107 @@
+.profile-last-login-text{
+    color: rgb(104, 103, 101);
+    text-align: center;
+    margin-bottom: 0px;
+    font-size: small; 
+    padding: 5px;   
+}
+
+.profile-completed-text{
+    color: rgb(104, 103, 101);
+    text-align: left;
+    margin-bottom: 8px;
+    font-size: small; 
+    padding: 0;
+}
+
+.profile-add-exp-text{
+    color: blue;
+    text-align: right;
+    margin-bottom: 8px;
+    font-size: small; 
+    padding: 0;
+    font-weight: bold;
+}
+
+.profile-completed-ion-row{
+    padding-bottom: 1%; 
+    padding-top: 6%;
+}
+
+.profile-completed-ion-col{
+    padding: 0%;
+}
+
+
+.profile-name{
+    color: black;
+    text-align: center;
+    margin-bottom: 0px;
+    font-size: x-large; 
+    padding: 5px;
+    font-weight: bold;   
+}
+
+.grey-bg {
+    background: rgba(99, 99, 99, 0.158);
+    font-size: 14px;
+    border-radius: 20%;
+    padding: 10px;
+}
+
+.item-profile-img {
+    max-width: 100px;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.custom-avatar {
+   height: 25vw;
+   width: 25vw;
+   border: 1px solid #fff;
+   border-radius: 50%;
+   display: inline-block;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.p-padding {
+    padding: 5px;
+}
+
+.list-header {
+    font-size: 12pt;
+    color: black;
+    font-weight: 500;
+    margin-bottom: 0 !important;
+
+    span {
+        font-size: 10pt;
+        color: blue;
+    }
+}
+
+.description {
+    color:black;
+    margin-bottom: 3%;
+    font-size: large; 
+    padding: 0%;
+    margin-left: 0%;
+    font-weight: bold;
+}
+
+.image-holder {
+    width: 50px;
+    height: 50px;
+    background: #d8d8d8;
+}
+
+ion-item {
+    span {
+        display: block;
+    }
+}
+
+.edit-icon {
+  color: blue;
+}

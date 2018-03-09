@@ -1,18 +1,17 @@
 import { Injectable } from "@angular/core";
 import { Platform } from "ionic-angular";
 import { HTTP } from "@ionic-native/http";
-import { Session } from "./session";
+
+import { AuthService } from "./auth.service";
 
 @Injectable()
 export class OAuthService {
 
-    redirect_url = "https://dev.open-sunbird.org/oauth2callback";
+    redirect_url = "https://staging.open-sunbird.org/oauth2callback";
 
-    auth_url= "https://dev.open-sunbird.org/auth/realms/" + 
-    "sunbird/protocol/openid-connect/auth?redirect_uri=${R}" + 
-    "&response_type=code&scope=offline_access&client_id=${CID}";
+    auth_url= "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=${R}&response_type=code&scope=offline_access&client_id=${CID}";
 
-    constructor(private platform: Platform, private http: HTTP, private session: Session) {
+    constructor(private platform: Platform, private http: HTTP, private authService: AuthService) {
         this.auth_url = this.auth_url.replace("${CID}", this.platform.is("android")?"android":"ios");
         this.auth_url = this.auth_url.replace("${R}", this.redirect_url);
     }
@@ -45,13 +44,13 @@ export class OAuthService {
 
         return new Promise(function(resolve, reject) {
             let body = {
-                redirect_uri: "https://dev.open-sunbird.org/oauth2callback",
+                redirect_uri: that.redirect_url,
                 grant_type: "authorization_code", 
                 client_id: "android", 
                 code: token
             };
             let contentType = "application/x-www-form-urlencoded";
-            let url = "https://dev.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/token";
+            let url = "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/token";
 
             that.http.post(
                 url, 
@@ -70,7 +69,7 @@ export class OAuthService {
                     let json = JSON.parse(value);
                     let userToken = json["sub"];
 
-                    that.session.createSession(userToken, accessToken, refreshToken);
+                    that.authService.startSession(accessToken, refreshToken, userToken);
 
                     resolve();
                     
