@@ -1,1 +1,0 @@
-declare module 'ext-framework-server';

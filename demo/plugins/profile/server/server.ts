@@ -15,7 +15,7 @@ export class Server implements IProfileService {
 	constructor(config: FrameworkConfig, manifest: Manifest) {
 		this.config = config;
 		this.manifest = manifest;
-		this.cassandraDB = new CassandraDB(config);
+		this.cassandraDB = new CassandraDB(config.db.cassandra);
 	}
 
 	public getUser(req: Request, res: Response) {

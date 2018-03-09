@@ -1,0 +1,33 @@
+{
+  "name": "profile-server-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean-install": "rm -rf ./node_modules/ext-framework-server && npm i /Users/sunil/ext-framework/server/dist --save",
+    "test": "mocha -r ts-node/register *.spec.ts"
+  },
+  "dependencies": {
+    "ext-framework-server": "file:///Users/sunil/ext-framework/server/dist",
+    "profile-server": "file:///Users/sunil/ext-framework/demo/plugins/profile/server/dist"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.2",
+    "@types/chai-http": "^3.0.4",
+    "@types/mocha": "^2.2.48",
+    "@types/sinon": "^4.3.0",
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "eslint-plugin-typescript": "^0.8.1",
+    "mocha": "^5.0.3",
+    "sinon": "^4.4.2",
+    "standard": "^10.0.3",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.7.1",
+    "typescript-eslint-parser": "^13.0.0"
+  },
+  "keywords": [],
+  "author": "sunil A S <sunils@ilimi.in>",
+  "license": "ISC"
+}

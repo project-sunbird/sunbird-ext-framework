@@ -1,6 +1,6 @@
 export class EventBus {
     private listeners: any = {};
-    public addEventListener(type: any, callback: any, scope: any) {
+    public addEventListener(type: any, callback: any, scope?: any) {
         let args = [];
         let numOfArgs = arguments.length;
         for (let i = 0; i < numOfArgs; i++) {
@@ -83,4 +83,4 @@ export class EventBus {
     }
 }
 
-export const eb = new EventBus(); 
+export const eventBus = new EventBus(); 
