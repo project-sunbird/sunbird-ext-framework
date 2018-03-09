@@ -55,6 +55,7 @@ export interface FrameworkConfig {
     db?: IDatabaseConfig;
     plugins: Array<IPlugin>;
     pluginBasePath: string;
+    port?: number
 }
 
 export enum PluginStatusEnum {

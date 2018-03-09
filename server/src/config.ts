@@ -21,5 +21,6 @@ export const defaultConfig: FrameworkConfig = {
         }
     },
     plugins: [],
-    pluginBasePath: ""
+    pluginBasePath: "",
+    port: 9000 //default
 };

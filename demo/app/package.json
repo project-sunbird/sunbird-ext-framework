@@ -1,33 +1,31 @@
 {
-    "name": "demo-app",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "start": "npm run build:live",
-        "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "preinstall": "rm-local-modules",
-        "build": "tsc --noImplicitUseStrict"
-    },
-    "dependencies": {
-        "@types/body-parser": "^1.16.8",
-        "@types/express": "^4.11.1",
-        "body-parser": "^1.18.2",
-        "express": "^4.16.2",
-        "rm-local-modules": "0.0.2",
-        "ext-framework-server": "file:../../server",
-        "profile-server": "file:../plugins/profile/server"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "devDependencies": {
-        "gulp": "^3.9.1",
-        "gulp-install": "^1.1.0",
-        "gulp-rename": "^1.2.2",
-        "nodemon": "^1.15.0",
-        "ts-node": "^4.1.0",
-        "typescript": "^2.7.2"
-    }
+  "name": "demo-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build:live",
+    "build:live": "nodemon --exec ./node_modules/.bin/ts-node -- ./index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc --noImplicitUseStrict"
+  },
+  "dependencies": {
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "ext-framework-server": "file:///Users/sunil/ext-framework/server/dist",
+    "rm-local-modules": "0.0.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-install": "^1.1.0",
+    "gulp-rename": "^1.2.2",
+    "nodemon": "^1.15.0",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.7.2"
+  }
 }

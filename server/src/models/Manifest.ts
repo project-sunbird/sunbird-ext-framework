@@ -17,7 +17,7 @@ export interface IDatabaseType {
 
 export interface IServerSchema {
     routes?: IRouteSchema;
-    dependencies: Array<IPlugin>;
+    dependencies?: Array<IPlugin>;
     databases?: Array<IDatabaseType>;
 }
 
@@ -27,7 +27,7 @@ export interface IPluginManifest {
     version: string;
     author: string;
     description?: string;
-    server: IServerSchema;
+    server?: IServerSchema;
 }
 
 export class Manifest {

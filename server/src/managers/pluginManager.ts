@@ -11,14 +11,19 @@ import { FrameworkError } from '../util';
 export class PluginManager {
 	private static instance: PluginManager;
 	private static _pluginInstances: any = {};
+	private static pluginLoader: PluginLoader;
 
 	public static get instances() : any {
 		return this._pluginInstances;
 	}
 
+	public static initialize(pluginLoader: PluginLoader) {
+		PluginManager.pluginLoader = pluginLoader;
+	}
+
 	public static async load(config: FrameworkConfig) {
 		for (let plugin of config.plugins) {
-			await PluginManager.loadPlugin(plugin, config);
+			await PluginManager.loadPlugin(plugin);
 		}
 	}
 
@@ -32,15 +37,15 @@ export class PluginManager {
 		return PluginManager._pluginInstances[pluginId];
 	}
 
-	public static async loadPlugin(plugin: IPlugin, config: FrameworkConfig) {
+	public static async loadPlugin(plugin: IPlugin) {
 		try {
-			let pluginLoader = new PluginLoader(config);
-			await pluginLoader.loadPlugin(plugin);
+			await PluginManager.pluginLoader.loadPlugin(plugin);
 			console.log('=====> ' + plugin.id + ' plugin loaded');
 		} catch (e) {
 			if(e instanceof FrameworkError) {
 				console.log('=====> ' + plugin.id + ' plugin load failed due to ' + (<FrameworkError> e).print());
-			}	
+			}
+			throw e;	
 		}
 	}
 }
