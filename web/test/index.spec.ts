@@ -1,8 +1,8 @@
 import "jasmine";
-import { Framework } from "../../index";
-import { PluginManager, IMenu } from "../../manager/PluginManager";
+import { Framework } from "../index";
+import { PluginManager, IMenu } from "../manager/PluginManager";
 import { ClientPlugin } from "./test-plugin";
-import { MenuManager } from "../../manager/MenuManager";
+import { MenuManager } from "../manager/MenuManager";
 
 describe("framework Testing", () => {
     var config;
@@ -27,6 +27,7 @@ describe("framework Testing", () => {
             manifest: manifest,
             pluginClass: ClientPlugin
         }
+        //Framework.initialize([config]);
     })
     it('framework initialisation', () => {
         spyOn(PluginManager, "setPluginInstance");
@@ -34,5 +35,4 @@ describe("framework Testing", () => {
         expect(PluginManager.setPluginInstance).toHaveBeenCalled();
         expect(PluginManager.setPluginInstance).toHaveBeenCalledWith(manifest, ClientPlugin);
     });
-
 })
