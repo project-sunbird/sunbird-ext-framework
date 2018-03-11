@@ -54,6 +54,7 @@ export class Framework {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
 			await Framework.laodPluginRegistrySchema();
+			PluginManager.initialize(new PluginLoader(Framework._instance.config))
 			await PluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
 		}

@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "clean-install": "rm -rf ./node_modules/ext-framework-server && npm i /Users/sunil/ext-framework/server/dist --save",
-    "test": "mocha -r ts-node/register *.spec.ts"
+    "test": "mocha -r ts-node/register *.spec.ts --reporter progress"
   },
   "dependencies": {
     "ext-framework-server": "file:///Users/sunil/ext-framework/server/dist",

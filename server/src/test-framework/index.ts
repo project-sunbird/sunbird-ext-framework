@@ -3,29 +3,7 @@ import {Framework, FrameworkConfig} from '../index';
 import { Manifest } from '../models/Manifest';
 import { PluginManager } from '../managers/PluginManager';
 import * as express from 'express';
-
-const defaultConfig: FrameworkConfig = {
-     db: {
-        cassandra: {
-            contactPoints: ['127.0.0.1'],
-            keyspace: 'core_framework_schema',
-            defaultKeyspaceSettings: {
-                replication: {
-			        'class': 'SimpleStrategy',
-  			        'replication_factor': '1'
-		        }
-            }
-        },
-        elasticsearch: {
-            host: "127.0.0.1:9200",
-            disabledApis: ["cat", "cluster", "indices", "ingest", "nodes", "remote", "snapshot", "tasks"]
-        }
-    },
-    plugins: [],
-    pluginBasePath: __dirname + '/node_modules/'
-};
-
-const PORT: number = 9000
+import {defaultConfig} from '../config';
 
 export class TestFramework {
     private static config: FrameworkConfig;
@@ -35,9 +13,9 @@ export class TestFramework {
             let expressApp = express();
             config = {...defaultConfig,...config};
             Framework.initialize(config, expressApp).then(()=> {
-                console.log(`=====> Application running on port: ${PORT}`);
+                console.log(`=====> Application running on port: ${defaultConfig.port}`);
                 expressApp.use(bodyParser.json({limit: '50mb'}))
-                expressApp.listen(PORT);
+                expressApp.listen(defaultConfig.port);
                 resolve();
             });
         });

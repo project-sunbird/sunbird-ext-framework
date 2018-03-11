@@ -7,7 +7,7 @@
   "scripts": {
     "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist && cp -R db ./dist",
     "clean-install": "rm -rf ./node_modules/ext-framework-server && npm i /Users/sunil/ext-framework/server/dist --save",
-    "test": "mocha -r ts-node/register ./test/**/*.spec.ts"
+    "test": "echo 'go to '../test' folder to execute test cases!'"
   },
   "dependencies": {
     "@types/body-parser": "^1.16.8",

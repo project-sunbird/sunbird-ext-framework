@@ -34,6 +34,7 @@ export class PluginRegistry {
             console.log(`=====> Plugin: ${manifest.id} is registered!`);
         } else {
             console.log(`=====> Plugin: ${manifest.id} is already registered!`);
+            throw new FrameworkError({ message: `Plugin: ${manifest.id} is already registered!`, code: FrameworkErrors.PLUGIN_REGISTERED})
         }
     }
 

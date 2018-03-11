@@ -22,7 +22,8 @@ export enum FrameworkErrors {
     ROUTE_REGISTRY_FAILED,
     UNKNOWN_ERROR,
     DB_ERROR,
-    SCHEMA_LOADER_FAILED
+    SCHEMA_LOADER_FAILED,
+    PLUGIN_REGISTERED
 }
 
 export interface ErrorSubclass extends Error {

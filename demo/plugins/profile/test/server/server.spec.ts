@@ -39,12 +39,11 @@ describe('Profile server plugin', () => {
             })
         });
 
-        it('should return 400 response when request is invalid!', (done) => {
+        xit('should return 400 response when request is invalid!', (done) => {
             chai.request(baseURL)
             .get('/profile/user/v1/read/asdf')
             .end((err, res) => {
-                //res.should.have.status(400);
-                //res.body.should.be.empty;
+                res.should.have.status(400);
                 done();
             })
         });
