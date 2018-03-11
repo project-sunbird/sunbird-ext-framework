@@ -80,6 +80,7 @@ describe('Class PluginRegistry', () => {
 
             let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>' };
             PluginRegistry.register(Manifest.fromJSON(manifest)).catch((error: FrameworkError) => {
+                //TODO: assert error from metaDataProvider
                 Sinon.assert.calledOnce(isRegisteredStub);
                 Sinon.assert.calledOnce(metaDataProviderStub);
                 isRegisteredStub.restore();

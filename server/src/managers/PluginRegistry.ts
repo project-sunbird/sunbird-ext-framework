@@ -7,15 +7,35 @@ import { FrameworkError, FrameworkErrors } from "../util";
 import { IMetaDataProvider, PluginMeta, PluginStatusEnum } from "../interfaces";
 import * as UUID from 'uuid/v1';
 
+/**
+ * 
+ * 
+ * @export
+ * @class PluginRegistry
+ */
 export class PluginRegistry {
 
     private static metaDataProvider: IMetaDataProvider;
-
-    public static initialize(metaDataProvider: IMetaDataProvider) {
+/**
+ * 
+ * 
+ * @static
+ * @param {IMetaDataProvider} metaDataProvider 
+ * @memberof PluginRegistry
+ */
+public static initialize(metaDataProvider: IMetaDataProvider) {
         PluginRegistry.metaDataProvider = metaDataProvider;
     }
 
-    public static async register(manifest: Manifest) {
+/**
+ * 
+ * 
+ * @static
+ * @param {Manifest} manifest 
+ * @returns {Promise<void>} 
+ * @memberof PluginRegistry
+ */
+public static async register(manifest: Manifest): Promise<void> {
         let isRegistered = await PluginRegistry.isRegistered(manifest.id);
         if (!isRegistered) {
             let metaObject: PluginMeta = {
@@ -37,28 +57,57 @@ export class PluginRegistry {
             throw new FrameworkError({ message: `Plugin: ${manifest.id} is already registered!`, code: FrameworkErrors.PLUGIN_REGISTERED})
         }
     }
-
-    public static async unregister(id: string) {
+/**
+ * 
+ * 
+ * @static
+ * @param {string} id 
+ * @returns 
+ * @memberof PluginRegistry
+ */
+public static async unregister(id: string) {
         return await PluginRegistry.updateStatus(id, PluginStatusEnum.unregistered);
     }
-
-    public static async isRegistered(id: string) {
+/**
+ * 
+ * 
+ * @static
+ * @param {string} id 
+ * @returns {Promise<boolean>} 
+ * @memberof PluginRegistry
+ */
+public static async isRegistered(id: string): Promise<boolean> {
         let result = await PluginRegistry.metaDataProvider.getMeta(id);
         if(result) {
             let plugin = result.rows.find((row) => row.id === id);
             return plugin.status === PluginStatusEnum.registered
         } else return false;
     }
-
-    public static async getStatus(id: string) {
+/**
+ * 
+ * 
+ * @static
+ * @param {string} id 
+ * @returns 
+ * @memberof PluginRegistry
+ */
+public static async getStatus(id: string) {
         let result = await PluginRegistry.metaDataProvider.getMeta(id);
         if(result) {
             let plugin = result.rows.find((row) => row.id === id);
             return PluginStatusEnum[plugin.status];
         } else return;
     }
-
-    public static async updateStatus(id: string, status: PluginStatusEnum) {
+/**
+ * 
+ * 
+ * @static
+ * @param {string} id 
+ * @param {PluginStatusEnum} status 
+ * @returns 
+ * @memberof PluginRegistry
+ */
+public static async updateStatus(id: string, status: PluginStatusEnum) {
         let result = await PluginRegistry.metaDataProvider.getMeta(id);
         if(result) {
             let plugin = result.rows.find((row) => row.id === id);
