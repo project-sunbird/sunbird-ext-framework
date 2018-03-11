@@ -5,22 +5,43 @@
 import { IPlugin } from "../interfaces";
 import * as _ from 'lodash';
 
+/**
+ * 
+ * 
+ * @export
+ * @interface IRouteSchema
+ */
 export interface IRouteSchema {
     prefix: string;
 }
-
+/**
+ * 
+ * 
+ * @export
+ * @interface IDatabaseType
+ */
 export interface IDatabaseType {
     type: string;
     path: string;
     compatibility: string;
 }
-
+/**
+ * 
+ * 
+ * @export
+ * @interface IServerSchema
+ */
 export interface IServerSchema {
     routes?: IRouteSchema;
     dependencies?: Array<IPlugin>;
     databases?: Array<IDatabaseType>;
 }
-
+/**
+ * 
+ * 
+ * @export
+ * @interface IPluginManifest
+ */
 export interface IPluginManifest {
     id: string;
     name: string;
@@ -29,7 +50,12 @@ export interface IPluginManifest {
     description?: string;
     server?: IServerSchema;
 }
-
+/**
+ * 
+ * 
+ * @export
+ * @class Manifest
+ */
 export class Manifest {
 
     private _id: string;
@@ -39,7 +65,12 @@ export class Manifest {
     private _description: string;
     private _server: IServerSchema;
     private json: IPluginManifest;
-
+    
+    /**
+     * Creates an instance of Manifest.
+     * @param {IPluginManifest} manifest 
+     * @memberof Manifest
+     */
     constructor(manifest: IPluginManifest) {
         this.json = manifest;
         this._id = manifest.id;
@@ -48,71 +79,106 @@ export class Manifest {
         this._description = manifest.description;
         this._server = manifest.server;
     }
-
+    /**
+     * 
+     * 
+     * @readonly
+     * @type {string}
+     * @memberof Manifest
+     */
     public get id(): string {
         return this._id;
     }
-
-    public set id(id: string) {
-        this._id = id;
-    }
-
+    /**
+     * 
+     * 
+     * @readonly
+     * @type {string}
+     * @memberof Manifest
+     */
     public get name(): string {
         return this._name;
     }
-
-    public set name(value: string) {
-        this._name = value;
-    }
-
+    /**
+     * 
+     * 
+     * @readonly
+     * @type {string}
+     * @memberof Manifest
+     */
     public get version(): string {
         return this._version;
     }
-
-    public set version(value: string) {
-        this._version = value;
-    }
-
+    /**
+     * 
+     * 
+     * @readonly
+     * @type {string}
+     * @memberof Manifest
+     */
     public get author(): string {
         return this._author;
     }
-
-    public set author(value: string) {
-        this._author = value;
-    }
-
+    /**
+     * 
+     * 
+     * @readonly
+     * @type {string}
+     * @memberof Manifest
+     */
     public get description(): string {
         return this._description;
     }
-
-    public set description(value: string) {
-        this._description = value;
-    }
-
+    /**
+     * 
+     * 
+     * @readonly
+     * @type {IServerSchema}
+     * @memberof Manifest
+     */
     public get server(): IServerSchema {
         return this._server;
     }
-
-    public set server(value: IServerSchema) {
-        this._server = value;
-    }
-
+    /**
+     * 
+     * 
+     * @returns 
+     * @memberof Manifest
+     */
     public getDependencies() {
         return this.server.dependencies;
     }
-
+    /**
+     * 
+     * 
+     * @memberof Manifest
+     */
     public validate() {
         //TODO: validate schema structure;
     }
-
+    /**
+     * 
+     * 
+     * @static
+     * @param {(IPluginManifest | string)} json 
+     * @returns {Manifest} 
+     * @memberof Manifest
+     */
     public static fromJSON(json: IPluginManifest | string): Manifest {
         if (typeof json === "string") {
             json = <IPluginManifest>JSON.parse(json);
         }
         return new Manifest(json);
     }
-
-    public toJSON(): IPluginManifest {
+    /**
+     * 
+     * 
+     * @param {boolean} toString 
+     * @returns {(IPluginManifest | string)} 
+     * @memberof Manifest
+     */
+    public toJSON(toString: boolean = false): IPluginManifest | string {
+        if (toString) return JSON.stringify(this.json);
         return _.cloneDeep(this.json);
     }
 }
