@@ -1,0 +1,8 @@
+{
+    "id": "sunnird.plugin.group",
+    "version": "0.0.1",
+    "module": "EnrollModule",
+    "main": "EnrollPage",
+    "children": [],
+    "appVersion": "0.0.1"
+}

@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Course
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <form>
+    <ion-list>
+      <ion-item>
+        <ion-label floating>First Name</ion-label>
+        <ion-input type="text" [(ngModel)]="student.firstName" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Last Name</ion-label>
+        <ion-input type="text" [(ngModel)]="student.lastName" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Course Name</ion-label>
+        <ion-select [(ngModel)]="student.course" [ngModelOptions]="{standalone: true}">
+          <ion-option>Architecture</ion-option>
+          <ion-option>Automobile Engineering</ion-option>
+          <ion-option>Chemical Engineering</ion-option>
+          <ion-option>Civil Engineering</ion-option>
+          <ion-option>Computer Science Engineering</ion-option>
+          <ion-option>Art History</ion-option>
+          <ion-option>Animal Science</ion-option>
+          <ion-option>Accounting</ion-option>
+          <ion-option>Advertising</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input type="text" [(ngModel)]="student.userName" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Password</ion-label>
+        <ion-input type="password" [(ngModel)]="student.password" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Confirm Password</ion-label>
+        <ion-input type="password" [(ngModel)]="student.confPassword" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Email</ion-label>
+        <ion-input type="email" [(ngModel)]="student.email" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label floating>Contact Number</ion-label>
+        <ion-input type="text" [(ngModel)]="student.contact" [ngModelOptions]="{standalone: true}"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <button ion-button block (click)="onSubmit()">Submit</button>
+      </ion-item>
+
+    </ion-list>
+  </form>
+
+</ion-content>

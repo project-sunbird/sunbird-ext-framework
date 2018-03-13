@@ -1,0 +1,8 @@
+{
+    "id": "sunnird.plugin.group",
+    "version": "0.0.1",
+    "module": "DashBoardModule",
+    "main": "DashboardPage",
+    "children": [],
+    "appVersion": "0.0.1"
+}
