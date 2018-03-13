@@ -1,9 +1,9 @@
-import { CassandraDB } from 'ext-framework-server/db/cassandra';
-import { ElasticSearchDB } from 'ext-framework-server/db/elasticsearch';
-import { Manifest } from 'ext-framework-server/models/manifest';
+import { CassandraDB } from 'ext-framework-server/dist/db/cassandra';
+import { ElasticSearchDB } from 'ext-framework-server/dist/db/elasticsearch';
+import { Manifest } from 'ext-framework-server/dist/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
-import { FrameworkConfig } from 'ext-framework-server/interfaces';
+import { FrameworkConfig } from 'ext-framework-server/dist/interfaces';
 
 export class Server implements IProfileService {
 
@@ -19,8 +19,11 @@ export class Server implements IProfileService {
 	}
 
 	public getUser(req: Request, res: Response) {
-		let id = req.params['userId'];
-		res.send({ status: 'success', data: this.userDetails[id]}).status(200);
+		res.send({ status: 'success', data: this.userDetails[req.params['id']] }).status(200);
+	}
+
+	public getAllUser(req: Request, res: Response): void {
+		res.send({ status: "success", data: this.userDetails }).status(200);
 	}
 
 	public setUser(req: Request, res: Response) {
@@ -32,9 +35,5 @@ export class Server implements IProfileService {
 		let body = req.body;
 		let searchQuery = {}; // create searchQuery from body json
 		res.send('search result api working!');
-	}
-
-	public getAllUser(req: Request, res: Response): void {
-		res.send({ status: "success", data: this.userDetails }).status(200);
 	}
 }

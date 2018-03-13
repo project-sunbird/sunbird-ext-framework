@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+.bodyDiv {
+    background-image: url("3.png");
+    min-height: 759px;
+}
+.well{
+    opacity: 0.95;
+}
