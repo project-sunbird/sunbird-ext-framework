@@ -4,5 +4,8 @@
         "declaration": true,
         "outDir": "./dist",
         "target": "es6"
-    }
+    },
+    "exclude": [
+        "test"
+    ]
 }

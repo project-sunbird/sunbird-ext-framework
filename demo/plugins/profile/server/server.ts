@@ -10,7 +10,7 @@ export class Server implements IProfileService {
 	private config: FrameworkConfig = null;
 	private manifest: Manifest = null;
 	private cassandraDB: CassandraDB;
-	private userDetails: any;
+	private userDetails: any = {};
 
 	constructor(config: FrameworkConfig, manifest: Manifest) {
 		this.config = config;
@@ -20,47 +20,21 @@ export class Server implements IProfileService {
 
 	public getUser(req: Request, res: Response) {
 		let id = req.params['userId'];
-		if (!this.userDetails) {
-			this.userDetails = {};
-			this.userDetails.avatar = "https://sunbirddev.blob.core.windows.net/user/874ed8a5-782e-4f6c-8f36-e0288455901e/File-01242833565242982418.png";
-			this.userDetails.firstName = "John";
-			this.userDetails.lastName = "Doe";
-			this.userDetails.department = "Science";
-			this.userDetails.hireDate = "2010-08-04";
-			this.userDetails.dob = "1978-03-04";
-			this.userDetails.gender = "Male";
-			this.userDetails.email = "john.doe@test.com";
-			this.userDetails.phone = "9876543210";
-		}
-		res.send(this.userDetails);
-		/*
-		let connection = this.cassandraDB.getConnection(this.manifest);
-		cassandraDB.findOne({tableName: "profile", where: {"user_id": id}}, function(err, user) {
-			if(err) {
-				res.send(util.error(err));
-			} else {
-				res.send(util.ok(user));
-			}
-		});*/
+		res.send({ status: 'success', data: this.userDetails[id]}).status(200);
 	}
 
 	public setUser(req: Request, res: Response) {
-		this.userDetails = req.body;
-		res.send().status(200);
+		this.userDetails[req.body.userId] = req.body;
+		res.send({ status: 'success', data: { userId: req.body.userId }}).status(200);
 	}
 
 	public searchUsers(req: Request, res: Response) {
 		let body = req.body;
 		let searchQuery = {}; // create searchQuery from body json
 		res.send('search result api working!');
-		/*
-		searchDB.search(searchQuery, function(err, results) {
-			if(err) {
-				res.send(util.error(err));
-			} else {
-				let resp = {};// transform results into API response format
-				res.send(util.ok(resp));
-			}
-		});*/
+	}
+
+	public getAllUser(req: Request, res: Response): void {
+		res.send({ status: "success", data: this.userDetails }).status(200);
 	}
 }

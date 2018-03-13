@@ -5,4 +5,5 @@ export interface IProfileService extends IServer {
 	getUser(req: Request, res: Response): void;
 	searchUsers(req: Request, res: Response): void;
 	setUser(req: Request, res: Response): void;
+	getAllUser(req: Request, res: Response): void;
 }

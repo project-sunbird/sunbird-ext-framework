@@ -1,22 +1,22 @@
 import { Router } from "express";
 import { Manifest, IPluginManifest } from "../models/Manifest";
-import {ClientOptions, Client} from 'cassandra-driver';
-import {ConfigOptions, Client as ESClient} from 'elasticsearch';
+import { ClientOptions, Client } from 'cassandra-driver';
+import { ConfigOptions, Client as ESClient } from 'elasticsearch';
 
 export interface IRouter {
     init(app: Router, auth: any, manifest: Manifest): void
 }
 
 export interface IRouterConstructor {
-    new () : IRouter;
+    new(): IRouter;
 }
 
 export interface IServer {
-    
+
 }
 
 export interface IServerConstructor {
-    new(config: object, manifest: Manifest) : IServer;
+    new(config: object, manifest: Manifest): IServer;
 }
 
 export interface IElasticSearchConfig extends ConfigOptions {
@@ -59,15 +59,15 @@ export interface FrameworkConfig {
 }
 
 export enum PluginStatusEnum {
-	unknown,
+    unknown,
     created,
     registered,
-	installed,
-	resolved,
-	started,
-	stopped,
-	active,
-	uninstalled,
+    installed,
+    resolved,
+    started,
+    stopped,
+    active,
+    uninstalled,
     unregistered,
 }
 
@@ -79,7 +79,7 @@ export interface PluginMeta {
     repo: string;
     registered_on: Date;
     cassandra_keyspace: string;
-    elasticsearch_index: string;    
+    elasticsearch_index: string;
     status: PluginStatusEnum;
     manifest: string;
 }

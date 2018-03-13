@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "ng-packagr -p ng-package.json"
+    "build": "ng-packagr"
   },
   "private": false,
   "dependencies": {
@@ -22,7 +22,7 @@
     "lodash": "^4.17.4",
     "moment": "^2.20.1",
     "rxjs": "^5.5.2",
-    "web-framework": "file:../../../../web/dist",
+    "web-framework": "file:///Users/sunil/ext-framework/web/dist",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
@@ -48,7 +48,6 @@
     "ts-node": "^3.2.0",
     "tslint": "^5.7.0",
     "typescript": "^2.4.2",
-    "moment-es6": "^1.0.0",
-    "ng2-semantic-ui": "^0.9.6"
+    "moment-es6": "^1.0.0"
   }
 }

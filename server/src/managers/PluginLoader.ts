@@ -66,53 +66,53 @@ export class PluginLoader {
             //TODO: Look for multiple paths
             const pluginId = plugin.id;
             const pluginManifest = await import(this.config.pluginBasePath + pluginId + '/manifest');
-		    return Manifest.fromJSON(<IPluginManifest>pluginManifest.manifest);
-        } catch(err) {
+            return Manifest.fromJSON(<IPluginManifest>pluginManifest.manifest);
+        } catch (err) {
             throw new FrameworkError({ code: FrameworkErrors.MANIFEST_NOT_FOUND, rootError: err });
         }
     }
 
     private async preparePlugin(manifest: Manifest) {
-    // PluginRegistry checks if database schema is created for the plugin
-    // if migration, do migration
-    // if not, db schema for the plugin should be created
-    let schemaPath = this.config.pluginBasePath + manifest.id + '/db/**/schema*.json';
-    await PluginLoader.loadDBSchema(manifest, schemaPath);
-}
+        // PluginRegistry checks if database schema is created for the plugin
+        // if migration, do migration
+        // if not, db schema for the plugin should be created
+        let schemaPath = this.config.pluginBasePath + manifest.id + '/db/**/schema*.json';
+        await PluginLoader.loadDBSchema(manifest, schemaPath);
+    }
 
     private async instantiatePlugin(manifest: Manifest) {
-    try {
-        let pluginFile = await import(this.config.pluginBasePath + manifest.id + '/server');
-        let pluginClass = <IServerConstructor>pluginFile.Server;
-        let pluginInstance = new pluginClass(this.config, manifest);
-        PluginManager.instances[manifest.id] = pluginInstance;
-    } catch (err) {
-        throw new FrameworkError({ code: FrameworkErrors.PLUGIN_LOAD_FAILED, rootError: err });
-    }
-}
-
-    private async registerRoutes(manifest: Manifest) {
-    try {
-        let router = RouterRegistry.getRouter(manifest);
-        let pluginRouter = await import(this.config.pluginBasePath + manifest.id + '/routes');
-        pluginRouter = <IRouterConstructor>pluginRouter.Router;
-        const routerInstance = new pluginRouter();
-        routerInstance.init(router, manifest);
-    } catch (err) {
-        throw new FrameworkError({ code: FrameworkErrors.ROUTE_REGISTRY_FAILED, rootError: err });
-    }
-}
-
-    public static async loadDBSchema(manifest: Manifest, path: string) {
-    let files = glob.sync(path, {});
-    for (let path of files) {
         try {
-            let schema = await import(path);
-            let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
-            await schemaLoader.create(manifest.id, schema);
-        } catch (error) {
-            throw new FrameworkError({ code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error });
+            let pluginFile = await import(this.config.pluginBasePath + manifest.id + '/server');
+            let pluginClass = <IServerConstructor>pluginFile.Server;
+            let pluginInstance = new pluginClass(this.config, manifest);
+            PluginManager.instances[manifest.id] = pluginInstance;
+        } catch (err) {
+            throw new FrameworkError({ code: FrameworkErrors.PLUGIN_LOAD_FAILED, rootError: err });
         }
     }
-}
+
+    private async registerRoutes(manifest: Manifest) {
+        try {
+            let router = RouterRegistry.getRouter(manifest);
+            let pluginRouter = await import(this.config.pluginBasePath + manifest.id + '/routes');
+            pluginRouter = <IRouterConstructor>pluginRouter.Router;
+            const routerInstance = new pluginRouter();
+            routerInstance.init(router, manifest);
+        } catch (err) {
+            throw new FrameworkError({ code: FrameworkErrors.ROUTE_REGISTRY_FAILED, rootError: err });
+        }
+    }
+
+    public static async loadDBSchema(manifest: Manifest, path: string) {
+        let files = glob.sync(path, {});
+        for (let path of files) {
+            try {
+                let schema = await import(path);
+                let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
+                await schemaLoader.create(manifest.id, schema);
+            } catch (error) {
+                throw new FrameworkError({ code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error });
+            }
+        }
+    }
 }

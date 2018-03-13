@@ -21,5 +21,4 @@ export class MenuModule {
     let config: IFrameworkConfig = { manifest: <Manifest>manifest, pluginClass: ClientPlugin }
     Framework.initialize([config]);
   }
-
 }
