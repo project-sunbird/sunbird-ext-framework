@@ -13,6 +13,7 @@ import { TabsPage } from "./container/tabs/tabs";
 import { BasePlugin } from "./plugin.base";
 import { AuthService } from "./services/auth/auth.service";
 import { ProfileService } from "./services/profile/profile.service";
+import { CourseService } from "./services/course/course.service"
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { ProfileService } from "./services/profile/profile.service";
         OAuthService,
         AuthService,
         ProfileService,
+        CourseService,
         { provide: TelemetryServiceFactory, useClass: GenieSDKServiceFactory },
         TelemetryService
     ],

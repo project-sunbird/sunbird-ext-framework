@@ -23,11 +23,8 @@ export * from "./services/telemetry/factory";
 
 export * from "./services/camera.service";
 
-
-
-
-
-
+export * from "./services/course/bean";
+export * from "./services/course/course.service";
 
 
 // export { CameraService } from "./services/camera.service";
