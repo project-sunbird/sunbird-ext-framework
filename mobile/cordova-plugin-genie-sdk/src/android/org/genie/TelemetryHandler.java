@@ -98,7 +98,8 @@ public class TelemetryHandler {
 
             @Override
             public void onError(GenieResponse<SyncStat> genieResponse) {
-                callbackContext.error(gson.toJson(genieResponse));
+                String response = gson.toJson(genieResponse);
+                callbackContext.error(new JSONObject(response));
             }
         });
     }

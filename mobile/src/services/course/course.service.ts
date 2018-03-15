@@ -1,53 +1,51 @@
 import { Injectable } from "@angular/core";
 
 import { EnrolledCoursesRequest, EnrollCourseRequest, UpdateContentStateRequest, CourseBatchesRequest } from "./bean"
+import { ServiceProvider } from "../factory";
+import { GenieResponse } from "../service.bean";
 
 @Injectable()
 export class CourseService {
 
-    getEnrolledCourses(request: { EnrolledCoursesRequest },
-        successCallback: (response: string) => void,
-        errorCallback: (error: string) => void) {
+    constructor(private factory: ServiceProvider) {
+
+    }
+
+    getEnrolledCourses(requestObject: (request: EnrolledCoursesRequest) => void,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
         try {
-            (<any>window).GenieSDK.course.getEnrolledCourses(
-                JSON.stringify(request),
-                successCallback, errorCallback);
+            this.factory.getCourseService().getEnrolledCourses(JSON.stringify(requestObject), successCallback, errorCallback);
         } catch (error) {
             console.log(error);
         }
     }
 
-    enrollCourse(request: { EnrollCourseRequest },
-        successCallback: (response: string) => void,
-        errorCallback: (error: string) => void) {
+    enrollCourse(requestObject: (request: EnrollCourseRequest) => void,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
         try {
-            (<any>window).GenieSDK.course.enrollCourse(
-                JSON.stringify(request),
-                successCallback, errorCallback);
+            this.factory.getCourseService().enrollCourse(JSON.stringify(requestObject), successCallback, errorCallback);
         } catch (error) {
             console.log(error);
         }
     }
 
-    updateContentState(request: { UpdateContentStateRequest },
-        successCallback: (response: string) => void,
-        errorCallback: (error: string) => void) {
+    updateContentState(requestObject: (request: UpdateContentStateRequest) => void,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
         try {
-            (<any>window).GenieSDK.course.updateContentState(
-                JSON.stringify(request),
-                successCallback, errorCallback);
+            this.factory.getCourseService().updateContentState(JSON.stringify(requestObject), successCallback, errorCallback);
         } catch (error) {
             console.log(error);
         }
     }
 
-    getCourseBatches(request: { CourseBatchesRequest },
-        successCallback: (response: string) => void,
-        errorCallback: (error: string) => void) {
+    getCourseBatches(requestObject: (request: CourseBatchesRequest) => void,
+        successCallback: (response: String) => void,
+        errorCallback: (error: String) => void) {
         try {
-            (<any>window).GenieSDK.course.getCourseBatches(
-                JSON.stringify(request),
-                successCallback, errorCallback);
+            this.factory.getCourseService().getCourseBatches(JSON.stringify(requestObject), successCallback, errorCallback);
         } catch (error) {
             console.log(error);
         }

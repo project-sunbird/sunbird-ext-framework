@@ -6,8 +6,8 @@ import { ContentService } from "./services/content/content.service";
 import { EventService } from "./services/event/event.service";
 import { IonicStorageModule } from "@ionic/storage";
 import { TelemetryService } from "./services/telemetry/telemetry.service";
-import { TelemetryServiceFactory } from "./services/telemetry/factory";
-import { GenieSDKServiceFactory } from "./services/telemetry/geniesdk.service";
+import { ServiceProvider } from "./services/factory";
+import { GenieSDKServiceProvider } from "./services/geniesdk.service";
 import { OAuthService } from "./services/auth/oauth.service";
 import { TabsPage } from "./container/tabs/tabs";
 import { BasePlugin } from "./plugin.base";
@@ -31,7 +31,7 @@ import { CourseService } from "./services/course/course.service"
         AuthService,
         ProfileService,
         CourseService,
-        { provide: TelemetryServiceFactory, useClass: GenieSDKServiceFactory },
+        { provide: ServiceProvider, useClass: GenieSDKServiceProvider },
         TelemetryService
     ],
     exports: [
