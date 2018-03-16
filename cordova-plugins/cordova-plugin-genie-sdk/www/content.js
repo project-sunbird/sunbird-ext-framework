@@ -12,9 +12,12 @@ var content = {
     exec(success, error, PLUGIN_NAME, this.action(), ["importEcar", requestJson]);
   },
 
-
   importContent: function(requestJson, success, error) {
     exec(success, error, PLUGIN_NAME, this.action(), ["importContent", requestJson]);
+  },
+
+  searchContent: function(requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["searchContent", requestJson]);
   },
 
   action: function() {
