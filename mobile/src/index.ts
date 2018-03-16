@@ -1,5 +1,4 @@
 export * from "./plugin.base";
-export * from "./framework.module";
 
 export * from "./container/tabs/tabs";
 export * from "./container/container.services";
@@ -25,6 +24,8 @@ export * from "./services/camera.service";
 
 export * from "./services/course/bean";
 export * from "./services/course/course.service";
+
+export * from "./framework.module";
 
 
 // export { CameraService } from "./services/camera.service";

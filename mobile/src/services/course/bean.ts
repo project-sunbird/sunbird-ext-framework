@@ -1,16 +1,16 @@
-export declare class EnrolledCoursesRequest {
+export class EnrolledCoursesRequest {
     userId: String;
     refreshEnrolledCourses: Boolean;
 }
 
-export declare class EnrollCourseRequest {
+export class EnrollCourseRequest {
     userId: String;
     courseId: String;
     contentId: String;
     batchId: String;
 }
 
-export declare class UpdateContentStateRequest {
+export class UpdateContentStateRequest {
     userId: String;
     courseId: String;
     contentId: String;
@@ -22,6 +22,6 @@ export declare class UpdateContentStateRequest {
     score: String;
 }
 
-export declare class CourseBatchesRequest {
+export class CourseBatchesRequest {
     courseId: String[];
 }
