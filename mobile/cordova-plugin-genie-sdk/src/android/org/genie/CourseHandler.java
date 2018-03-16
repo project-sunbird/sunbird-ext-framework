@@ -1,10 +1,11 @@
 package org.genie;
 
 import org.apache.cordova.CallbackContext;
+import org.ekstep.genieservices.GenieService;
 import org.ekstep.genieservices.commons.IResponseHandler;
 import org.ekstep.genieservices.commons.bean.CourseBatchesRequest;
 import org.ekstep.genieservices.commons.bean.CourseBatchesResponse;
-import org.ekstep.genieservices.commons.bean.EnrolCourseRequest;
+import org.ekstep.genieservices.commons.bean.EnrollCourseRequest;
 import org.ekstep.genieservices.commons.bean.EnrolledCoursesRequest;
 import org.ekstep.genieservices.commons.bean.EnrolledCoursesResponse;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
@@ -45,24 +46,31 @@ public class CourseHandler {
 
     private static void getEnrolledCourses(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
-        EnrolledCoursesRequest request = GsonUtil.fromJson(requestJson, EnrolledCoursesRequest.class);
-        GenieService.getAsyncService().getCourseService().getEnrolledCourses(request, new IResponseHandler<EnrolledCoursesResponse>() {
-            @Override
-            public void onSuccess(GenieResponse<EnrolledCoursesResponse> genieResponse) {
-                callbackContext.success(GsonUtil.toJson(genieResponse));
-            }
 
-            @Override
-            public void onError(GenieResponse<EnrolledCoursesResponse> genieResponse) {
-                callbackContext.error(GsonUtil.toJson(genieResponse));
-            }
-        });
+        EnrolledCoursesRequest.Builder builder = gson.fromJson(requestJson,
+                EnrolledCoursesRequest.Builder.class);
+
+        GenieService.getAsyncService().getCourseService().getEnrolledCourses(builder.build(),
+                new IResponseHandler<EnrolledCoursesResponse>() {
+                    @Override
+                    public void onSuccess(GenieResponse<EnrolledCoursesResponse> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<EnrolledCoursesResponse> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
     }
 
     private static void enrollCourse(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
-        EnrolCourseRequest request = GsonUtil.fromJson(requestJson, EnrolCourseRequest.class);
-        GenieService.getAsyncService().getCourseService().enrollCourse(request, new IResponseHandler<Void>() {
+
+        EnrollCourseRequest.Builder builder = gson.fromJson(requestJson,
+                EnrollCourseRequest.Builder.class);
+        
+        GenieService.getAsyncService().getCourseService().enrollCourse(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse));
@@ -77,8 +85,11 @@ public class CourseHandler {
 
     private static void updateContentState(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
-        UpdateContentStateRequest request = GsonUtil.fromJson(requestJson, UpdateContentStateRequest.class);
-        GenieService.getAsyncService().getCourseService().updateContentState(request, new IResponseHandler<Void>() {
+
+        UpdateContentStateRequest.Builder builder = gson.fromJson(requestJson,
+                UpdateContentStateRequest.Builder.class);
+        
+        GenieService.getAsyncService().getCourseService().updateContentState(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse));
@@ -93,17 +104,21 @@ public class CourseHandler {
 
     private static void getCourseBatches(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
-        CourseBatchesRequest request = GsonUtil.fromJson(requestJson, CourseBatchesRequest.class);
-        GenieService.getAsyncService().getCourseService().getCourseBatches(request, new IResponseHandler<CourseBatchesResponse>() {
-            @Override
-            public void onSuccess(GenieResponse<CourseBatchesResponse> genieResponse) {
-                callbackContext.success(GsonUtil.toJson(genieResponse));
-            }
 
-            @Override
-            public void onError(GenieResponse<CourseBatchesResponse> genieResponse) {
-                callbackContext.error(GsonUtil.toJson(genieResponse));
-            }
-        });
+        CourseBatchesRequest.Builder builder = gson.fromJson(requestJson,
+                CourseBatchesRequest.Builder.class);
+        
+        GenieService.getAsyncService().getCourseService().getCourseBatches(builder.build(),
+                new IResponseHandler<CourseBatchesResponse>() {
+                    @Override
+                    public void onSuccess(GenieResponse<CourseBatchesResponse> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<CourseBatchesResponse> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
     }
 }

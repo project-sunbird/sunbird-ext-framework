@@ -12,4 +12,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.course;
     }
 
+    getContentService(): any {
+        return (<any>window).GenieSDK.content;
+    }
+
 }

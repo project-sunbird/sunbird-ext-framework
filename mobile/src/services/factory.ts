@@ -9,4 +9,8 @@ export class ServiceProvider {
     getCourseService(): any {
 
     }
+
+    getContentService(): any {
+
+    }
 }

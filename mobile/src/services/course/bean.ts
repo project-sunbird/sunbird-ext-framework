@@ -1,16 +1,16 @@
-export interface EnrolledCoursesRequest {
+export declare class EnrolledCoursesRequest {
     userId: String;
     refreshEnrolledCourses: Boolean;
 }
 
-export interface EnrollCourseRequest {
+export declare class EnrollCourseRequest {
     userId: String;
     courseId: String;
     contentId: String;
     batchId: String;
 }
 
-export interface UpdateContentStateRequest {
+export declare class UpdateContentStateRequest {
     userId: String;
     courseId: String;
     contentId: String;
@@ -22,6 +22,6 @@ export interface UpdateContentStateRequest {
     score: String;
 }
 
-export interface CourseBatchesRequest {
+export declare class CourseBatchesRequest {
     courseId: String[];
 }

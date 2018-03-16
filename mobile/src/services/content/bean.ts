@@ -1,15 +1,13 @@
 import { CorrelationData } from "../telemetry/bean";
 
-export class ContentDetailRequest {
-
+export declare class ContentDetailRequest {
   contentId: string;
   attachFeedback: boolean;
   attachContentAccess: boolean;
   refreshContentDetails: boolean;
 }
 
-export class ContentListingCriteria {
-
+export declare class ContentListingCriteria {
   contentListingId: string;
   uid: string;
   language: string;
@@ -24,13 +22,13 @@ export class ContentListingCriteria {
   facets: Array<string>;
 }
 
-export class FilterValue {
+export declare class FilterValue {
   name: string;
   count: number;
   apply: boolean;
 }
 
-export class ContentSearchFilter {
+export declare class ContentSearchFilter {
   name: string;
   values: Array<FilterValue>;
 }
@@ -40,8 +38,7 @@ export enum SearchType {
   FILTER = "filter",
 }
 
-export class ContentSearchCriteria {
-
+export declare class ContentSearchCriteria {
   query: string;
   limit: number;
   mode: number;
@@ -62,15 +59,24 @@ export class ContentSearchCriteria {
   searchType: SearchType;
 }
 
-export class ContentImport {
+export declare class ContentImport {
   isChildContent: boolean;
   destinationFolder: string;
   contentId: string;
   correlationData: Array<CorrelationData>;
 }
 
-
-export class ContentImportRequest {
+export declare class ContentImportRequest {
   contentImportMap: { [index: string]: ContentImport };
   contentStatusArray: Array<string>;
+}
+
+export declare class ContentSortCriteria {
+  sortAttribute: String;
+  sortOrder: SortOrder;
+}
+
+export enum SortOrder {
+  ASC = "asc",
+  DESC = "desc",
 }

@@ -11,7 +11,7 @@ export class CourseService {
 
     }
 
-    getEnrolledCourses(requestObject: (request: EnrolledCoursesRequest) => void,
+    getEnrolledCourses(requestObject: EnrolledCoursesRequest,
         successCallback: (response: String) => void,
         errorCallback: (error: String) => void) {
         try {
@@ -21,7 +21,7 @@ export class CourseService {
         }
     }
 
-    enrollCourse(requestObject: (request: EnrollCourseRequest) => void,
+    enrollCourse(requestObject: EnrollCourseRequest,
         successCallback: (response: String) => void,
         errorCallback: (error: String) => void) {
         try {
@@ -31,7 +31,7 @@ export class CourseService {
         }
     }
 
-    updateContentState(requestObject: (request: UpdateContentStateRequest) => void,
+    updateContentState(requestObject: UpdateContentStateRequest,
         successCallback: (response: String) => void,
         errorCallback: (error: String) => void) {
         try {
@@ -41,7 +41,7 @@ export class CourseService {
         }
     }
 
-    getCourseBatches(requestObject: (request: CourseBatchesRequest) => void,
+    getCourseBatches(requestObject: CourseBatchesRequest,
         successCallback: (response: String) => void,
         errorCallback: (error: String) => void) {
         try {
