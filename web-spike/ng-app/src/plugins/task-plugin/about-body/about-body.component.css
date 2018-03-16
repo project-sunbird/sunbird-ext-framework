@@ -1,0 +1,18 @@
+.md-form .prefix {
+  float: left;
+  position: relative;
+  width: 0;
+}
+
+.view:not(.hm-zoom) {
+  overflow:visible;
+}
+
+/* Animations */
+.wow {
+visibility: hidden;
+} 
+
+.btn-group {
+  display:inline-flex;
+}
