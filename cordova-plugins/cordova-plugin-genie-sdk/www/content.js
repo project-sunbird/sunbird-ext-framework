@@ -20,6 +20,10 @@ var content = {
     exec(success, error, PLUGIN_NAME, this.action(), ["searchContent", requestJson]);
   },
 
+ getAllLocalContents: function(requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["getAllLocalContents", requestJson]);
+  },
+
   action: function() {
     return "content";
   }

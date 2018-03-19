@@ -80,3 +80,13 @@ export enum SortOrder {
   ASC = "asc",
   DESC = "desc",
 }
+
+export class ContentFilterCriteria {
+  uid: String;
+  contentTypes: String[];
+  audience: String[];
+  pragma: String[];
+  attachFeedback: Boolean;
+  attachContentAccess: Boolean;
+  sortCriteria: Array<ContentSortCriteria>;
+}
