@@ -17,6 +17,7 @@ import org.ekstep.genieservices.commons.bean.GenieResponse;
 import org.ekstep.genieservices.commons.bean.ContentSearchCriteria;
 import org.ekstep.genieservices.commons.bean.ContentSearchCriteria.SearchBuilder;
 import org.ekstep.genieservices.commons.bean.ContentSearchCriteria.FilterBuilder;
+import org.ekstep.genieservices.commons.bean.ContentSearchResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -128,14 +129,14 @@ public class ContentHandler {
                 ContentSearchCriteria.SearchBuilder.class);
 
         GenieService.getAsyncService().getContentService().searchContent(builder.build(),
-                new IResponseHandler<List<ContentSearchResult>>() {
+                new IResponseHandler<ContentSearchResult>() {
                     @Override
-                    public void onSuccess(GenieResponse<List<ContentSearchResult>> genieResponse) {
+                    public void onSuccess(GenieResponse<ContentSearchResult> genieResponse) {
                         callbackContext.success(gson.toJson(genieResponse));
                     }
 
                     @Override
-                    public void onError(GenieResponse<List<ContentSearchResult>> genieResponse) {
+                    public void onError(GenieResponse<ContentSearchResult> genieResponse) {
                         callbackContext.error(gson.toJson(genieResponse));
                     }
                 });

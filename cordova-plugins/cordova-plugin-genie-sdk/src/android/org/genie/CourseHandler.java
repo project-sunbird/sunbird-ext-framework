@@ -4,7 +4,7 @@ import org.apache.cordova.CallbackContext;
 import org.ekstep.genieservices.commons.IResponseHandler;
 import org.ekstep.genieservices.commons.bean.CourseBatchesRequest;
 import org.ekstep.genieservices.commons.bean.CourseBatchesResponse;
-import org.ekstep.genieservices.commons.bean.EnrolCourseRequest;
+import org.ekstep.genieservices.commons.bean.EnrollCourseRequest;
 import org.ekstep.genieservices.commons.bean.EnrolledCoursesRequest;
 import org.ekstep.genieservices.commons.bean.EnrolledCoursesResponse;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
@@ -46,7 +46,7 @@ public class CourseHandler {
     private static void getEnrolledCourses(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
 
-        EnrolledCoursesRequest.Builder builder = gson.fromJson(requestJson,
+        EnrolledCoursesRequest.Builder builder = GsonUtil.fromJson(requestJson,
                 EnrolledCoursesRequest.Builder.class);
 
         GenieService.getAsyncService().getCourseService().getEnrolledCourses(builder.build(),
@@ -66,7 +66,7 @@ public class CourseHandler {
     private static void enrollCourse(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
 
-        EnrollCourseRequest.Builder builder = gson.fromJson(requestJson,
+        EnrollCourseRequest.Builder builder = GsonUtil.fromJson(requestJson,
                 EnrollCourseRequest.Builder.class);
         
         GenieService.getAsyncService().getCourseService().enrollCourse(builder.build(), new IResponseHandler<Void>() {
@@ -85,7 +85,7 @@ public class CourseHandler {
     private static void updateContentState(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
 
-        UpdateContentStateRequest.Builder builder = gson.fromJson(requestJson,
+        UpdateContentStateRequest.Builder builder = GsonUtil.fromJson(requestJson,
                 UpdateContentStateRequest.Builder.class);
         
         GenieService.getAsyncService().getCourseService().updateContentState(builder.build(), new IResponseHandler<Void>() {
@@ -104,7 +104,7 @@ public class CourseHandler {
     private static void getCourseBatches(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
 
-        CourseBatchesRequest.Builder builder = gson.fromJson(requestJson,
+        CourseBatchesRequest.Builder builder = GsonUtil.fromJson(requestJson,
                 CourseBatchesRequest.Builder.class);
         
         GenieService.getAsyncService().getCourseService().getCourseBatches(builder.build(),

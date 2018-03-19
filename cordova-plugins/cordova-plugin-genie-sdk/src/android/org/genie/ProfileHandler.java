@@ -60,7 +60,7 @@ public class ProfileHandler {
         GenieService.getAsyncService().getUserService().createUserProfile(profile, new IResponseHandler<Profile>() {
             @Override
             public void onSuccess(GenieResponse<Profile> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
