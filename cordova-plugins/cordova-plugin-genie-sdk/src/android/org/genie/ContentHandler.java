@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.cordova.CallbackContext;
 import org.ekstep.genieservices.GenieService;
 import org.ekstep.genieservices.commons.IResponseHandler;
+import org.ekstep.genieservices.commons.bean.ChildContentRequest;
 import org.ekstep.genieservices.commons.bean.Content;
 import org.ekstep.genieservices.commons.bean.ContentDetailsRequest;
 import org.ekstep.genieservices.commons.bean.ContentFilterCriteria;
@@ -161,5 +162,24 @@ public class ContentHandler {
                 });
     }
 
-}
+    private static void getChildContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
 
+        ChildContentRequest.Builder builder =  GsonUtil.fromJson(requestJson,
+                ChildContentRequest.Builder.class);
+
+        GenieService.getAsyncService().getContentService().getChildContents(builder.build(),
+                new IResponseHandler<Content>() {
+                    @Override
+                    public void onSuccess(GenieResponse<Content> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<Content> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
+    }
+
+}

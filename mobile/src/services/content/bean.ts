@@ -90,3 +90,14 @@ export class ContentFilterCriteria {
   attachContentAccess: Boolean;
   sortCriteria: Array<ContentSortCriteria>;
 }
+
+export class HierarchyInfo {
+  identifier: String;
+  contentType: String;
+}
+
+export class ChildContentRequest {
+  contentId: String;
+  hierarchyInfo: Array<HierarchyInfo>;
+  level: Number;
+}

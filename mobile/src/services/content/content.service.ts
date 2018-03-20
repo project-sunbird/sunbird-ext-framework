@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria } from "./bean";
+import { ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest } from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
@@ -46,6 +46,16 @@ export class ContentService {
     errorCallback: (response: string) => void) {
     try {
       this.factory.getContentService().getAllLocalContents(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getChildContents(request: ChildContentRequest,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().getChildContents(JSON.stringify(request), successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }
