@@ -1,6 +1,7 @@
-package org.ekstep.genieservices;
+package org.genie;
 
 import org.apache.cordova.CallbackContext;
+import org.ekstep.genieservices.GenieService;
 import org.ekstep.genieservices.commons.IResponseHandler;
 import org.ekstep.genieservices.commons.bean.CourseBatchesRequest;
 import org.ekstep.genieservices.commons.bean.CourseBatchesResponse;

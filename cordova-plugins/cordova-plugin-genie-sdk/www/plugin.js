@@ -5,7 +5,7 @@ var auth = require("./auth");
 var event = require("./event");
 var downloadService = require("./downloadService");
 var profile = require("./profile");
-
+var course = require("./course");
 var GenieSDK = {
 
   telemetry: telemetry,
@@ -13,7 +13,8 @@ var GenieSDK = {
   auth: auth,
   event: event,
   downloadService: downloadService,
-  profile: profile
+  profile: profile,
+  course: course
 };
 
 
