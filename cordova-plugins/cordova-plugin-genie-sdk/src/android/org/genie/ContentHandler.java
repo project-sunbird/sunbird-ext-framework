@@ -7,13 +7,18 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.cordova.CallbackContext;
 import org.ekstep.genieservices.GenieService;
 import org.ekstep.genieservices.commons.IResponseHandler;
+import org.ekstep.genieservices.commons.bean.ChildContentRequest;
 import org.ekstep.genieservices.commons.bean.Content;
 import org.ekstep.genieservices.commons.bean.ContentDetailsRequest;
+import org.ekstep.genieservices.commons.bean.ContentFilterCriteria;
 import org.ekstep.genieservices.commons.bean.ContentImport;
 import org.ekstep.genieservices.commons.bean.ContentImportRequest;
 import org.ekstep.genieservices.commons.bean.ContentImportResponse;
+import org.ekstep.genieservices.commons.bean.ContentSearchCriteria;
+import org.ekstep.genieservices.commons.bean.ContentSearchResult;
 import org.ekstep.genieservices.commons.bean.EcarImportRequest;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
+import org.ekstep.genieservices.commons.utils.GsonUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,7 +26,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * Created by souvikmondal on 9/2/18.
@@ -49,35 +53,29 @@ public class ContentHandler {
         }
     }
 
-    private static void getContentDetail(
-            JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    private static void getContentDetail(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
         final Gson gson = new GsonBuilder().create();
-        ContentDetailsRequest request =
-                gson.fromJson(requestJson, ContentDetailsRequest.class);
-        GenieService.getAsyncService().getContentService().getContentDetails(request,
-                new IResponseHandler<Content>() {
-                    @Override
-                    public void onSuccess(GenieResponse<Content> genieResponse) {
-                        callbackContext.success(gson.toJson(genieResponse));
-                    }
+        ContentDetailsRequest request = gson.fromJson(requestJson, ContentDetailsRequest.class);
+        GenieService.getAsyncService().getContentService().getContentDetails(request, new IResponseHandler<Content>() {
+            @Override
+            public void onSuccess(GenieResponse<Content> genieResponse) {
+                callbackContext.success(gson.toJson(genieResponse));
+            }
 
-                    @Override
-                    public void onError(GenieResponse<Content> genieResponse) {
-                        callbackContext.error(gson.toJson(genieResponse));
+            @Override
+            public void onError(GenieResponse<Content> genieResponse) {
+                callbackContext.error(gson.toJson(genieResponse));
 
-                    }
-                });
+            }
+        });
     }
 
-    private static void importEcar(JSONArray args,
-                                   final CallbackContext callbackContext) throws JSONException {
+    private static void importEcar(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
         final Gson gson = new GsonBuilder().create();
 
-
-        EcarImportRequest.Builder builder = gson.fromJson(requestJson,
-                EcarImportRequest.Builder.class);
+        EcarImportRequest.Builder builder = gson.fromJson(requestJson, EcarImportRequest.Builder.class);
 
         GenieService.getAsyncService().getContentService().importEcar(builder.build(),
                 new IResponseHandler<List<ContentImportResponse>>() {
@@ -93,19 +91,16 @@ public class ContentHandler {
                 });
     }
 
-
-    private static void importContent(JSONArray args,
-                                      final CallbackContext callbackContext) throws JSONException {
+    private static void importContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
         final Gson gson = new GsonBuilder().create();
 
-
         JSONObject contentImportRequestBuilder = new JSONObject(requestJson);
-        Type contentImportMapType = new TypeToken<Map<String, ContentImport>>(){}.getType();
+        Type contentImportMapType = new TypeToken<Map<String, ContentImport>>() {
+        }.getType();
 
         Map<String, ContentImport> contentImportMap = gson
-                .fromJson(contentImportRequestBuilder
-                        .optString("contentImportMap"), contentImportMapType);
+                .fromJson(contentImportRequestBuilder.optString("contentImportMap"), contentImportMapType);
 
         ContentImportRequest.Builder builder = new ContentImportRequest.Builder();
 
@@ -126,5 +121,65 @@ public class ContentHandler {
                     }
                 });
     }
-}
 
+    private static void searchContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        ContentSearchCriteria.SearchBuilder builder = GsonUtil.fromJson(requestJson,
+                ContentSearchCriteria.SearchBuilder.class);
+
+        GenieService.getAsyncService().getContentService().searchContent(builder.build(),
+                new IResponseHandler<ContentSearchResult>() {
+                    @Override
+                    public void onSuccess(GenieResponse<ContentSearchResult> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<ContentSearchResult> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
+    }
+
+    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson,
+                ContentFilterCriteria.Builder.class);
+
+        GenieService.getAsyncService().getContentService().getAllLocalContent(builder.build(),
+                new IResponseHandler<List<Content>>() {
+                    @Override
+                    public void onSuccess(GenieResponse<List<Content>> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<List<Content>> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
+    }
+
+    private static void getChildContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        ChildContentRequest.Builder builder =  GsonUtil.fromJson(requestJson,
+                ChildContentRequest.Builder.class);
+
+        GenieService.getAsyncService().getContentService().getChildContents(builder.build(),
+                new IResponseHandler<Content>() {
+                    @Override
+                    public void onSuccess(GenieResponse<Content> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<Content> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
+    }
+
+}

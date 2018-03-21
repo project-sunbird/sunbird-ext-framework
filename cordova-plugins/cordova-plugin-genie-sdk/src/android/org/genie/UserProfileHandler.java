@@ -1,4 +1,4 @@
-package org.ekstep.genieservices.profile;
+package org.genie;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -68,12 +68,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().getUserProfileDetails(request, new IResponseHandler<UserProfile>() {
             @Override
             public void onSuccess(GenieResponse<UserProfile> genieResponse) {
-                callbackContext.success(genieResponse.getResult().getUserProfile());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult().getUserProfile()));
             }
 
             @Override
             public void onError(GenieResponse<UserProfile> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
@@ -91,12 +91,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().getTenantInfo(builder.build(), new IResponseHandler<TenantInfo>() {
             @Override
             public void onSuccess(GenieResponse<TenantInfo> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
             public void onError(GenieResponse<TenantInfo> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
@@ -114,12 +114,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().searchUser(builder.build(), new IResponseHandler<UserSearchResult>() {
             @Override
             public void onSuccess(GenieResponse<UserSearchResult> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
             public void onError(GenieResponse<UserSearchResult> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
@@ -137,12 +137,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().getSkills(builder.build(), new IResponseHandler<UserProfileSkill>() {
             @Override
             public void onSuccess(GenieResponse<UserProfileSkill> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
             public void onError(GenieResponse<UserProfileSkill> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
@@ -160,12 +160,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().endorseOrAddSkill(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
             public void onError(GenieResponse<Void> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
@@ -183,12 +183,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().setProfileVisibility(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
             public void onError(GenieResponse<Void> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
@@ -206,12 +206,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().uploadFile(builder.build(), new IResponseHandler<FileUploadResult>() {
             @Override
             public void onSuccess(GenieResponse<FileUploadResult> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
             public void onError(GenieResponse<FileUploadResult> genieResponse) {
-                callbackContext.error(genieResponse.getError());
+                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }

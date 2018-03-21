@@ -1,4 +1,4 @@
-package org.ekstep.genieservices.profile;
+package org.genie;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -36,7 +36,7 @@ public class ProfileHandler {
         try {
             String type = args.getString(0);
             if (type.equals(TYPE_CREATE_PROFILE)) {
-                uploadFile(args, callbackContext);
+                createProfile(args, callbackContext);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -53,7 +53,7 @@ public class ProfileHandler {
         GenieService.getAsyncService().getUserService().createUserProfile(profile, new IResponseHandler<Profile>() {
             @Override
             public void onSuccess(GenieResponse<Profile> genieResponse) {
-                callbackContext.success(genieResponse.getResult());
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override

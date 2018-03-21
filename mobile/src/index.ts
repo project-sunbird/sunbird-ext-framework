@@ -1,5 +1,4 @@
 export * from "./plugin.base";
-export * from "./framework.module";
 
 export * from "./container/tabs/tabs";
 export * from "./container/container.services";
@@ -17,17 +16,16 @@ export * from "./services/profile/profile.service";
 
 export * from "./services/telemetry/bean";
 export * from "./services/telemetry/telemetry.service";
-export * from "./services/telemetry/geniesdk.service"
-export * from "./services/telemetry/factory";
+export * from "./services/geniesdk.service"
+export * from "./services/factory";
 
 
 export * from "./services/camera.service";
 
+export * from "./services/course/bean";
+export * from "./services/course/course.service";
 
-
-
-
-
+export * from "./framework.module";
 
 
 // export { CameraService } from "./services/camera.service";

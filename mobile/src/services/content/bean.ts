@@ -1,7 +1,6 @@
 import { CorrelationData } from "../telemetry/bean";
 
 export class ContentDetailRequest {
-
   contentId: string;
   attachFeedback: boolean;
   attachContentAccess: boolean;
@@ -9,7 +8,6 @@ export class ContentDetailRequest {
 }
 
 export class ContentListingCriteria {
-
   contentListingId: string;
   uid: string;
   language: string;
@@ -41,7 +39,6 @@ export enum SearchType {
 }
 
 export class ContentSearchCriteria {
-
   query: string;
   limit: number;
   mode: number;
@@ -69,8 +66,38 @@ export class ContentImport {
   correlationData: Array<CorrelationData>;
 }
 
-
 export class ContentImportRequest {
   contentImportMap: { [index: string]: ContentImport };
   contentStatusArray: Array<string>;
+}
+
+export class ContentSortCriteria {
+  sortAttribute: String;
+  sortOrder: SortOrder;
+}
+
+export enum SortOrder {
+  ASC = "asc",
+  DESC = "desc",
+}
+
+export class ContentFilterCriteria {
+  uid: String;
+  contentTypes: String[];
+  audience: String[];
+  pragma: String[];
+  attachFeedback: Boolean;
+  attachContentAccess: Boolean;
+  sortCriteria: Array<ContentSortCriteria>;
+}
+
+export class HierarchyInfo {
+  identifier: String;
+  contentType: String;
+}
+
+export class ChildContentRequest {
+  contentId: String;
+  hierarchyInfo: Array<HierarchyInfo>;
+  level: Number;
 }

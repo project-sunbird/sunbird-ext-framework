@@ -1,18 +1,18 @@
 import { Injectable } from "@angular/core";
 import { Impression, Start, Audit, End, ExData, Feedback, Interact, Interrupt, Log, Search, Share, SyncStat } from './bean';
-import { TelemetryServiceFactory } from "./factory";
+import { ServiceProvider } from "../factory";
 import { GenieResponse } from "../service.bean";
 
 @Injectable()
 export class TelemetryService {
 
-  constructor(private factory: TelemetryServiceFactory) {
+  constructor(private factory: ServiceProvider) {
 
   }
 
   audit(audit: Audit) {
-    try {
-      this.factory.getService().audit(JSON.stringify(audit));
+    try { 
+      this.factory.getTelemteryService().audit(JSON.stringify(audit));
     } catch (error) {
       console.log(error);
     }
@@ -20,7 +20,7 @@ export class TelemetryService {
 
   start(start: Start) {
     try {
-      this.factory.getService().start(JSON.stringify(start));
+      this.factory.getTelemteryService().start(JSON.stringify(start));
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +28,7 @@ export class TelemetryService {
 
   end(end: End) {
     try {
-      this.factory.getService().end(JSON.stringify(end));
+      this.factory.getTelemteryService().end(JSON.stringify(end));
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +36,7 @@ export class TelemetryService {
 
   error(error: Error) {
     try {
-      this.factory.getService().error(JSON.stringify(error));
+      this.factory.getTelemteryService().error(JSON.stringify(error));
     } catch (error) {
       console.log(error);
     }
@@ -44,7 +44,7 @@ export class TelemetryService {
 
   exdata(exdata: ExData) {
     try {
-      this.factory.getService().exdata(JSON.stringify(exdata));
+      this.factory.getTelemteryService().exdata(JSON.stringify(exdata));
     } catch (error) {
       console.log(error);
     }
@@ -53,7 +53,7 @@ export class TelemetryService {
 
   feedback(feedback: Feedback) {
     try {
-      this.factory.getService().feedback(JSON.stringify(feedback));
+      this.factory.getTelemteryService().feedback(JSON.stringify(feedback));
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +61,7 @@ export class TelemetryService {
 
   impression(impression: Impression) {
     try {
-      this.factory.getService().impression(JSON.stringify(impression));
+      this.factory.getTelemteryService().impression(JSON.stringify(impression));
     } catch (error) {
       console.log(error);
     }
@@ -70,7 +70,7 @@ export class TelemetryService {
 
   interact(interact: Interact) {
     try {
-      this.factory.getService().interact(JSON.stringify(interact));
+      this.factory.getTelemteryService().interact(JSON.stringify(interact));
     } catch (error) {
       console.log(error);
     }
@@ -79,7 +79,7 @@ export class TelemetryService {
 
   interrupt(interrupt: Interrupt) {
     try {
-      this.factory.getService().interrupt(JSON.stringify(interrupt));
+      this.factory.getTelemteryService().interrupt(JSON.stringify(interrupt));
     } catch (error) {
       console.log(error);
     }
@@ -88,7 +88,7 @@ export class TelemetryService {
 
   log(log: Log) {
     try {
-      this.factory.getService().log(JSON.stringify(log));
+      this.factory.getTelemteryService().log(JSON.stringify(log));
     } catch (error) {
       console.log(error);
     }
@@ -96,7 +96,7 @@ export class TelemetryService {
 
   search(search: Search) {
     try {
-      this.factory.getService().search(JSON.stringify(search));
+      this.factory.getTelemteryService().search(JSON.stringify(search));
     } catch (error) {
       console.log(error);
     }
@@ -104,16 +104,16 @@ export class TelemetryService {
 
   share(share: Share) {
     try {
-      this.factory.getService().share(JSON.stringify(share));
+      this.factory.getTelemteryService().share(JSON.stringify(share));
     } catch (error) {
       console.log(error);
     }
   }
 
   sync(successCallback: (response: GenieResponse<SyncStat>) => void,
-    errorCallback: (error: string) => void) {
+    errorCallback: (error: GenieResponse<SyncStat>) => void) {
     try {
-      this.factory.getService().sync(successCallback, errorCallback);
+      this.factory.getTelemteryService().sync(successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }

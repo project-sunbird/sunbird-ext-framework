@@ -60,6 +60,11 @@ android {
             buildConfigField 'String', 'CONTENT_LISTING_BASE_URL', '"https://staging.open-sunbird.org/api/data/v1"'
             buildConfigField 'String', 'CONTENT_BASE_URL', '"https://staging.open-sunbird.org/api/content/v1"'
             buildConfigField 'String', 'APIGATEWAY_BASE_URL', '"https://staging.open-sunbird.org/api/api-manager/v1"'
+            buildConfigField 'String', 'USER_SERVICE_BASE_URL', '"https://staging.open-sunbird.org/api/user/v1"'
+            buildConfigField 'String', 'COURSE_SERVICE_BASE_URL', '"https://staging.open-sunbird.org/api/course/v1"'
+            buildConfigField 'String', 'CHANNEL_SERVICE_BASE_URL', '"https://staging.open-sunbird.org/api/channel/v1"'
+            buildConfigField 'String', 'FRAMEWORK_SERVICE_BASE_URL', '"https://staging.open-sunbird.org/api/framework/v1"'
+            buildConfigField 'String', 'ORG_SERVICE_BASE_URL', '"https://staging.open-sunbird.org/api/org/v1"'
             buildConfigField 'String', 'PRODUCER_ID', '"sunbird-ionic"'
             buildConfigField 'String', 'CHANNEL_ID', '"in.ekstep"'
             buildConfigField 'String', 'LOG_LEVEL', '"INFO"'
@@ -70,16 +75,14 @@ android {
             buildConfigField 'String', 'MOBILE_APP_KEY', '"sunbird-0.1"'
             buildConfigField 'String', 'MOBILE_APP_SECRET', '"86d56385115f44c985de4d44c874aa1d"'
             buildConfigField 'String', 'ENVIRONMENT', '"Genie"'
-            buildConfigField 'String', 'USER_SERVICE_BASE_URL', '"https://staging.open-sunbird.org/api/user/v1"'
-
             dimension "default"
         }
     }
 }
 
 dependencies {
-    compile "org.ekstep.genieservices:genie-providers:1.0.552"
-    compile "org.ekstep.genieservices:genie-integration:1.0.552"
+    compile "org.ekstep.genieservices:genie-providers:1.0.561"
+    compile "org.ekstep.genieservices:genie-integration:1.0.561"
     // compile "com.google.code.gson:gson:2.8.2"
     // compile "joda-time:joda-time:2.9.9"
     // compile "org.greenrobot:eventbus:3.1.1"
