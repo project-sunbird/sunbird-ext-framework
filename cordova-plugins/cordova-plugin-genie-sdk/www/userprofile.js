@@ -33,10 +33,10 @@ var userprofile = {
   },
 
   action: function () {
-    return "userprofile";
+    return "userProfile";
   }
 
 };
 
-module.exports = userprofile;
+module.exports = userProfile;
 
