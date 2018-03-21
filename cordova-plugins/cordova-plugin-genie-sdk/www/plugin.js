@@ -5,6 +5,7 @@ var auth = require("./auth");
 var event = require("./event");
 var downloadService = require("./downloadService");
 var profile = require("./profile");
+var userprofile = require("./userprofile");
 
 var GenieSDK = {
 
