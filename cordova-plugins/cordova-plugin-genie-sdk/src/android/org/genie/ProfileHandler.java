@@ -36,7 +36,7 @@ public class ProfileHandler {
         try {
             String type = args.getString(0);
             if (type.equals(TYPE_CREATE_PROFILE)) {
-                uploadFile(args, callbackContext);
+                createProfile(args, callbackContext);
             }
         } catch (JSONException e) {
             e.printStackTrace();
