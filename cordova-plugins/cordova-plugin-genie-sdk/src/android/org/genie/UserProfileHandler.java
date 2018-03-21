@@ -88,7 +88,7 @@ public class UserProfileHandler {
         TenantInfoRequest.Builder builder = gson.fromJson(requestJson,
                 TenantInfoRequest.Builder.class);
 
-        GenieService.getAsyncService().getUserService().getTenantInfo(builder.build(), new IResponseHandler<TenantInfo>() {
+        GenieService.getAsyncService().getUserProfileService().getTenantInfo(builder.build(), new IResponseHandler<TenantInfo>() {
             @Override
             public void onSuccess(GenieResponse<TenantInfo> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
@@ -111,7 +111,7 @@ public class UserProfileHandler {
         UserSearchCriteria.SearchBuilder builder = gson.fromJson(requestJson,
                 UserSearchCriteria.SearchBuilder.class);
 
-        GenieService.getAsyncService().getUserService().searchUser(builder.build(), new IResponseHandler<UserSearchResult>() {
+        GenieService.getAsyncService().getUserProfileService().searchUser(builder.build(), new IResponseHandler<UserSearchResult>() {
             @Override
             public void onSuccess(GenieResponse<UserSearchResult> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
@@ -134,7 +134,7 @@ public class UserProfileHandler {
         UserProfileSkillsRequest.Builder builder = gson.fromJson(requestJson,
                 UserProfileSkillsRequest.Builder.class);
 
-        GenieService.getAsyncService().getUserService().getSkills(builder.build(), new IResponseHandler<UserProfileSkill>() {
+        GenieService.getAsyncService().getUserProfileService().getSkills(builder.build(), new IResponseHandler<UserProfileSkill>() {
             @Override
             public void onSuccess(GenieResponse<UserProfileSkill> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
@@ -157,7 +157,7 @@ public class UserProfileHandler {
         EndorseOrAddSkillRequest.Builder builder = gson.fromJson(requestJson,
                 EndorseOrAddSkillRequest.Builder.class);
 
-        GenieService.getAsyncService().getUserService().endorseOrAddSkill(builder.build(), new IResponseHandler<Void>() {
+        GenieService.getAsyncService().getUserProfileService().endorseOrAddSkill(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
@@ -180,7 +180,7 @@ public class UserProfileHandler {
         ProfileVisibilityRequest.Builder builder = gson.fromJson(requestJson,
                 ProfileVisibilityRequest.Builder.class);
 
-        GenieService.getAsyncService().getUserService().setProfileVisibility(builder.build(), new IResponseHandler<Void>() {
+        GenieService.getAsyncService().getUserProfileService().setProfileVisibility(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
@@ -203,7 +203,7 @@ public class UserProfileHandler {
         UploadFileRequest.Builder builder = gson.fromJson(requestJson,
                 UploadFileRequest.Builder.class);
 
-        GenieService.getAsyncService().getUserService().uploadFile(builder.build(), new IResponseHandler<FileUploadResult>() {
+        GenieService.getAsyncService().getUserProfileService().uploadFile(builder.build(), new IResponseHandler<FileUploadResult>() {
             @Override
             public void onSuccess(GenieResponse<FileUploadResult> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
