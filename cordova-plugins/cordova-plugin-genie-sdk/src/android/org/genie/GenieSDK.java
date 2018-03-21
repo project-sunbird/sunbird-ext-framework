@@ -38,6 +38,8 @@ public class GenieSDK extends CordovaPlugin {
             ProfileHandler.handle(args, callbackContext);
         } else if (action.equals("course")) {
             CourseHandler.handle(args, callbackContext);
+        }else if (action.equals("userProfile")) {
+            UserProfileHandler.handle(args, callbackContext);
         }
         return true;
     }

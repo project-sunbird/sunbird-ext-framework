@@ -1,4 +1,4 @@
-package org.ekstep.genieservices.profile;
+package org.genie;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
