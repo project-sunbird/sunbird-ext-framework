@@ -71,4 +71,14 @@ export class ContentService {
     }
   }
 
+  getImportStatus(request: Array<String>,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().getImportStatus(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }

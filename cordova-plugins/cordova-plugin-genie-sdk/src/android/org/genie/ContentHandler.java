@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -144,11 +145,11 @@ public class ContentHandler {
                 });
     }
 
-    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext)
-            throws JSONException {
+    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson, ContentFilterCriteria.Builder.class);
+        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson,
+                ContentFilterCriteria.Builder.class);
 
         GenieService.getAsyncService().getContentService().getAllLocalContent(builder.build(),
                 new IResponseHandler<List<Content>>() {
@@ -167,7 +168,8 @@ public class ContentHandler {
     private static void getChildContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ChildContentRequest.Builder builder = GsonUtil.fromJson(requestJson, ChildContentRequest.Builder.class);
+        ChildContentRequest.Builder builder = GsonUtil.fromJson(requestJson,
+                ChildContentRequest.Builder.class);
 
         GenieService.getAsyncService().getContentService().getChildContents(builder.build(),
                 new IResponseHandler<Content>() {
@@ -186,7 +188,8 @@ public class ContentHandler {
     private static void deleteContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ContentDeleteRequest.Builder builder = GsonUtil.fromJson(requestJson, ContentDeleteRequest.Builder.class);
+        ContentDeleteRequest.Builder builder = GsonUtil.fromJson(requestJson,
+                ContentDeleteRequest.Builder.class);
 
         GenieService.getAsyncService().getContentService().deleteContent(builder.build(),
                 new IResponseHandler<List<ContentDeleteResponse>>() {
@@ -197,6 +200,26 @@ public class ContentHandler {
 
                     @Override
                     public void onError(GenieResponse<List<ContentDeleteResponse>> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
+    }
+
+    private static void getImportStatus(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        List<String> contentIdList = GsonUtil.fromJson(requestJson,
+                List.class);
+        
+        GenieService.getAsyncService().getContentService().getImportStatus(contentIdList,
+                new IResponseHandler<List<ContentImportResponse>>() {
+                    @Override
+                    public void onSuccess(GenieResponse<List<ContentImportResponse>> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<List<ContentImportResponse>> genieResponse) {
                         callbackContext.error(GsonUtil.toJson(genieResponse));
                     }
                 });
