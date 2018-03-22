@@ -44,6 +44,10 @@ var content = {
     exec(success, error, PLUGIN_NAME, this.action(), ["exportContent", requestJson]);
   },
 
+  setDownloadAction: function (requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["setDownloadAction", requestJson]);
+  },
+
   action: function () {
     return "content";
   }

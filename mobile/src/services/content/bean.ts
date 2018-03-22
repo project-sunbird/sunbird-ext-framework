@@ -115,3 +115,8 @@ export class ContentExportRequest {
   contentIds: Array<String>;
   destinationFolder: String;
 }
+
+export enum DownloadAction {
+  RESUME = 0,
+  PAUSE = 1,
+}

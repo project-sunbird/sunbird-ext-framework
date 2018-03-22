@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
 
-import { ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest, ContentDeleteRequest, ContentExportRequest } from "./bean";
+import {
+  ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest, ContentDeleteRequest,
+  ContentExportRequest, DownloadAction
+} from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
@@ -93,12 +96,22 @@ export class ContentService {
 
   exportContent(request: ContentExportRequest,
     successCallback: (response: string) => void,
-    errorCallback: (response: string) => void){
-      try {
-        this.factory.getContentService().exportContent(JSON.stringify(request), successCallback, errorCallback);
-      } catch (error) {
-        console.log(error);
-      }
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().exportContent(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  setDownloadAction(request: DownloadAction,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().setDownloadAction(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
 }

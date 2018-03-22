@@ -22,6 +22,7 @@ import org.ekstep.genieservices.commons.bean.ContentSearchCriteria;
 import org.ekstep.genieservices.commons.bean.ContentSearchResult;
 import org.ekstep.genieservices.commons.bean.EcarImportRequest;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
+import org.ekstep.genieservices.commons.bean.enums.DownloadAction;
 import org.ekstep.genieservices.commons.utils.GsonUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -249,7 +250,7 @@ public class ContentHandler {
         final String requestJson = args.getString(1);
 
         ContentExportRequest.Builder builder = GsonUtil.fromJson(requestJson, ContentExportRequest.Builder.class);
-        
+
         GenieService.getAsyncService().getContentService().exportContent(builder.build(),
                 new IResponseHandler<ContentExportResponse>() {
                     @Override
@@ -263,6 +264,25 @@ public class ContentHandler {
                     }
                 }
         );
+    }
+
+    private static void setDownloadAction(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        DownloadAction downloadAction = GsonUtil.fromJson(requestJson, DownloadAction.class);
+
+        GenieService.getAsyncService().getContentService().setDownloadAction(downloadAction,
+                new IResponseHandler<Void>() {
+                    @Override
+                    public void onSuccess(GenieResponse<Void> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<Void> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
     }
 
 }
