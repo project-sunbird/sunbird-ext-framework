@@ -114,4 +114,13 @@ export class ContentService {
     }
   }
 
+  getDownloadState(successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().getDownloadState(successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }

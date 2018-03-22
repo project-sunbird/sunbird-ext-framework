@@ -48,6 +48,10 @@ var content = {
     exec(success, error, PLUGIN_NAME, this.action(), ["setDownloadAction", requestJson]);
   },
 
+  getDownloadState: function (requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["getDownloadState", requestJson]);
+  },
+
   action: function () {
     return "content";
   }

@@ -285,4 +285,19 @@ public class ContentHandler {
                 });
     }
 
+    private static void getDownloadState(final CallbackContext callbackContext) throws JSONException {
+        GenieService.getAsyncService().getContentService().getDownloadState(new IResponseHandler<DownloadAction>() {
+            @Override
+            public void onSuccess(GenieResponse<DownloadAction> genieResponse) {
+                callbackContext.success(GsonUtil.toJson(genieResponse));
+            }
+
+            @Override
+            public void onError(GenieResponse<DownloadAction> genieResponse) {
+                callbackContext.error(GsonUtil.toJson(genieResponse));
+            }
+        });
+
+    }
+
 }
