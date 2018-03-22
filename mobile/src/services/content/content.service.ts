@@ -81,4 +81,14 @@ export class ContentService {
     }
   }
 
+  cancelDownload(request: String,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().cancelDownload(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 }

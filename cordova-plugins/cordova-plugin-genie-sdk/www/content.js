@@ -36,6 +36,10 @@ var content = {
     exec(success, error, PLUGIN_NAME, this.action(), ["getImportStatus", requestJson]);
   },
 
+  cancelDownload: function (requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["cancelDownload", requestJson]);
+  },
+
   action: function () {
     return "content";
   }
