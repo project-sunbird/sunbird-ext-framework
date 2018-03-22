@@ -36,6 +36,9 @@
     <js-module src="www/course.js" name="course">
         <clobbers target="course" />
     </js-module>
+    <js-module src="www/pageAssemble.js" name="pageAssemble">
+        <clobbers target="pageAssemble" />
+    </js-module>
     <!-- android -->
     <platform name="android">
 
@@ -56,6 +59,7 @@
       <source-file src="src/android/org/genie/GenieSdkEventListener.java" target-dir="src/org/genie/" />
       <source-file src="src/android/org/genie/DownloadService.java" target-dir="src/org/genie/" />
       <source-file src="src/android/org/genie/CourseHandler.java" target-dir="src/org/genie/" />
+      <source-file src="src/android/org/genie/PageHandler.java" target-dir="src/org/genie/" />
 
     </platform>
 

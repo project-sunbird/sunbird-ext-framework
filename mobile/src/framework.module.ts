@@ -15,6 +15,7 @@ import { AuthService } from "./services/auth/auth.service";
 import { ProfileService } from "./services/profile/profile.service";
 import { CourseService } from "./services/course/course.service"
 import { UserProfileService } from "./services/userprofile/userprofile.service"
+import { PageAssembleService } from "./services/page/page.service";
 
 @NgModule({
     declarations: [
@@ -34,7 +35,8 @@ import { UserProfileService } from "./services/userprofile/userprofile.service"
         CourseService,
         UserProfileService,
         { provide: ServiceProvider, useClass: GenieSDKServiceProvider },
-        TelemetryService
+        TelemetryService,
+        PageAssembleService
     ],
     exports: [
     ]

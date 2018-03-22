@@ -16,4 +16,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.content;
     }
 
+    getPageAssembleService(): any {
+        return (<any>window).GenieSDK.pageAssemble;
+    }
+
 }

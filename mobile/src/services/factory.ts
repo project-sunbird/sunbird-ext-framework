@@ -13,4 +13,8 @@ export class ServiceProvider {
     getContentService(): any {
 
     }
+
+    getPageAssembleService(): any {
+        
+    }
 }
