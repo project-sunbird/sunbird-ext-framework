@@ -101,3 +101,12 @@ export class ChildContentRequest {
   hierarchyInfo: Array<HierarchyInfo>;
   level: Number;
 }
+
+export class ContentDeleteRequest{
+  contentDeleteList: Array<ContentDelete>;
+}
+
+export class ContentDelete{
+  contentId: String;
+  isChildContent: Boolean
+}
