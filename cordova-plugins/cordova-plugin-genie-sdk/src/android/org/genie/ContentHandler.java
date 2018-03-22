@@ -9,6 +9,8 @@ import org.ekstep.genieservices.GenieService;
 import org.ekstep.genieservices.commons.IResponseHandler;
 import org.ekstep.genieservices.commons.bean.ChildContentRequest;
 import org.ekstep.genieservices.commons.bean.Content;
+import org.ekstep.genieservices.commons.bean.ContentDeleteRequest;
+import org.ekstep.genieservices.commons.bean.ContentDeleteResponse;
 import org.ekstep.genieservices.commons.bean.ContentDetailsRequest;
 import org.ekstep.genieservices.commons.bean.ContentFilterCriteria;
 import org.ekstep.genieservices.commons.bean.ContentImport;
@@ -142,11 +144,11 @@ public class ContentHandler {
                 });
     }
 
-    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext)
+            throws JSONException {
         final String requestJson = args.getString(1);
 
-        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson,
-                ContentFilterCriteria.Builder.class);
+        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson, ContentFilterCriteria.Builder.class);
 
         GenieService.getAsyncService().getContentService().getAllLocalContent(builder.build(),
                 new IResponseHandler<List<Content>>() {
@@ -165,8 +167,7 @@ public class ContentHandler {
     private static void getChildContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ChildContentRequest.Builder builder =  GsonUtil.fromJson(requestJson,
-                ChildContentRequest.Builder.class);
+        ChildContentRequest.Builder builder = GsonUtil.fromJson(requestJson, ChildContentRequest.Builder.class);
 
         GenieService.getAsyncService().getContentService().getChildContents(builder.build(),
                 new IResponseHandler<Content>() {
@@ -177,6 +178,25 @@ public class ContentHandler {
 
                     @Override
                     public void onError(GenieResponse<Content> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                });
+    }
+
+    private static void deleteContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        ContentDeleteRequest.Builder builder = GsonUtil.fromJson(requestJson, ContentDeleteRequest.Builder.class);
+
+        GenieService.getAsyncService().getContentService().deleteContent(builder.build(),
+                new IResponseHandler<List<ContentDeleteResponse>>() {
+                    @Override
+                    public void onSuccess(GenieResponse<List<ContentDeleteResponse>> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<List<ContentDeleteResponse>> genieResponse) {
                         callbackContext.error(GsonUtil.toJson(genieResponse));
                     }
                 });

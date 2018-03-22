@@ -28,6 +28,10 @@ var content = {
     exec(success, error, PLUGIN_NAME, this.action(), ["getChildContents", requestJson]);
   },
 
+  deleteContent: function(requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["deleteContent", requestJson]);
+  },
+
   action: function() {
     return "content";
   }
