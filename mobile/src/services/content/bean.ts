@@ -102,11 +102,16 @@ export class ChildContentRequest {
   level: Number;
 }
 
-export class ContentDeleteRequest{
+export class ContentDeleteRequest {
   contentDeleteList: Array<ContentDelete>;
 }
 
-export class ContentDelete{
+export class ContentDelete {
   contentId: String;
   isChildContent: Boolean
+}
+
+export class ContentExportRequest {
+  contentIds: Array<String>;
+  destinationFolder: String;
 }

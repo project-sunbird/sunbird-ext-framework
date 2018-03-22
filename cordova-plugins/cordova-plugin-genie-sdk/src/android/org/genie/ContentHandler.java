@@ -12,6 +12,8 @@ import org.ekstep.genieservices.commons.bean.Content;
 import org.ekstep.genieservices.commons.bean.ContentDeleteRequest;
 import org.ekstep.genieservices.commons.bean.ContentDeleteResponse;
 import org.ekstep.genieservices.commons.bean.ContentDetailsRequest;
+import org.ekstep.genieservices.commons.bean.ContentExportRequest;
+import org.ekstep.genieservices.commons.bean.ContentExportResponse;
 import org.ekstep.genieservices.commons.bean.ContentFilterCriteria;
 import org.ekstep.genieservices.commons.bean.ContentImport;
 import org.ekstep.genieservices.commons.bean.ContentImportRequest;
@@ -25,7 +27,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
@@ -210,7 +211,7 @@ public class ContentHandler {
 
         List<String> contentIdList = GsonUtil.fromJson(requestJson,
                 List.class);
-        
+
         GenieService.getAsyncService().getContentService().getImportStatus(contentIdList,
                 new IResponseHandler<List<ContentImportResponse>>() {
                     @Override
@@ -242,6 +243,26 @@ public class ContentHandler {
                         callbackContext.error(GsonUtil.toJson(genieResponse));
                     }
                 });
+    }
+
+    private static void exportContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        final String requestJson = args.getString(1);
+
+        ContentExportRequest.Builder builder = GsonUtil.fromJson(requestJson, ContentExportRequest.Builder.class);
+        
+        GenieService.getAsyncService().getContentService().exportContent(builder.build(),
+                new IResponseHandler<ContentExportResponse>() {
+                    @Override
+                    public void onSuccess(GenieResponse<ContentExportResponse> genieResponse) {
+                        callbackContext.success(GsonUtil.toJson(genieResponse));
+                    }
+
+                    @Override
+                    public void onError(GenieResponse<ContentExportResponse> genieResponse) {
+                        callbackContext.error(GsonUtil.toJson(genieResponse));
+                    }
+                }
+        );
     }
 
 }
