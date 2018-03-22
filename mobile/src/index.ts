@@ -28,6 +28,9 @@ export * from "./services/camera.service";
 export * from "./services/course/bean";
 export * from "./services/course/course.service";
 
+export * from "./services/page/bean";
+export * from "./services/page/page.service";
+
 export * from "./framework.module";
 
 
