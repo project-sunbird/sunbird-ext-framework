@@ -68,12 +68,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().getUserProfileDetails(request, new IResponseHandler<UserProfile>() {
             @Override
             public void onSuccess(GenieResponse<UserProfile> genieResponse) {
-                callbackContext.success(GsonUtil.toJson(genieResponse.getResult().getUserProfile()));
+                callbackContext.success(genieResponse.getResult().getUserProfile());
             }
 
             @Override
             public void onError(GenieResponse<UserProfile> genieResponse) {
-                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
+                callbackContext.error(genieResponse.getError());
             }
         });
     }
