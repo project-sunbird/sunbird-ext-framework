@@ -39,6 +39,9 @@
     <js-module src="www/pageAssemble.js" name="pageAssemble">
         <clobbers target="pageAssemble" />
     </js-module>
+    <js-module src="www/permission.js" name="permission">
+        <clobbers target="permission" />
+    </js-module>
     <!-- android -->
     <platform name="android">
 
@@ -60,6 +63,8 @@
       <source-file src="src/android/org/genie/DownloadService.java" target-dir="src/org/genie/" />
       <source-file src="src/android/org/genie/CourseHandler.java" target-dir="src/org/genie/" />
       <source-file src="src/android/org/genie/PageHandler.java" target-dir="src/org/genie/" />
+      <source-file src="src/android/org/genie/PermissionHandler.java" target-dir="src/org/genie/" />
+      
 
     </platform>
 

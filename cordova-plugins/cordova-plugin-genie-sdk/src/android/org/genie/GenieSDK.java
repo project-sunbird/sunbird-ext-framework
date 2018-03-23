@@ -1,5 +1,8 @@
 package org.genie;
 
+import android.content.pm.PackageManager;
+import android.util.SparseArray;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
@@ -11,12 +14,17 @@ import org.ekstep.genieservices.commons.bean.SyncStat;
 import org.ekstep.genieservices.commons.bean.telemetry.Impression;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Random;
 
 /**
  * Created by souvikmondal on 8/1/18.
  */
 
 public class GenieSDK extends CordovaPlugin {
+
+
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -42,7 +50,16 @@ public class GenieSDK extends CordovaPlugin {
             UserProfileHandler.handle(args, callbackContext);
         } else if (action.equals("pageAssemble")) {
             PageHandler.handle(args, callbackContext);
+        } else if (action.equals("permission")) {
+            PermissionHandler.handle(this, args, callbackContext);
         }
         return true;
+    }
+
+
+    @Override
+    public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults) throws JSONException {
+        super.onRequestPermissionResult(requestCode, permissions, grantResults);
+        PermissionHandler.onPermissionResult(requestCode, permissions, grantResults);
     }
 }

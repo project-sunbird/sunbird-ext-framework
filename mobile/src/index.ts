@@ -28,6 +28,8 @@ export * from "./services/course/course.service";
 export * from "./services/page/bean";
 export * from "./services/page/page.service";
 
+export * from "./services/permission.sevice";
+
 export * from "./framework.module";
 
 
