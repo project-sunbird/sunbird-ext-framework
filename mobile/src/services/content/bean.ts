@@ -2,9 +2,9 @@ import { CorrelationData } from "../telemetry/bean";
 
 export class ContentDetailRequest {
   contentId: string;
-  attachFeedback: boolean;
-  attachContentAccess: boolean;
-  refreshContentDetails: boolean;
+  attachFeedback?: boolean = false;
+  attachContentAccess?: boolean = false;
+  refreshContentDetails?: boolean = false;
 }
 
 export class ContentListingCriteria {
@@ -39,24 +39,24 @@ export enum SearchType {
 }
 
 export class ContentSearchCriteria {
-  query: string;
-  limit: number;
-  mode: number;
-  age: number;
-  grade: number;
-  medium: string;
-  board: string;
-  createdBy: Array<string>;
-  audience: Array<string>;
-  channel: Array<string>;
-  contentStatusArray: Array<string>;
-  facets: Array<string>;
-  contentTypes: Array<string>;
-  facetFilters: Array<ContentSearchFilter>;
-  impliedFilters: Array<ContentSearchFilter>;
-  sortCriteria: Array<ContentSearchFilter>;
+  query?: string;
+  limit?: number;
+  mode?: number;
+  age?: number;
+  grade?: number;
+  medium?: string;
+  board?: string;
+  createdBy?: Array<string>;
+  audience?: Array<string>;
+  channel?: Array<string>;
+  contentStatusArray?: Array<string>;
+  facets?: Array<string>;
+  contentTypes?: Array<string>;
+  facetFilters?: Array<ContentSearchFilter>;
+  impliedFilters?: Array<ContentSearchFilter>;
+  sortCriteria?: Array<ContentSearchFilter>;
   // 1 - indicates search, 2 - filter
-  searchType: SearchType;
+  searchType?: SearchType;
 }
 
 export class ContentImport {
@@ -68,7 +68,7 @@ export class ContentImport {
 
 export class ContentImportRequest {
   contentImportMap: { [index: string]: ContentImport };
-  contentStatusArray: Array<string>;
+  contentStatusArray?: Array<string>;
 }
 
 export class ContentSortCriteria {
@@ -82,13 +82,13 @@ export enum SortOrder {
 }
 
 export class ContentFilterCriteria {
-  uid: String;
-  contentTypes: String[];
-  audience: String[];
-  pragma: String[];
-  attachFeedback: Boolean;
-  attachContentAccess: Boolean;
-  sortCriteria: Array<ContentSortCriteria>;
+  uid?: String;
+  contentTypes?: String[];
+  audience?: String[];
+  pragma?: String[];
+  attachFeedback?: Boolean;
+  attachContentAccess?: Boolean;
+  sortCriteria?: Array<ContentSortCriteria>;
 }
 
 export class HierarchyInfo {
@@ -98,8 +98,8 @@ export class HierarchyInfo {
 
 export class ChildContentRequest {
   contentId: String;
-  hierarchyInfo: Array<HierarchyInfo>;
-  level: Number;
+  hierarchyInfo?: Array<HierarchyInfo>;
+  level?: Number;
 }
 
 export class ContentDeleteRequest {
@@ -112,7 +112,7 @@ export class ContentDelete {
 }
 
 export class ContentExportRequest {
-  contentIds: Array<String>;
+  contentIds?: Array<String>;
   destinationFolder: String;
 }
 
