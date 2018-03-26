@@ -1,7 +1,6 @@
 package org.genie;
 
 import android.content.pm.PackageManager;
-import android.util.Log;
 import android.util.SparseArray;
 
 import org.apache.cordova.CallbackContext;
@@ -11,8 +10,9 @@ import org.ekstep.genieservices.commons.bean.GenieResponse;
 import org.ekstep.genieservices.commons.utils.GsonUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -35,7 +35,7 @@ public class PermissionHandler {
             action = args.getString(0);
             JSONArray permissionJSONArray = new JSONArray(args.getString(1));
 
-            if (permissionJSONArray != null && permissionJSONArray.length() > 0) {
+            if (permissionJSONArray.length() > 0) {
 
                 String[] permissionArray = new String[permissionJSONArray.length()];
                 for (int index = 0; index < permissionJSONArray.length(); index++) {
@@ -73,41 +73,38 @@ public class PermissionHandler {
                                         CallbackContext callbackContext,
                                         String[] permissionArray) throws JSONException {
 
-        JSONObject responseJSONObject = new JSONObject();
+        Map<String, Boolean> responseMap = new HashMap<>();
 
         for (String permission : permissionArray) {
-            responseJSONObject.put(permission, plugin.cordova.hasPermission(permission));
+             responseMap.put(permission, plugin.cordova.hasPermission(permission));
         }
 
-        GenieResponse<JSONObject> response = GenieResponseBuilder
-                .getSuccessResponse("success", JSONObject.class);
-        response.setResult(responseJSONObject);
+        GenieResponse<Map> response = GenieResponseBuilder
+                .getSuccessResponse("success", Map.class);
+        response.setResult(responseMap);
         callbackContext.success(GsonUtil.toJson(response));
     }
 
 
     public static void onPermissionResult(int requestCode, String[] permissions,
                                           int[] grantResults) {
-        try {
-            if (grantResults.length > 0) {
-                if (sPermissionCallback.get(requestCode, null) != null) {
-                    JSONObject responseJSONObject = new JSONObject();
+        if (grantResults.length > 0) {
+            if (sPermissionCallback.get(requestCode, null) != null) {
+                Map<String, Boolean> responseMap = new HashMap<>();
 
-                    for (int index = 0; index < permissions.length; index++) {
-                        responseJSONObject.put(permissions[index],
-                                grantResults[index] == PackageManager.PERMISSION_GRANTED);
-                    }
 
-                    GenieResponse<JSONObject> response = GenieResponseBuilder
-                            .getSuccessResponse("success", JSONObject.class);
-                    response.setResult(responseJSONObject);
-
-                    sPermissionCallback.get(requestCode).success(GsonUtil.toJson(response));
-                    sPermissionCallback.remove(requestCode);
+                for (int index = 0; index < permissions.length; index++) {
+                    responseMap.put(permissions[index],
+                            grantResults[index] == PackageManager.PERMISSION_GRANTED);
                 }
+
+                GenieResponse<Map> response = GenieResponseBuilder
+                        .getSuccessResponse("success", Map.class);
+                response.setResult(responseMap);
+
+                sPermissionCallback.get(requestCode).success(GsonUtil.toJson(response));
+                sPermissionCallback.remove(requestCode);
             }
-        } catch (JSONException e) {
-            Log.e("PermissionHandler", e.toString());
         }
     }
 }
