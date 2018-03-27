@@ -9,7 +9,7 @@ import {
 export class UserProfileService {
 
     getUserProfileDetails(request: UserProfileDetailsRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.getUserProfileDetails(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.getUserProfileDetails(JSON.stringify(request), onSuccess, onError);
     }
 
     getTenantInfo(request: TenantInfoRequest, onSuccess, onError) {
@@ -21,7 +21,7 @@ export class UserProfileService {
     }
 
     getSkills(request: UserProfileSkillsRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.getSkills(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.getSkills(JSON.stringify(request), onSuccess, onError);
     }
 
     endorseOrAddSkill(request: EndorseOrAddSkillRequest, onSuccess, onError) {
