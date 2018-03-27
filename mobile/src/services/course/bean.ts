@@ -23,5 +23,5 @@ export class UpdateContentStateRequest {
 }
 
 export class CourseBatchesRequest {
-    courseId: String[];
+    courseIds: String[];
 }

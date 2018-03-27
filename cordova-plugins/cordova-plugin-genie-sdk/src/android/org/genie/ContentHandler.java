@@ -41,6 +41,15 @@ public class ContentHandler {
     private static final String TYPE_GET_CONTENT_DETAIL = "getContentDetail";
     private static final String TYPE_IMPORT_ECAR = "importEcar";
     private static final String TYPE_IMPORT_CONTENT = "importContent";
+    private static final String TYPE_SEARCH_CONTENT = "searchContent";
+    private static final String TYPE_GET_ALL_LOCAL_CONTENTS = "getAllLocalContents";
+    private static final String TYPE_GET_CHILD_CONTENTS = "getChildContents";
+    private static final String TYPE_GET_IMPORT_STATUS = "getImportStatus";
+    private static final String TYPE_CANCEL_DOWNLOAD = "cancelDownload";
+    private static final String TYPE_EXPORT_CONTENT = "exportContent";
+    private static final String TYPE_SET_DOWNLOAD_ACTION = "setDownloadAction";
+    private static final String TYPE_GET_DOWNLOAD_STATE = "getDownloadState";
+    private static final String TYPE_DELETE_CONTENTS = "deleteContent";
 
     public static void handle(JSONArray args, final CallbackContext callbackContext) {
         try {
@@ -51,6 +60,24 @@ public class ContentHandler {
                 importEcar(args, callbackContext);
             } else if (type.equals(TYPE_IMPORT_CONTENT)) {
                 importContent(args, callbackContext);
+            } else if (type.equals(TYPE_SEARCH_CONTENT)) {
+                searchContent(args, callbackContext);
+            } else if (type.equals(TYPE_GET_ALL_LOCAL_CONTENTS)) {
+                getAllLocalContents(args, callbackContext);
+            } else if (type.equals(TYPE_GET_CHILD_CONTENTS)) {
+                getChildContents(args, callbackContext);
+            } else if (type.equals(TYPE_DELETE_CONTENTS)) {
+                deleteContent(args, callbackContext);
+            } else if (type.equals(TYPE_GET_IMPORT_STATUS)) {
+                getImportStatus(args, callbackContext);
+            } else if (type.equals(TYPE_CANCEL_DOWNLOAD)) {
+                cancelDownload(args, callbackContext);
+            } else if (type.equals(TYPE_EXPORT_CONTENT)) {
+                exportContent(args, callbackContext);
+            } else if (type.equals(TYPE_SET_DOWNLOAD_ACTION)) {
+                setDownloadAction(args, callbackContext);
+            } else if (type.equals(TYPE_GET_DOWNLOAD_STATE)) {
+                getDownloadState(args, callbackContext);
             }
 
         } catch (JSONException e) {
@@ -147,11 +174,11 @@ public class ContentHandler {
                 });
     }
 
-    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    private static void getAllLocalContents(JSONArray args, final CallbackContext callbackContext)
+            throws JSONException {
         final String requestJson = args.getString(1);
 
-        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson,
-                ContentFilterCriteria.Builder.class);
+        ContentFilterCriteria.Builder builder = GsonUtil.fromJson(requestJson, ContentFilterCriteria.Builder.class);
 
         GenieService.getAsyncService().getContentService().getAllLocalContent(builder.build(),
                 new IResponseHandler<List<Content>>() {
@@ -170,8 +197,7 @@ public class ContentHandler {
     private static void getChildContents(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ChildContentRequest.Builder builder = GsonUtil.fromJson(requestJson,
-                ChildContentRequest.Builder.class);
+        ChildContentRequest.Builder builder = GsonUtil.fromJson(requestJson, ChildContentRequest.Builder.class);
 
         GenieService.getAsyncService().getContentService().getChildContents(builder.build(),
                 new IResponseHandler<Content>() {
@@ -190,8 +216,7 @@ public class ContentHandler {
     private static void deleteContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ContentDeleteRequest.Builder builder = GsonUtil.fromJson(requestJson,
-                ContentDeleteRequest.Builder.class);
+        ContentDeleteRequest.Builder builder = GsonUtil.fromJson(requestJson, ContentDeleteRequest.Builder.class);
 
         GenieService.getAsyncService().getContentService().deleteContent(builder.build(),
                 new IResponseHandler<List<ContentDeleteResponse>>() {
@@ -210,8 +235,7 @@ public class ContentHandler {
     private static void getImportStatus(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        List<String> contentIdList = GsonUtil.fromJson(requestJson,
-                List.class);
+        List<String> contentIdList = GsonUtil.fromJson(requestJson, List.class);
 
         GenieService.getAsyncService().getContentService().getImportStatus(contentIdList,
                 new IResponseHandler<List<ContentImportResponse>>() {
@@ -232,18 +256,17 @@ public class ContentHandler {
 
         String contentId = GsonUtil.fromJson(requestJson, String.class);
 
-        GenieService.getAsyncService().getContentService().cancelDownload(contentId,
-                new IResponseHandler<Void>() {
-                    @Override
-                    public void onSuccess(GenieResponse<Void> genieResponse) {
-                        callbackContext.success(GsonUtil.toJson(genieResponse));
-                    }
+        GenieService.getAsyncService().getContentService().cancelDownload(contentId, new IResponseHandler<Void>() {
+            @Override
+            public void onSuccess(GenieResponse<Void> genieResponse) {
+                callbackContext.success(GsonUtil.toJson(genieResponse));
+            }
 
-                    @Override
-                    public void onError(GenieResponse<Void> genieResponse) {
-                        callbackContext.error(GsonUtil.toJson(genieResponse));
-                    }
-                });
+            @Override
+            public void onError(GenieResponse<Void> genieResponse) {
+                callbackContext.error(GsonUtil.toJson(genieResponse));
+            }
+        });
     }
 
     private static void exportContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -262,8 +285,7 @@ public class ContentHandler {
                     public void onError(GenieResponse<ContentExportResponse> genieResponse) {
                         callbackContext.error(GsonUtil.toJson(genieResponse));
                     }
-                }
-        );
+                });
     }
 
     private static void setDownloadAction(JSONArray args, final CallbackContext callbackContext) throws JSONException {
