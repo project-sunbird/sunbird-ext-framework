@@ -77,7 +77,7 @@ public class ContentHandler {
             } else if (type.equals(TYPE_SET_DOWNLOAD_ACTION)) {
                 setDownloadAction(args, callbackContext);
             } else if (type.equals(TYPE_GET_DOWNLOAD_STATE)) {
-                getDownloadState(args, callbackContext);
+                getDownloadState(callbackContext);
             }
 
         } catch (JSONException e) {
