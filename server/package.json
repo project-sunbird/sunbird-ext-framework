@@ -6,9 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "npm run build:live",
-    "build:live": "nodemon --exec ts-node -r tsconfig-paths/register ./src/index.ts",
-    "test": "mocha -r ts-node/register -r tsconfig-paths/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "build:live": "nodemon --exec ts-node -r ./src/index.ts",
+    "test": "mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
+    "build": "sudo rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
     "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
   },
   "keywords": [],

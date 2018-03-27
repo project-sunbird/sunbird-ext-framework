@@ -4,6 +4,7 @@ import 'mocha';
 import { PluginManager } from '../../src/managers/PluginManager';
 import { FrameworkConfig } from '../../src/interfaces';
 import { PluginLoader } from '../../src/managers/PluginLoader';
+//TODO: remove all relative path reference with module alias path
 
 chai.should();
 

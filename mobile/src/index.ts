@@ -14,6 +14,9 @@ export * from "./services/event/event.service";
 
 export * from "./services/profile/profile.service";
 
+export * from "./services/userprofile/userprofile.service";
+export * from "./services/userprofile/bean"
+
 export * from "./services/telemetry/bean";
 export * from "./services/telemetry/telemetry.service";
 export * from "./services/geniesdk.service"
@@ -29,6 +32,9 @@ export * from "./services/page/bean";
 export * from "./services/page/page.service";
 
 export * from "./services/permission.sevice";
+
+export * from "./services/userprofile/bean";
+export * from "./services/userprofile/userprofile.service";
 
 export * from "./framework.module";
 

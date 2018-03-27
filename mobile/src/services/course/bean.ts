@@ -1,6 +1,6 @@
 export class EnrolledCoursesRequest {
     userId: String;
-    refreshEnrolledCourses: Boolean;
+    refreshEnrolledCourses?: Boolean;
 }
 
 export class EnrollCourseRequest {
@@ -15,13 +15,13 @@ export class UpdateContentStateRequest {
     courseId: String;
     contentId: String;
     batchId: String;
-    status: Number;
-    progress: Number;
-    result: String;
-    grade: String;
-    score: String;
+    status?: Number;
+    progress?: Number;
+    result?: String;
+    grade?: String;
+    score?: String;
 }
 
 export class CourseBatchesRequest {
-    courseId: String[];
+    courseIds: String[];
 }
