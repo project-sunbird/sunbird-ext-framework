@@ -1,4 +1,4 @@
-# Developer Guidelines
+# Contributor Guidelines
 
 ### General:
 
