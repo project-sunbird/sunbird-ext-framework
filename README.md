@@ -4,8 +4,9 @@ Repo containing code for the Extensibility Framework of Sunbird.  To be moved to
 ## Server Framework:
 
 ### Setup 
-  1. Download `Apache Cassandra` 3.7 or above
-  2. Download `Elasticsearch` 6.1
+  1. Download `Apache Cassandra` v3.7 or higher
+  2. Download `Elasticsearch` v6.1
+  3. Download `Node.Js` v6.4 or higher
 
 ### To see in Action
 
