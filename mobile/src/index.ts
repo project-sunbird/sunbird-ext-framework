@@ -31,6 +31,9 @@ export * from "./services/course/course.service";
 export * from "./services/page/bean";
 export * from "./services/page/page.service";
 
+export * from "./services/userprofile/bean";
+export * from "./services/userprofile/userprofile.service";
+
 export * from "./framework.module";
 
 
