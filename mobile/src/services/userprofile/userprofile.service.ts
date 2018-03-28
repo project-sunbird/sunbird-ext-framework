@@ -13,11 +13,11 @@ export class UserProfileService {
     }
 
     getTenantInfo(request: TenantInfoRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.getTenantInfo(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.getTenantInfo(JSON.stringify(request), onSuccess, onError);
     }
 
     searchUser(request: UserSearchCriteria, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.searchUser(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.searchUser(JSON.stringify(request), onSuccess, onError);
     }
 
     getSkills(request: UserProfileSkillsRequest, onSuccess, onError) {
@@ -25,15 +25,15 @@ export class UserProfileService {
     }
 
     endorseOrAddSkill(request: EndorseOrAddSkillRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.endorseOrAddSkill(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.endorseOrAddSkill(JSON.stringify(request), onSuccess, onError);
     }
 
     setProfileVisibility(request: ProfileVisibilityRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.setProfileVisibility(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.setProfileVisibility(JSON.stringify(request), onSuccess, onError);
     }
 
     uploadFile(request: UploadFileRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.userprofile.uploadFile(JSON.stringify(request), onSuccess, onError);
+        (<any>window).GenieSDK.userProfile.uploadFile(JSON.stringify(request), onSuccess, onError);
     }
 
 }
