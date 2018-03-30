@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import {
     UserProfileDetailsRequest, UserProfileSkillsRequest, TenantInfoRequest,
-    UserSearchCriteria, EndorseOrAddSkillRequest, ProfileVisibilityRequest, UploadFileRequest
+    UserSearchCriteria, EndorseOrAddSkillRequest, ProfileVisibilityRequest, UploadFileRequest, UpdateUserInfoRequest
 } from "./bean"
 
 @Injectable()
@@ -34,6 +34,10 @@ export class UserProfileService {
 
     uploadFile(request: UploadFileRequest, onSuccess, onError) {
         (<any>window).GenieSDK.userProfile.uploadFile(JSON.stringify(request), onSuccess, onError);
+    }
+
+    updateUserInfo(request: UpdateUserInfoRequest, onSuccess, onError) {
+        (<any>window).GenieSDK.userProfile.updateUserInfo(JSON.stringify(request), onSuccess, onError);
     }
 
 }
