@@ -11,6 +11,8 @@ import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by souvikmondal on 8/1/18.
  */
@@ -40,7 +42,7 @@ public class ImageChooser extends CordovaPlugin {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == IMAGE_CHOOSER_ID) {
+        if (requestCode == IMAGE_CHOOSER_ID && resultCode == RESULT_OK) {
             String picturePath = ImagePicker.getPath(ImagePicker.getImageUriFromResult(
                     cordova.getActivity(), resultCode, intent),
                     cordova.getActivity().getApplicationContext(), cordova.getActivity());
