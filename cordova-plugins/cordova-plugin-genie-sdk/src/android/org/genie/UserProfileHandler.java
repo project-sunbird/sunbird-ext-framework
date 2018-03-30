@@ -183,12 +183,12 @@ public class UserProfileHandler {
         GenieService.getAsyncService().getUserProfileService().setProfileVisibility(builder.build(), new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
-                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
+                callbackContext.success(GsonUtil.toJson(genieResponse));
             }
 
             @Override
             public void onError(GenieResponse<Void> genieResponse) {
-                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
+                callbackContext.error(GsonUtil.toJson(genieResponse));
             }
         });
     }

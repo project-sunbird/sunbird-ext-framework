@@ -13,7 +13,7 @@ export class UserSearchCriteria {
     query: string;
     offset: number;
     limit: number;
-    identifiers: Set<string>
+    identifiers: Array<string>
     fields: Array<String>;
 }
 
