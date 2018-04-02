@@ -23,7 +23,11 @@ export enum FrameworkErrors {
     UNKNOWN_ERROR,
     DB_ERROR,
     SCHEMA_LOADER_FAILED,
-    PLUGIN_REGISTERED
+    PLUGIN_REGISTERED,
+    INVALID_JWT_PAYLOAD,
+    INVALID_JWT_SECRET,
+    INVALID_JWT_TOKEN,
+    JWT_ERROR
 }
 
 export interface ErrorSubclass extends Error {
@@ -63,20 +67,16 @@ export class FrameworkError extends ErrorSubclass {
     public rootError: any;
 
     constructor(options: FrameworkErrorOptions) {
-
         super(options.message);
         this.name = "FrameworkError";
         this.detail = (options.detail || "");
         this.extendedInfo = (options.extendedInfo || "");
         this.code = (options.code || FrameworkErrors.UNKNOWN_ERROR);
         this.rootError = (options.rootError || null);
-
     }
 
     public print(): string {
-
         return ("FrameworkError:: code:" + this.code + " | message:" + this.message + " | rootErr:" + this.rootError);
-
     }
 
 }

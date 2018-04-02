@@ -22,7 +22,6 @@ export class Framework {
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
-	private static _FRAMEWORK_DB_SCHEMA: string = "core_framework_schema";
 
 	public get config(): FrameworkConfig {
 		return this._config;
@@ -36,7 +35,7 @@ export class Framework {
 		this._config = Object.assign(defaultConfig, config);
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
-		RouterRegistry.initialize(app);
+		RouterRegistry.initialize(app, this._config.secureContextParams);
 		console.log('=====> Framework initialized!');
 	}
 
@@ -49,7 +48,6 @@ export class Framework {
 	}
 
 	public static async initialize(config: FrameworkConfig, app: Express) {
-		
 		if (!Framework._initialized) {
 			Framework._instance = new Framework(config, app);
 			Framework._initialized = true;
@@ -63,7 +61,7 @@ export class Framework {
 	public static async laodPluginRegistrySchema() {
 		try {
 			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(RegistrySchema.type);
-			await schemaLoader.create(Framework._FRAMEWORK_DB_SCHEMA, RegistrySchema);
+			await schemaLoader.create(RegistrySchema.db, RegistrySchema);
 		} catch(e) {
 			console.log(e);
 		}

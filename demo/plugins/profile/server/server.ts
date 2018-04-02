@@ -1,9 +1,11 @@
-import { CassandraDB } from 'ext-framework-server/dist/db/cassandra';
-import { ElasticSearchDB } from 'ext-framework-server/dist/db/elasticsearch';
-import { Manifest } from 'ext-framework-server/dist/models/manifest';
+import { CassandraDB } from 'ext-framework-server/db/cassandra';
+import { ElasticSearchDB } from 'ext-framework-server/db/elasticsearch';
+import { Manifest } from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
-import { FrameworkConfig } from 'ext-framework-server/dist/interfaces';
+import { FrameworkConfig } from 'ext-framework-server/interfaces';
+import { KafkaClient } from 'ext-framework-server/messaging';
+import { JwtAuthService } from 'ext-framework-server/auth';
 
 export class Server implements IProfileService {
 
@@ -19,6 +21,7 @@ export class Server implements IProfileService {
 	}
 
 	public getUser(req: Request, res: Response) {
+		console.log('getUser request', req.header);
 		res.send({ status: 'success', data: this.userDetails[req.params['id']] }).status(200);
 	}
 
@@ -28,12 +31,38 @@ export class Server implements IProfileService {
 
 	public setUser(req: Request, res: Response) {
 		this.userDetails[req.body.userId] = req.body;
-		res.send({ status: 'success', data: { userId: req.body.userId }}).status(200);
+		if(req.header['signed-context']) {
+			JwtAuthService.verifyToken(req.header['signed-context']).then((token) => {
+				res.send({ status: 'success', data: { userId: req.body.userId }, message: 'request context token is verified'}).status(200);
+			}).catch((error) => {
+				res.send({ status: 'error', message: error.message }).status(400);
+			})
+		} else {
+			res.send({ status: 'success', data: { userId: req.body.userId }, message: 'request context token not verified'}).status(200);
+		}
+
 	}
 
 	public searchUsers(req: Request, res: Response) {
 		let body = req.body;
 		let searchQuery = {}; // create searchQuery from body json
 		res.send('search result api working!');
+	}
+
+	public TestMessagingService() {
+		let kafkaClient = KafkaClient.getSingletonInstance({connectionString: '127.0.0.1:56855'});
+		let producer = kafkaClient.createProducer();
+		let payloads = [
+				{ topic: 'topic1', messages: 'hi', partition: 0 },
+				{ topic: 'topic2', messages: ['hello', 'world'] }
+		];	
+
+		producer.on('ready', function () {
+			producer.send(payloads, function (err, data) {
+					console.log(data);
+			});
+		});
+
+		producer.on('error', function (err) {})
 	}
 }

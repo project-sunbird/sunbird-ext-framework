@@ -13,9 +13,9 @@ export class TestFramework {
             let expressApp = express();
             config = {...defaultConfig,...config};
             Framework.initialize(config, expressApp).then(()=> {
-                console.log(`=====> Application running on port: ${defaultConfig.port}`);
+                console.log(`=====> Application running on port: ${config.port}`);
                 expressApp.use(bodyParser.json({limit: '50mb'}))
-                expressApp.listen(defaultConfig.port);
+                expressApp.listen(config.port);
                 resolve();
             });
         });
