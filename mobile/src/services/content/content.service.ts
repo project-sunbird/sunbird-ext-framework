@@ -1,6 +1,9 @@
 import { Injectable } from "@angular/core";
 
-import { ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest } from "./bean";
+import {
+  ContentDetailRequest, ContentImportRequest, ContentSearchCriteria, ContentFilterCriteria, ChildContentRequest, ContentDeleteRequest,
+  ContentExportRequest, DownloadAction
+} from "./bean";
 import { ServiceProvider } from "../factory";
 
 @Injectable()
@@ -56,6 +59,65 @@ export class ContentService {
     errorCallback: (response: string) => void) {
     try {
       this.factory.getContentService().getChildContents(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  deleteContent(request: ContentDeleteRequest,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().deleteContent(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getImportStatus(request: Array<String>,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().getImportStatus(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  cancelDownload(request: String,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().cancelDownload(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  exportContent(request: ContentExportRequest,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().exportContent(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  setDownloadAction(request: DownloadAction,
+    successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().setDownloadAction(JSON.stringify(request), successCallback, errorCallback);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  getDownloadState(successCallback: (response: string) => void,
+    errorCallback: (response: string) => void) {
+    try {
+      this.factory.getContentService().getDownloadState(successCallback, errorCallback);
     } catch (error) {
       console.log(error);
     }
