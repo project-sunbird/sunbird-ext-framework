@@ -16,3 +16,7 @@
 	4. `docs` - consists of code documentation files
 4. **Build Jobs:**
     1. Gulp (NPM package)
+    
+ ### Web and Mobile
+ 
+ 1. Please follow `angular-cli` naming convention
