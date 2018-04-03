@@ -9,10 +9,10 @@ import org.ekstep.genieservices.commons.IResponseHandler;
 import org.ekstep.genieservices.commons.bean.EndorseOrAddSkillRequest;
 import org.ekstep.genieservices.commons.bean.FileUploadResult;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
-import org.ekstep.genieservices.commons.bean.Profile;
 import org.ekstep.genieservices.commons.bean.ProfileVisibilityRequest;
 import org.ekstep.genieservices.commons.bean.TenantInfo;
 import org.ekstep.genieservices.commons.bean.TenantInfoRequest;
+import org.ekstep.genieservices.commons.bean.UpdateUserInfoRequest;
 import org.ekstep.genieservices.commons.bean.UploadFileRequest;
 import org.ekstep.genieservices.commons.bean.UserProfile;
 import org.ekstep.genieservices.commons.bean.UserProfileDetailsRequest;
@@ -38,6 +38,7 @@ public class UserProfileHandler {
     private static final String TYPE_ENDORSE_OR_ADD_SKILL = "endorseOrAddSkill";
     private static final String TYPE_SET_PROFILE_VISIBILITY = "setProfileVisibility";
     private static final String TYPE_UPLOAD_FILE = "uploadFile";
+    private static final String TYPE_UPDATE_USER_INFO = "updateUserInfo";
 
     public static void handle(JSONArray args, final CallbackContext callbackContext) {
         try {
@@ -56,10 +57,29 @@ public class UserProfileHandler {
                 setProfileVisibility(args, callbackContext);
             } else if (type.equals(TYPE_UPLOAD_FILE)) {
                 uploadFile(args, callbackContext);
+            } else if (type.equalsIgnoreCase(TYPE_UPDATE_USER_INFO)) {
+                updateUserInfo(args, callbackContext);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void updateUserInfo(JSONArray args, CallbackContext callbackContext) throws JSONException {
+        String requestJson = args.getString(1);
+
+        UpdateUserInfoRequest request = GsonUtil.fromJson(requestJson, UpdateUserInfoRequest.class);
+        GenieService.getAsyncService().getUserProfileService().updateUserInfo(request, new IResponseHandler<Void>() {
+            @Override
+            public void onSuccess(GenieResponse<Void> genieResponse) {
+                callbackContext.success(GsonUtil.toJson(genieResponse));
+            }
+
+            @Override
+            public void onError(GenieResponse<Void> genieResponse) {
+                callbackContext.error(GsonUtil.toJson(genieResponse));
+            }
+        });
     }
 
     private static void getUserProfileDetails(JSONArray args, final CallbackContext callbackContext) throws JSONException {
