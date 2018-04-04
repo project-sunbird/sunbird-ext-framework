@@ -4,7 +4,7 @@ import { Manifest } from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
 import { FrameworkConfig } from 'ext-framework-server/interfaces';
-import { KafkaClient } from 'ext-framework-server/messaging';
+//import { KafkaClient } from 'ext-framework-server/messaging';
 import { JwtAuthService } from 'ext-framework-server/auth';
 
 export class Server implements IProfileService {
@@ -49,20 +49,32 @@ export class Server implements IProfileService {
 		res.send('search result api working!');
 	}
 
-	public TestMessagingService() {
-		let kafkaClient = KafkaClient.getSingletonInstance({connectionString: '127.0.0.1:56855'});
-		let producer = kafkaClient.createProducer();
-		let payloads = [
-				{ topic: 'topic1', messages: 'hi', partition: 0 },
-				{ topic: 'topic2', messages: ['hello', 'world'] }
-		];	
+	// public TestMessagingService() {
+	// 	console.log('calling TestMessagingService');
+	// 	let kafkaClient = KafkaClient.connect();
+	// 	let producer = kafkaClient.createProducer();
+	// 	let payloads = [
+	// 			{ topic: 'topic1', messages: 'hi', partition: 0 },
+	// 			{ topic: 'topic2', messages: ['hello', 'world'] }
+	// 	];
 
-		producer.on('ready', function () {
-			producer.send(payloads, function (err, data) {
-					console.log(data);
-			});
-		});
+	// 	producer.on('ready', function () {
+	// 		producer.createTopics(['topic1', 'topic2'], false, (error, data) => {
+	// 			console.log('topics created!', error, data)
+	// 			producer.send(payloads, function (err, data) {
+	// 				console.log('sending payloads!', err, data);
+	// 			});
+	// 		})
+	// 	});
 
-		producer.on('error', function (err) {})
-	}
+	// 	producer.on('error', function (err) {
+	// 		console.log('producer error', err)
+	// 	})
+
+	// 	let consumer = kafkaClient.createConsumer([{topic: 'topic1', partition: 0 }]);
+	// 	consumer.on('message', function (message) {
+	// 		console.log('message from client!' ,message);
+	// 	});
+		
+	// }
 }
