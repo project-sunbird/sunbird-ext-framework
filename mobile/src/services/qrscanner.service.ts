@@ -4,8 +4,8 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class QRScanner {
 
-    startScanner(successCallback: (data: String) => void, errorCallback: () => void) {
-        (<any>window).qrScanner.startScanner(successCallback, errorCallback);
+    startScanner(screenTitle: String, displayText: String, displayTextColor: String, successCallback: (data: String) => void, errorCallback: () => void) {
+        (<any>window).qrScanner.startScanner(screenTitle, displayText, displayTextColor, successCallback, errorCallback);
     }
 
     stopScanner(successCallback: () => void, errorCallback: () => void) {
