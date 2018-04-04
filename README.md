@@ -7,7 +7,9 @@ Repo containing code for the Extensibility Framework of Sunbird.  To be moved to
   1. Download `Apache Cassandra` v3.7 or higher
   2. Download `Elasticsearch` v6.1
   3. Download `Node.Js` v6.4 or higher
-
+  4. install nodemon globally: `npm i nodemon -g`
+  5. install Gulp cli globally: `npm install gulp-cli -g`
+  
 ### To see in Action
 
 To run the demo app with default plugins. Follow the instructions.
