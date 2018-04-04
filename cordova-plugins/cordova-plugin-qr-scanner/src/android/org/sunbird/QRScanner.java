@@ -3,10 +3,13 @@ package org.sunbird;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.zxing.ResultPoint;
@@ -18,6 +21,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.sunbird.app.R;
 
 import java.util.List;
 
@@ -42,21 +46,11 @@ public class QRScanner extends CordovaPlugin {
             
             switch (type) {
                 case START_SCANNING:
-                    cordova.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            webView.postMessage(START_SCANNING, callbackContext);
-                        }
-                    });
+                    showScanDialog(args, callbackContext);
                     break;
                     
                 case STOP_SCANNING:
-                    cordova.getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            webView.postMessage(STOP_SCANNING, callbackContext);
-                        }
-                    });
+                    stopScanner(callbackContext);
                     break;
             }
         }
@@ -65,23 +59,20 @@ public class QRScanner extends CordovaPlugin {
     }
 
 
-    @Override
-    public Object onMessage(String id, Object data) {
-        if (START_SCANNING.equals(id)) {
-            this.showScanDialog((CallbackContext) data);
-        } else if (STOP_SCANNING.equals(id)) {
-            this.stopScanner((CallbackContext) data);
-        }
-        
-        return null;
-    }
-
-    private void showScanDialog(CallbackContext callbackContext) {
+    private void showScanDialog(JSONArray args, CallbackContext callbackContext) throws JSONException {
         stopScanner(null);
         
         if (cordova.getActivity().isFinishing()) {
             return;
         }
+
+
+        Log.i("hello", cordova.getActivity().getPackageName());
+
+        String title = args.optString(1, "Scan QR Code");
+
+        String displayText = args.optString(1, "Scan the QR code with your phone camera");
+        String color = args.optString(3, "#0000ff");
         
         
         cordova.getActivity().runOnUiThread(new Runnable() {
@@ -89,25 +80,25 @@ public class QRScanner extends CordovaPlugin {
             public void run() {
                 Context context = webView.getContext();
 
-                LinearLayout rootLayout = new LinearLayout(context);
-                rootLayout.setOrientation(LinearLayout.VERTICAL);
+                View view = LayoutInflater.from(context).inflate(R.layout.qr_scanner_dialog, null);
 
-                TextView textView = new TextView(context);
+                Toolbar toolbar = view.findViewById(R.id.toolbar);
+                toolbar.setTitle(title);
 
-                LinearLayout.LayoutParams textLayoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                0, 1);
-                textView.setText("Hello");
-                textView.setBackgroundColor(Color.WHITE);
-                textView.setTextColor(Color.BLACK);
-                textView.setGravity(Gravity.CENTER);
-                textView.setLayoutParams(textLayoutParams);
-                rootLayout.addView(textView);
+                toolbar.setNavigationIcon(R.drawable.ic_action_arrow_left);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopScanner(null);
+                    }
+                });
 
-                DecoratedBarcodeView decoratedBarcodeView = new DecoratedBarcodeView(context);
-                LinearLayout.LayoutParams layoutParams =
-                        new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                                0, 2);
+                DecoratedBarcodeView decoratedBarcodeView = view.findViewById(R.id.qr_scanner);
+                TextView titleTextView = view.findViewById(R.id.display_text);
+                decoratedBarcodeView.setStatusText(null);
+
+                titleTextView.setText(displayText);
+                titleTextView.setTextColor(Color.parseColor(color));
 
                 decoratedBarcodeView.decodeSingle(new BarcodeCallback() {
                     @Override
@@ -123,11 +114,6 @@ public class QRScanner extends CordovaPlugin {
                     }
                 });
 
-
-                decoratedBarcodeView.setLayoutParams(layoutParams);
-
-                rootLayout.addView(decoratedBarcodeView);
-
                 mScanDialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
 
                 if ((cordova.getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -136,7 +122,7 @@ public class QRScanner extends CordovaPlugin {
                             WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
 
-                mScanDialog.setContentView(rootLayout);
+                mScanDialog.setContentView(view);
                 mScanDialog.setCancelable(false);
 
                 mScanDialog.show();
