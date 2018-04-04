@@ -4,20 +4,16 @@ var PLUGIN_NAME = 'GenieSDK';
 
 var announcement = {
 
-  getAnnouncementById: function (requestJson, success, error) {
-    exec(success, error, PLUGIN_NAME, this.action(), ["getAnnouncementById", requestJson]);
+  getAnnouncementDetails: function (requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["getAnnouncementDetails", requestJson]);
   },
 
-  userInbox: function (requestJson, success, error) {
-    exec(success, error, PLUGIN_NAME, this.action(), ["userInbox", requestJson]);
+  getAnnouncementList: function (requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["getAnnouncementList", requestJson]);
   },
 
-  receivedAnnouncement: function (requestJson, success, error) {
-    exec(success, error, PLUGIN_NAME, this.action(), ["receivedAnnouncement", requestJson]);
-  },
-
-  readAnnouncement: function (requestJson, success, error) {
-    exec(success, error, PLUGIN_NAME, this.action(), ["readAnnouncement", requestJson]);
+  updateAnnouncementState: function (requestJson, success, error) {
+    exec(success, error, PLUGIN_NAME, this.action(), ["updateAnnouncementState", requestJson]);
   },
 
   action: function () {

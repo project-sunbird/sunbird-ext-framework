@@ -1,11 +1,18 @@
-export declare class AnnouncementRequest {
+export declare class AnnouncementDetailsRequest {
     announcementId: string;
 }
-export declare class UserInboxRequest {
+
+export declare class AnnouncementListRequest {
     limit: number;
     offset: number;
 }
-export declare class ReceivedAnnouncementRequest {
+
+export declare class UpdateAnnouncementStateRequest {
     announcementId: string;
-    channel: number;
+    announcementStatus: AnnouncementStatus;
+}
+
+export enum AnnouncementStatus {
+    RECEIVED = "received",
+    READ = "read",
 }

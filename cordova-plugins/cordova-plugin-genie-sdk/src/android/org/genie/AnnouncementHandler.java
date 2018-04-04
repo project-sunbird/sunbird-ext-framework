@@ -7,12 +7,11 @@ import org.apache.cordova.CallbackContext;
 import org.ekstep.genieservices.GenieService;
 import org.ekstep.genieservices.commons.IResponseHandler;
 import org.ekstep.genieservices.commons.bean.Announcement;
-import org.ekstep.genieservices.commons.bean.AnnouncementRequest;
+import org.ekstep.genieservices.commons.bean.AnnouncementDetailsRequest;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
-import org.ekstep.genieservices.commons.bean.ReceivedAnnouncementRequest;
-import org.ekstep.genieservices.commons.bean.TenantInfoRequest;
-import org.ekstep.genieservices.commons.bean.UserInboxAnnouncements;
-import org.ekstep.genieservices.commons.bean.UserInboxRequest;
+import org.ekstep.genieservices.commons.bean.UpdateAnnouncementStateRequest;
+import org.ekstep.genieservices.commons.bean.AnnouncementList;
+import org.ekstep.genieservices.commons.bean.AnnouncementListRequest;
 import org.ekstep.genieservices.commons.utils.GsonUtil;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,34 +22,32 @@ import org.json.JSONException;
 
 public class AnnouncementHandler {
 
-    private static final String TYPE_GET_ANNOUNCEMENT_BY_ID = "getAnnouncementById";
-    private static final String TYPE_USER_INBOX = "userInbox";
-    private static final String TYPE_RECEIVED_ANNOUNCEMENT = "receivedAnnouncement";
-    private static final String TYPE_READ_ANNOUNCEMENT = "readAnnouncement";
+    private static final String TYPE_GET_ANNOUNCEMENT_DETAILS = "getAnnouncementDetails";
+    private static final String TYPE_GET_ANNOUNCEMENT_LIST = "getAnnouncementList";
+    private static final String TYPE_UPDATE_ANNOUNCEMENT_STATE = "updateAnnouncementState";
 
     public static void handle(JSONArray args, final CallbackContext callbackContext) {
         try {
             String type = args.getString(0);
-            if (type.equals(TYPE_GET_ANNOUNCEMENT_BY_ID)) {
-                getAnnouncementById(args, callbackContext);
-            } else if (type.equals(TYPE_USER_INBOX)) {
-                userInbox(args, callbackContext);
-            } else if (type.equals(TYPE_RECEIVED_ANNOUNCEMENT)) {
-                receivedAnnouncement(args, callbackContext);
-            } else if (type.equals(TYPE_READ_ANNOUNCEMENT)) {
-                readAnnouncement(args, callbackContext);
+            if (type.equals(TYPE_GET_ANNOUNCEMENT_DETAILS)) {
+                getAnnouncementDetails(args, callbackContext);
+            } else if (type.equals(TYPE_GET_ANNOUNCEMENT_LIST)) {
+                getAnnouncementList(args, callbackContext);
+            } else if (type.equals(TYPE_UPDATE_ANNOUNCEMENT_STATE)) {
+                updateAnnouncementState(args, callbackContext);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private static void getAnnouncementById(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    private static void getAnnouncementDetails(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
         final Gson gson = new GsonBuilder().create();
-        TenantInfoRequest.Builder builder = gson.fromJson(requestJson, TenantInfoRequest.Builder.class);
-        AnnouncementRequest.Builder request = GsonUtil.fromJson(requestJson, AnnouncementRequest.Builder.class);
-        GenieService.getAsyncService().getAnnouncementService().getAnnouncementById(request, new IResponseHandler<Announcement>() {
+        AnnouncementDetailsRequest.Builder builder = GsonUtil.fromJson(requestJson,
+                AnnouncementDetailsRequest.Builder.class);
+        GenieService.getAsyncService().getAnnouncementService().getAnnouncementDetails(builder.build(), 
+                new IResponseHandler<Announcement>() {
             @Override
             public void onSuccess(GenieResponse<Announcement> genieResponse) {
                 callbackContext.success(genieResponse.getResult());
@@ -63,51 +60,34 @@ public class AnnouncementHandler {
         });
     }
 
-    private static void userInbox(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    private static void getAnnouncementList(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
         final Gson gson = new GsonBuilder().create();
-        UserInboxRequest.Builder builder = gson.fromJson(requestJson,
-                UserInboxRequest.Builder.class);
+        AnnouncementListRequest.Builder builder = gson.fromJson(requestJson,
+                AnnouncementListRequest.Builder.class);
 
-        GenieService.getAsyncService().getAnnouncementService().userInbox(builder.build(), new IResponseHandler<UserInboxAnnouncements>() {
+        GenieService.getAsyncService().getAnnouncementService().getAnnouncementList(builder.build(), 
+                new IResponseHandler<AnnouncementList>() {
             @Override
-            public void onSuccess(GenieResponse<UserInboxAnnouncements> genieResponse) {
+            public void onSuccess(GenieResponse<AnnouncementList> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
             }
 
             @Override
-            public void onError(GenieResponse<UserInboxAnnouncements> genieResponse) {
+            public void onError(GenieResponse<AnnouncementList> genieResponse) {
                 callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
             }
         });
     }
 
-    private static void receivedAnnouncement(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+    private static void updateAnnouncementState(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
         final Gson gson = new GsonBuilder().create();
-        ReceivedAnnouncementRequest.Builder builder = gson.fromJson(requestJson,
-                ReceivedAnnouncementRequest.Builder.class);
+        UpdateAnnouncementStateRequest.Builder builder = gson.fromJson(requestJson,
+                UpdateAnnouncementStateRequest.Builder.class);
 
-        GenieService.getAsyncService().getAnnouncementService().receivedAnnouncement(builder.build(), new IResponseHandler<Void>() {
-            @Override
-            public void onSuccess(GenieResponse<Void> genieResponse) {
-                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
-            }
-
-            @Override
-            public void onError(GenieResponse<Void> genieResponse) {
-                callbackContext.error(GsonUtil.toJson(genieResponse.getError()));
-            }
-        });
-    }
-
-    private static void readAnnouncement(JSONArray args, final CallbackContext callbackContext) throws JSONException {
-        final String requestJson = args.getString(1);
-        final Gson gson = new GsonBuilder().create();
-        ReceivedAnnouncementRequest.Builder builder = gson.fromJson(requestJson,
-                ReceivedAnnouncementRequest.Builder.class);
-
-        GenieService.getAsyncService().getAnnouncementService().readAnnouncement(builder.build(), new IResponseHandler<Void>() {
+        GenieService.getAsyncService().getAnnouncementService().updateAnnouncementState(builder.build(), 
+                new IResponseHandler<Void>() {
             @Override
             public void onSuccess(GenieResponse<Void> genieResponse) {
                 callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
