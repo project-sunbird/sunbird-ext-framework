@@ -1,13 +1,13 @@
-export declare class AnnouncementDetailsRequest {
+export class AnnouncementDetailsRequest {
     announcementId: string;
 }
 
-export declare class AnnouncementListRequest {
+export class AnnouncementListRequest {
     limit: number;
     offset: number;
 }
 
-export declare class UpdateAnnouncementStateRequest {
+export class UpdateAnnouncementStateRequest {
     announcementId: string;
     announcementStatus: AnnouncementStatus;
 }
