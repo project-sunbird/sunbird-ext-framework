@@ -65,7 +65,7 @@ public class UserProfileHandler {
         }
     }
 
-    private static void updateUserInfo(JSONArray args, CallbackContext callbackContext) throws JSONException {
+    private static void updateUserInfo(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         String requestJson = args.getString(1);
 
         UpdateUserInfoRequest request = GsonUtil.fromJson(requestJson, UpdateUserInfoRequest.class);
