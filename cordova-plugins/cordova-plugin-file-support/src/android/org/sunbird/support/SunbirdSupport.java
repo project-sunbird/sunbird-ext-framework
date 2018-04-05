@@ -28,16 +28,23 @@ public class SunbirdSupport extends CordovaPlugin {
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        if (action.equals("makeEntryInSunbirdSupportFile")) {
+        if (args.get(0).equals("makeEntryInSunbirdSupportFile")) {
             this.callbackContext = callbackContext;
             try {
-                String packageName = this.cordova.getActivity().getPackageName();
+                final String packageName = this.cordova.getActivity().getPackageName();
                 PackageInfo packageInfo = this.cordova.getActivity().getPackageManager().getPackageInfo(packageName, 0);
-                String versionName = packageInfo.versionName;
-                SunbirdFileHandler.makeEntryInSunbirdSupportFile(packageName, versionName);
+                final String versionName = packageInfo.versionName;
+                this.cordova.getThreadPool().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            SunbirdFileHandler.makeEntryInSunbirdSupportFile(packageName, versionName);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

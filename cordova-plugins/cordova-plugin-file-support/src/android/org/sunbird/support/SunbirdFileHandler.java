@@ -72,7 +72,7 @@ public class SunbirdFileHandler {
     }
 
     public static void removeLastLineFromFile(final String filePath) throws IOException {
-        final List<String> lines = new LinkedList<>();
+        final List<String> lines = new LinkedList<String>();
         final Scanner reader = new Scanner(new FileInputStream(filePath), "UTF-8");
         while (reader.hasNextLine()) {
             lines.add(reader.nextLine().concat(System.getProperty("line.separator")));
