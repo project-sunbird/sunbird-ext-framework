@@ -16,100 +16,91 @@ import * as UUID from 'uuid/v1';
 export class PluginRegistry {
 
     private static metaDataProvider: IMetaDataProvider;
-/**
- * 
- * 
- * @static
- * @param {IMetaDataProvider} metaDataProvider 
- * @memberof PluginRegistry
- */
-public static initialize(metaDataProvider: IMetaDataProvider) {
+    /**
+     * 
+     * 
+     * @static
+     * @param {IMetaDataProvider} metaDataProvider 
+     * @memberof PluginRegistry
+     */
+    public static initialize(metaDataProvider: IMetaDataProvider) {
         PluginRegistry.metaDataProvider = metaDataProvider;
     }
 
-/**
- * 
- * 
- * @static
- * @param {Manifest} manifest 
- * @returns {Promise<void>} 
- * @memberof PluginRegistry
- */
-public static async register(manifest: Manifest): Promise<void> {
+    /**
+     * 
+     * 
+     * @static
+     * @param {Manifest} manifest 
+     * @returns {Promise<void>} 
+     * @memberof PluginRegistry
+     */
+    public static async register(manifest: Manifest): Promise<void> {
         let isRegistered = await PluginRegistry.isRegistered(manifest.id);
         if (!isRegistered) {
-            let metaObject: PluginMeta = {
-                id: manifest.id,
-                uuid: UUID(),
-                name: manifest.name || '',
-                version: manifest.version || '',
-                repo: 'local',
-                registered_on: new Date(),
-                cassandra_keyspace: '',
-                elasticsearch_index: '',
-                status: PluginStatusEnum.registered,
-                manifest: JSON.stringify(manifest.toJSON())
-            };
+            let metaObject: PluginMeta = { id: manifest.id, uuid: UUID(), name: manifest.name || '', version: manifest.version || '', repo: 'local', registered_on: new Date(), cassandra_keyspace: '', elasticsearch_index: '', status: PluginStatusEnum.registered, manifest: JSON.stringify(manifest.toJSON()) };
             await PluginRegistry.metaDataProvider.createMeta(metaObject);
             console.log(`=====> Plugin: ${manifest.id} is registered!`);
         } else {
             console.log(`=====> Plugin: ${manifest.id} is already registered!`);
-            throw new FrameworkError({ message: `Plugin: ${manifest.id} is already registered!`, code: FrameworkErrors.PLUGIN_REGISTERED})
+            //throw new FrameworkError({ message: `Plugin: ${manifest.id} is already registered!`, code: FrameworkErrors.PLUGIN_REGISTERED})
         }
     }
-/**
- * 
- * 
- * @static
- * @param {string} id 
- * @returns 
- * @memberof PluginRegistry
- */
-public static async unregister(id: string) {
+    /**
+     * 
+     * 
+     * @static
+     * @param {string} id 
+     * @returns 
+     * @memberof PluginRegistry
+     */
+    public static async unregister(id: string) {
         return await PluginRegistry.updateStatus(id, PluginStatusEnum.unregistered);
     }
-/**
- * 
- * 
- * @static
- * @param {string} id 
- * @returns {Promise<boolean>} 
- * @memberof PluginRegistry
- */
-public static async isRegistered(id: string): Promise<boolean> {
+    /**
+     * 
+     * 
+     * @static
+     * @param {string} id 
+     * @returns {Promise<boolean>} 
+     * @memberof PluginRegistry
+     */
+    public static async isRegistered(id: string): Promise<boolean> {
         let result = await PluginRegistry.metaDataProvider.getMeta(id);
-        if(result) {
+        if (result) {
             let plugin = result.rows.find((row) => row.id === id);
-            return plugin.status === PluginStatusEnum.registered
+            if (plugin && plugin.status) return plugin.status === PluginStatusEnum.registered
+            return false;
         } else return false;
     }
-/**
- * 
- * 
- * @static
- * @param {string} id 
- * @returns 
- * @memberof PluginRegistry
- */
-public static async getStatus(id: string) {
+    /**
+     * 
+     * 
+     * @static
+     * @param {string} id 
+     * @returns {Promise<PluginStatusEnum | undefined>}
+     * @memberof PluginRegistry
+     */
+    public static async getStatus(id: string): Promise<PluginStatusEnum | undefined> {
         let result = await PluginRegistry.metaDataProvider.getMeta(id);
-        if(result) {
+        if (result) {
             let plugin = result.rows.find((row) => row.id === id);
-            return PluginStatusEnum[plugin.status];
+            if (plugin && plugin.status) return PluginStatusEnum[PluginStatusEnum[plugin.status]];
+            return;
         } else return;
     }
-/**
- * 
- * 
- * @static
- * @param {string} id 
- * @param {PluginStatusEnum} status 
- * @returns 
- * @memberof PluginRegistry
- */
-public static async updateStatus(id: string, status: PluginStatusEnum) {
+    /**
+     * 
+     * 
+     * @static
+     * @param {string} id 
+     * @param {PluginStatusEnum} status 
+     * @returns 
+     * @memberof PluginRegistry
+     */
+    public static async updateStatus(id: string, status: PluginStatusEnum): Promise<undefined> {
         let result = await PluginRegistry.metaDataProvider.getMeta(id);
-        if(result) {
+        if (result) {
             let plugin = result.rows.find((row) => row.id === id);
             plugin.status = status;
             return await PluginRegistry.metaDataProvider.updateMeta(id, plugin);
