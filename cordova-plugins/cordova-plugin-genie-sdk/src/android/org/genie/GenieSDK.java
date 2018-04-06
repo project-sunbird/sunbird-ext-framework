@@ -42,6 +42,8 @@ public class GenieSDK extends CordovaPlugin {
             UserProfileHandler.handle(args, callbackContext);
         } else if (action.equals("pageAssemble")) {
             PageHandler.handle(args, callbackContext);
+        } else if (action.equals("announcement")){
+            AnnouncementHandler.handle(args, callbackContext);
         }
         return true;
     }

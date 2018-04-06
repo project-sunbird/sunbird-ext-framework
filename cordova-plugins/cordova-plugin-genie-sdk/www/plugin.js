@@ -8,6 +8,7 @@ var profile = require("./profile");
 var course = require("./course");
 var userProfile = require("./userprofile");
 var pageAssemble = require("./pageAssemble");
+var announcement = require("./announcement");
 
 var GenieSDK = {
   telemetry: telemetry,
@@ -18,7 +19,8 @@ var GenieSDK = {
   profile: profile,
   course: course,
   userProfile: userProfile,
-  pageAssemble: pageAssemble
+  pageAssemble: pageAssemble,
+  announcement: announcement
 };
 
 
