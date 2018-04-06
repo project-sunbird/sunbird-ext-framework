@@ -21,7 +21,7 @@ public class SunbirdFileHandler {
     private static final String SUNBIRD_SUPPORT_FILE = "sunbird_support.txt";
     private static final String SEPERATOR = "~";
 
-    public static void makeEntryInSunbirdSupportFile(String packageName, String versionName) throws IOException {
+    public static String makeEntryInSunbirdSupportFile(String packageName, String versionName) throws IOException {
         File genieSupportDirectory = SunbirdFileHandler.getRequiredDirectory(Environment.getExternalStorageDirectory(), SUNBIRD_SUPPORT_DIRECTORY);
         String filePath = genieSupportDirectory + "/" + SUNBIRD_SUPPORT_FILE;
 
@@ -55,6 +55,8 @@ public class SunbirdFileHandler {
                 SunbirdFileHandler.saveToFile(filePath, newEntry);
             }
         }
+
+        return filePath;
     }
 
     private static boolean isNullOrEmpty(String string) {
