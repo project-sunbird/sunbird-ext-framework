@@ -11,7 +11,7 @@ import { FrameworkConfig } from './interfaces';
 import {Manifest} from './models/Manifest';
 import { PluginLoader } from './managers/PluginLoader';
 import {RegistrySchema} from './meta/RegistrySchema';
-import { KafkaClient } from './messaging';
+//import { KafkaClient } from './messaging';
 import { cassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
 import { PluginRegistry } from './managers/PluginRegistry';
 
