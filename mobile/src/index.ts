@@ -31,6 +31,12 @@ export * from "./services/page/page.service";
 export * from "./services/userprofile/bean";
 export * from "./services/userprofile/userprofile.service";
 
+
+export * from "./services/announcement/bean";
+export * from "./services/announcement/announcement.service";
+
+export * from "./services/qrscanner.service";
+
 export * from "./framework.module";
 
 
