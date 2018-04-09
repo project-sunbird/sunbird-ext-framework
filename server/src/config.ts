@@ -7,7 +7,6 @@ export const defaultConfig: FrameworkConfig = {
     db: {
         cassandra: {
             contactPoints: ['127.0.0.1'],
-            keyspace: 'core_framework_schema',
             defaultKeyspaceSettings: {
                 replication: {
                     'class': 'SimpleStrategy',
@@ -22,5 +21,8 @@ export const defaultConfig: FrameworkConfig = {
     },
     plugins: [],
     pluginBasePath: '',
+    kafka: {
+        connectionString: '127.0.0.1:56855' //default
+    },
     port: 9000 //default
 }

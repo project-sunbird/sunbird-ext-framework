@@ -11,7 +11,6 @@ import { RouterRegistry } from "./RouterRegistry";
 import * as _ from 'lodash';
 import { SchemaLoader, ISchemaLoader } from '../db';
 import * as glob from 'glob';
-import { cassandraMetaDataProvider } from '../meta/CassandraMetaDataProvider';
 
 export class PluginLoader {
 
@@ -20,7 +19,6 @@ export class PluginLoader {
 
     constructor(config: FrameworkConfig) {
         this._config = _.cloneDeep(config);
-        PluginRegistry.initialize(cassandraMetaDataProvider);
     }
 
     get config(): FrameworkConfig {
@@ -48,17 +46,20 @@ export class PluginLoader {
      * @param plugin IPlugin
      */
     public async loadPlugin(plugin: IPlugin) {
-
-        this._pluginsLoaded.push(plugin.id); // Step 1
-        const manifest = await this.getManifest(plugin); // Step 2
-        const pluginManifest = _.cloneDeep(manifest);
-        if (typeof (manifest.server.dependencies) !== undefined) { // Step 3
-            await this.loadDependencies(pluginManifest);
+        try{
+            this._pluginsLoaded.push(plugin.id); // Step 1
+            const manifest = await this.getManifest(plugin); // Step 2
+            const pluginManifest = _.cloneDeep(manifest);
+            if (typeof (manifest.server.dependencies) !== undefined) { // Step 3
+                await this.loadDependencies(pluginManifest);
+            }
+            await PluginRegistry.register(pluginManifest); // Step 4
+            await this.preparePlugin(pluginManifest) // Step 5
+            await this.instantiatePlugin(pluginManifest) // Step 6
+            await this.registerRoutes(pluginManifest) // Step 7
+        } catch(error) {
+            console.log(`Error while loading plugin ${plugin.id}: ${error}`)
         }
-        await PluginRegistry.register(pluginManifest); // Step 4
-        await this.preparePlugin(pluginManifest) // Step 5
-        await this.instantiatePlugin(pluginManifest) // Step 6
-        await this.registerRoutes(pluginManifest) // Step 7
     }
 
     private async getManifest(plugin: IPlugin) {
