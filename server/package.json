@@ -8,7 +8,7 @@
     "start": "npm run build:live",
     "build:live": "nodemon --exec ts-node -r ./src/index.ts",
     "test": "mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "sudo rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
     "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
   },
   "keywords": [],

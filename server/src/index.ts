@@ -11,6 +11,9 @@ import { FrameworkConfig } from './interfaces';
 import {Manifest} from './models/Manifest';
 import { PluginLoader } from './managers/PluginLoader';
 import {RegistrySchema} from './meta/RegistrySchema';
+//import { KafkaClient } from './messaging';
+import { cassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
+import { PluginRegistry } from './managers/PluginRegistry';
 
 export * from './interfaces';
 export * from './test-framework';
@@ -32,11 +35,9 @@ export class Framework {
 	}
 
 	constructor(config: FrameworkConfig, app: Express) {
-		this._config = Object.assign(defaultConfig, config);
+		this._config = config;
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
-		RouterRegistry.initialize(app, this._config.secureContextParams);
-		console.log('=====> Framework initialized!');
 	}
 
 	public static get db(): db {
@@ -49,10 +50,22 @@ export class Framework {
 
 	public static async initialize(config: FrameworkConfig, app: Express) {
 		if (!Framework._initialized) {
+			config = Object.assign(defaultConfig, config);
 			Framework._instance = new Framework(config, app);
-			Framework._initialized = true;
-			await Framework.laodPluginRegistrySchema();
+			
+			// Initialize Managers, Registry and other services 
+			RouterRegistry.initialize(app, config.secureContextParams);
+			PluginRegistry.initialize(cassandraMetaDataProvider);
 			PluginManager.initialize(new PluginLoader(Framework._instance.config))
+			//if(config.kafka) KafkaClient.initialize(config.kafka)
+			
+			// Load the schema for plugin registry before plugins are loaded
+			await Framework.laodPluginRegistrySchema();
+
+			// Set Framework initialized to `true` after above tasks are performed
+			Framework._initialized = true;
+			console.log('=====> Framework initialized!');
+			
 			await PluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
 		}
@@ -62,8 +75,8 @@ export class Framework {
 		try {
 			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(RegistrySchema.type);
 			await schemaLoader.create(RegistrySchema.db, RegistrySchema);
-		} catch(e) {
-			console.log(e);
+		} catch(error) {
+			console.log(error);
 		}
 	}
 }
