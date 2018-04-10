@@ -3,6 +3,9 @@ package org.sunbird.support;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
