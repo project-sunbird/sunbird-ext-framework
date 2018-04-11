@@ -1,8 +1,8 @@
 {
-  "name": "cordova-plugin-genie-sdk",
+  "name": "cordova-plugin-imagechooser",
   "version": "1.0.0",
   "cordova": {
-    "id": "cordova-plugin-genie-sdk",
+    "id": "cordova-plugin-imagechooser",
     "platforms": [
       "android",
       "ios"
