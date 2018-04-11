@@ -3,21 +3,19 @@ import { ElasticSearchDB } from 'ext-framework-server/db/elasticsearch';
 import { Manifest } from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
-import { FrameworkConfig } from 'ext-framework-server/interfaces';
 //import { KafkaClient } from 'ext-framework-server/messaging';
 import { JwtAuthService } from 'ext-framework-server/auth';
+import { Framework } from 'ext-framework-server';
 
 export class Server implements IProfileService {
 
-	private config: FrameworkConfig = null;
 	private manifest: Manifest = null;
 	private cassandraDB: CassandraDB;
 	private userDetails: any = {};
 
-	constructor(config: FrameworkConfig, manifest: Manifest) {
-		this.config = config;
+	constructor(manifest: Manifest) {
 		this.manifest = manifest;
-		this.cassandraDB = new CassandraDB(config.db.cassandra);
+		this.cassandraDB = Framework.api.getCassandraInstance();
 	}
 
 	public getUser(req: Request, res: Response) {

@@ -25,6 +25,7 @@ export class Framework {
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
+	private static _pluginManager: PluginManager;
 
 	public get config(): FrameworkConfig {
 		return this._config;
@@ -44,6 +45,10 @@ export class Framework {
 		return Framework._instance._db;
 	}
 
+	public static get pluginManager(): PluginManager {
+		return Framework._pluginManager;
+	}
+
 	public static get api(): FrameworkAPI {
 		return Framework._instance._api;
 	}
@@ -56,7 +61,7 @@ export class Framework {
 			// Initialize Managers, Registry and other services 
 			RouterRegistry.initialize(app, config.secureContextParams);
 			PluginRegistry.initialize(cassandraMetaDataProvider);
-			PluginManager.initialize(new PluginLoader(Framework._instance.config))
+			Framework._pluginManager = new PluginManager(new PluginLoader(Framework._instance.config))
 			//if(config.kafka) KafkaClient.initialize(config.kafka)
 			
 			// Load the schema for plugin registry before plugins are loaded
@@ -66,7 +71,7 @@ export class Framework {
 			Framework._initialized = true;
 			console.log('=====> Framework initialized!');
 			
-			await PluginManager.load(Framework._instance.config);
+			await Framework._pluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
 		}
 	}

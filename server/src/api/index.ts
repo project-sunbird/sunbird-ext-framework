@@ -3,14 +3,15 @@
  */
 import { PluginManager } from "../managers/PluginManager";
 import { FrameworkConfig } from "../interfaces";
+import { CassandraDB } from "../db";
 
 export class FrameworkAPI {
-    constructor(config: FrameworkConfig) {
-
+    constructor(private config: FrameworkConfig) {
+        this.config = config;
     }
 
-    public getPlugin(pluginId: string): any {
-        return PluginManager.getPluginInstance(pluginId);
+    public getCassandraInstance() {
+        return new CassandraDB(this.config.db.cassandra)
     }
 }
 

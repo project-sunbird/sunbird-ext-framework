@@ -1,7 +1,6 @@
 import * as bodyParser from 'body-parser'
 import {Framework, FrameworkConfig} from '../index';
 import { Manifest } from '../models/Manifest';
-import { PluginManager } from '../managers/PluginManager';
 import * as express from 'express';
 import {defaultConfig} from '../config';
 
@@ -19,9 +18,5 @@ export class TestFramework {
                 resolve();
             });
         });
-    }
-
-    public static getPluginInstance(id: Manifest['id']) {
-        return PluginManager.getPluginInstance(id);
     }
 }

@@ -6,7 +6,6 @@ import { Manifest, IPluginManifest } from "../models/Manifest";
 import { IRouterConstructor, IServerConstructor, IPlugin, FrameworkConfig } from '../interfaces';
 import { FrameworkError, FrameworkErrors } from "../util";
 import { PluginRegistry } from "./PluginRegistry";
-import { PluginManager } from "./PluginManager";
 import { RouterRegistry } from "./RouterRegistry";
 import * as _ from 'lodash';
 import { SchemaLoader, ISchemaLoader } from '../db';
@@ -16,6 +15,7 @@ export class PluginLoader {
 
     private _config: FrameworkConfig;
     private _pluginsLoaded: Array<string> = [];
+    private _pluginInstances: any = {};
 
     constructor(config: FrameworkConfig) {
         this._config = _.cloneDeep(config);
@@ -24,6 +24,16 @@ export class PluginLoader {
     get config(): FrameworkConfig {
         return this._config;
     }
+
+    public getPluginManifest(pluginId: string): Manifest {
+		return this._pluginInstances.find((plugin) => {
+			return plugin.id === pluginId;
+		});
+	}
+
+	public getPluginInstance(pluginId: string) : any {
+		return this._pluginInstances[pluginId];
+	}
 
     private async loadDependencies(manifest: Manifest) {
         for (let dependency of manifest.server.dependencies) {
@@ -46,16 +56,18 @@ export class PluginLoader {
      * @param plugin IPlugin
      */
     public async loadPlugin(plugin: IPlugin) {
+        let instance = this;
         this._pluginsLoaded.push(plugin.id); // Step 1
         const manifest = await this.getManifest(plugin); // Step 2
         const pluginManifest = _.cloneDeep(manifest);
         if (typeof (manifest.server.dependencies) !== undefined) { // Step 3
             await this.loadDependencies(pluginManifest);
         }
-        await PluginRegistry.register(pluginManifest) // Step 4
-        await this.preparePlugin(pluginManifest) // Step 5
-        await this.instantiatePlugin(pluginManifest) // Step 6
-        await this.registerRoutes(pluginManifest) // Step 7
+        await Promise.all([PluginRegistry.register(pluginManifest), // Step 4
+            instance.preparePlugin(pluginManifest), // Step 5
+            instance.instantiatePlugin(pluginManifest), // Step 6
+            instance.registerRoutes(pluginManifest) // Step 7
+        ])
     }
 
     private async getManifest(plugin: IPlugin) {
@@ -82,7 +94,7 @@ export class PluginLoader {
             let pluginFile = await import(this.config.pluginBasePath + manifest.id + '/server');
             let pluginClass = <IServerConstructor>pluginFile.Server;
             let pluginInstance = new pluginClass(this.config, manifest);
-            PluginManager.instances[manifest.id] = pluginInstance;
+            this._pluginInstances[manifest.id] = pluginInstance;
         } catch (err) {
             throw new FrameworkError({ code: FrameworkErrors.PLUGIN_INSTANCE_FAILED, rootError: err });
         }

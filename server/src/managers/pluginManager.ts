@@ -9,37 +9,25 @@ import { PluginLoader } from './PluginLoader';
 import { FrameworkError } from '../util';
 
 export class PluginManager {
-	private static instance: PluginManager;
-	private static _pluginInstances: any = {};
-	private static pluginLoader: PluginLoader;
+	private pluginLoader: PluginLoader;
 
-	public static get instances() : any {
-		return this._pluginInstances;
+	constructor(pluginLoader: PluginLoader) {
+		this.pluginLoader = pluginLoader;
 	}
 
-	public static initialize(pluginLoader: PluginLoader) {
-		PluginManager.pluginLoader = pluginLoader;
-	}
-
-	public static async load(config: FrameworkConfig) {
+	public async load(config: FrameworkConfig) {
 		for (let plugin of config.plugins) {
-			await PluginManager.loadPlugin(plugin);
+			await this.loadPlugin(plugin);
 		}
 	}
 
-	public static getPluginManifest(pluginId: string): Manifest {
-		return PluginManager._pluginInstances.find((plugin) => {
-			return plugin.id === pluginId;
-		});
+	public getPluginInstance(pluginId: string) : any {
+		return this.pluginLoader.getPluginInstance(pluginId);
 	}
 
-	public static getPluginInstance(pluginId: string) : any {
-		return PluginManager._pluginInstances[pluginId];
-	}
-
-	public static async loadPlugin(plugin: IPlugin) {
+	public async loadPlugin(plugin: IPlugin) {
 		try {
-			await PluginManager.pluginLoader.loadPlugin(plugin);
+			await this.pluginLoader.loadPlugin(plugin);
 			console.log('=====> ' + plugin.id + ' plugin loaded');
 		} catch (e) {
 			if(e instanceof FrameworkError) {
