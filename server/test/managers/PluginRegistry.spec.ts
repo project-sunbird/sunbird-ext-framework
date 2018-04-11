@@ -33,7 +33,7 @@ describe('Class PluginRegistry', () => {
                     resolve(true);
                 })  
             })
-            let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>' };
+            let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>', server: {} };
             PluginRegistry.register(Manifest.fromJSON(manifest)).then(() => {
                 Sinon.assert.calledOnce(isRegisteredStub);
                 Sinon.assert.calledOnce(metaDataProviderStub);
@@ -55,7 +55,7 @@ describe('Class PluginRegistry', () => {
                     resolve(true);
                 })  
             })
-            let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>' };
+            let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>', server: {} };
             PluginRegistry.register(Manifest.fromJSON(manifest)).then((registered) => {
                 registered.should.be.true;
                 Sinon.assert.calledOnce(isRegisteredStub);
@@ -79,7 +79,7 @@ describe('Class PluginRegistry', () => {
                 })  
             })
 
-            let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>' };
+            let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>', server: {} };
             PluginRegistry.register(Manifest.fromJSON(manifest)).catch((error: FrameworkError) => {
                 //TODO: assert error from metaDataProvider
                 Sinon.assert.calledOnce(isRegisteredStub);

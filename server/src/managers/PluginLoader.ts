@@ -90,7 +90,7 @@ export class PluginLoader {
 
     private async registerRoutes(manifest: Manifest) {
         try {
-            let router = RouterRegistry.getRouter(manifest);
+            let router = RouterRegistry.bindRouter(manifest);
             let pluginRouter = await import(this.config.pluginBasePath + manifest.id + '/routes');
             pluginRouter = <IRouterConstructor>pluginRouter.Router;
             const routerInstance = new pluginRouter();

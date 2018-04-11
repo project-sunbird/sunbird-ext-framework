@@ -7,7 +7,7 @@ import { IRouteSchema, Manifest } from '../models/Manifest';
 import { JwtAuthService } from '../auth';
 import * as _ from 'lodash';
 import { FrameworkConfig } from '..';
-import { FrameworkError } from '../util';
+import { FrameworkError, FrameworkErrors } from '../util';
 
 export class RouterRegistry {
     private static rootApp: Express;
@@ -17,7 +17,7 @@ export class RouterRegistry {
     private static contextParams: FrameworkConfig['secureContextParams'];
     private static tokenIssuerId: string = 'framework_router_service';
 
-    static initialize(app: Express, contextParams: FrameworkConfig['secureContextParams']) {
+    public static initialize(app: Express, contextParams: FrameworkConfig['secureContextParams']) {
         RouterRegistry.rootApp = app;
         RouterRegistry.contextParams = contextParams;
     }
@@ -29,11 +29,13 @@ export class RouterRegistry {
      * @returns {Router} 
      * @memberof RouterRegistry
      */
-    public static getRouter(manifest: Manifest): Router {
+    public static bindRouter(manifest: Manifest): Router {
         let router = Router();
+        let prefix = _.get(manifest, 'server.routes.prefix')
+        if (!prefix) throw new FrameworkError({message: `cannot bind "Router" object to App`, code: FrameworkErrors.ROUTE_REGISTRY_FAILED});
         router.use(RouterRegistry.signContext);
         RouterRegistry.routerInstances.push({ [manifest.id]: router })
-        RouterRegistry.rootApp.use(manifest.server.routes.prefix, router);
+        RouterRegistry.rootApp.use(prefix, router);
         return router;
     }
 

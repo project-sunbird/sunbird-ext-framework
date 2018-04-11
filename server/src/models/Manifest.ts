@@ -48,7 +48,7 @@ export interface IPluginManifest {
     version: string;
     author: string;
     description?: string;
-    server?: IServerSchema;
+    server: IServerSchema;
 }
 /**
  * 
