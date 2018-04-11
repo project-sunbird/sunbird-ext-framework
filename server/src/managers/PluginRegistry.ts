@@ -35,15 +35,16 @@ export class PluginRegistry {
      * @returns {Promise<void>} 
      * @memberof PluginRegistry
      */
-    public static async register(manifest: Manifest): Promise<void> {
+    public static async register(manifest: Manifest): Promise<Boolean> {
         let isRegistered = await PluginRegistry.isRegistered(manifest.id);
         if (!isRegistered) {
             let metaObject: PluginMeta = { id: manifest.id, uuid: UUID(), name: manifest.name || '', version: manifest.version || '', repo: 'local', registered_on: new Date(), cassandra_keyspace: '', elasticsearch_index: '', status: PluginStatusEnum.registered, manifest: JSON.stringify(manifest.toJSON()) };
             await PluginRegistry.metaDataProvider.createMeta(metaObject);
             console.log(`=====> Plugin: ${manifest.id} is registered!`);
+            return true;
         } else {
             console.log(`=====> Plugin: ${manifest.id} is already registered!`);
-            //throw new FrameworkError({ message: `Plugin: ${manifest.id} is already registered!`, code: FrameworkErrors.PLUGIN_REGISTERED})
+            return true;
         }
     }
     /**

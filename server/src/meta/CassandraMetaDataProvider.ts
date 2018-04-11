@@ -1,7 +1,7 @@
 import { IMetaDataProvider, PluginMeta, ICassandraConfig } from "../interfaces";
-import { CassandraDB } from "../db/index";
+import { CassandraDB } from "../db";
 import { defaultConfig } from "../config";
-import { Util, delayPromise, FrameworkError, FrameworkErrors } from "../util/index";
+import { Util, delayPromise, FrameworkError, FrameworkErrors } from "../util";
 import { RegistrySchema } from "./RegistrySchema";
 
 export class CassandraMetaDataProvider implements IMetaDataProvider {

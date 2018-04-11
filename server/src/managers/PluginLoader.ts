@@ -46,20 +46,16 @@ export class PluginLoader {
      * @param plugin IPlugin
      */
     public async loadPlugin(plugin: IPlugin) {
-        try{
-            this._pluginsLoaded.push(plugin.id); // Step 1
-            const manifest = await this.getManifest(plugin); // Step 2
-            const pluginManifest = _.cloneDeep(manifest);
-            if (typeof (manifest.server.dependencies) !== undefined) { // Step 3
-                await this.loadDependencies(pluginManifest);
-            }
-            await PluginRegistry.register(pluginManifest); // Step 4
-            await this.preparePlugin(pluginManifest) // Step 5
-            await this.instantiatePlugin(pluginManifest) // Step 6
-            await this.registerRoutes(pluginManifest) // Step 7
-        } catch(error) {
-            console.log(`Error while loading plugin ${plugin.id}: ${error}`)
+        this._pluginsLoaded.push(plugin.id); // Step 1
+        const manifest = await this.getManifest(plugin); // Step 2
+        const pluginManifest = _.cloneDeep(manifest);
+        if (typeof (manifest.server.dependencies) !== undefined) { // Step 3
+            await this.loadDependencies(pluginManifest);
         }
+        await PluginRegistry.register(pluginManifest) // Step 4
+        await this.preparePlugin(pluginManifest) // Step 5
+        await this.instantiatePlugin(pluginManifest) // Step 6
+        await this.registerRoutes(pluginManifest) // Step 7
     }
 
     private async getManifest(plugin: IPlugin) {
@@ -88,7 +84,7 @@ export class PluginLoader {
             let pluginInstance = new pluginClass(this.config, manifest);
             PluginManager.instances[manifest.id] = pluginInstance;
         } catch (err) {
-            throw new FrameworkError({ code: FrameworkErrors.PLUGIN_LOAD_FAILED, rootError: err });
+            throw new FrameworkError({ code: FrameworkErrors.PLUGIN_INSTANCE_FAILED, rootError: err });
         }
     }
 
@@ -112,7 +108,7 @@ export class PluginLoader {
                 let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(schema.type);
                 await schemaLoader.create(manifest.id, schema);
             } catch (error) {
-                throw new FrameworkError({ code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error });
+                throw new FrameworkError({ message: `Error while laoding DB schema for plugin ${manifest.id}`, code: FrameworkErrors.SCHEMA_LOADER_FAILED, rootError: error });
             }
         }
     }
