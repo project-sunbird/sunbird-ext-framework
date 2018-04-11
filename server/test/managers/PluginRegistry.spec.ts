@@ -20,7 +20,7 @@ describe('Class PluginRegistry', () => {
         PluginRegistry.initialize(metaDataProvider)
     })
 
-    describe('.register method', () => {
+    describe('register method', () => {
         it('should register the plugin with manifest', (done) => {
             let isRegisteredStub = Sinon.stub(PluginRegistry, 'isRegistered').callsFake(() => {
                 return new Promise((resolve, reject) => {
@@ -43,7 +43,7 @@ describe('Class PluginRegistry', () => {
             })
         })
 
-        xit('should not register the plugin and throw error if it is already registered', (done) => {
+        it('should not register the plugin, if it is already registered', (done) => {
             let isRegisteredStub = Sinon.stub(PluginRegistry, 'isRegistered').callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve(true);
@@ -56,8 +56,8 @@ describe('Class PluginRegistry', () => {
                 })  
             })
             let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>' };
-            PluginRegistry.register(Manifest.fromJSON(manifest)).catch((error: FrameworkError) => {
-                error.code.should.be.equal(FrameworkErrors.PLUGIN_REGISTERED)
+            PluginRegistry.register(Manifest.fromJSON(manifest)).then((registered) => {
+                registered.should.be.true;
                 Sinon.assert.calledOnce(isRegisteredStub);
                 Sinon.assert.notCalled(metaDataProviderStub);
                 isRegisteredStub.restore();
@@ -66,7 +66,7 @@ describe('Class PluginRegistry', () => {
             })
         })
 
-        xit('should handle error when metaDataProvider throws error', (done) => {
+        it('should handle error when metaDataProvider throws error', (done) => {
             let isRegisteredStub = Sinon.stub(PluginRegistry, 'isRegistered').callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve(false);
@@ -91,7 +91,7 @@ describe('Class PluginRegistry', () => {
         })
     })
 
-    describe('.unregister method', () => {
+    describe('unregister method', () => {
         let updateStatusStub = Sinon.stub(PluginRegistry, 'updateStatus').callsFake(() => {
             return new Promise((resolve, reject) => {
                 resolve(true);
@@ -107,7 +107,7 @@ describe('Class PluginRegistry', () => {
         })
     })
 
-    describe('.isRegistered method', () => {
+    describe('isRegistered method', () => {
         it('should return TRUE, if the plugin is registered',(done) => {
             let pluginId = 'testPlugin123';
             let metaDataProviderStub = Sinon.stub(metaDataProvider, 'getMeta').callsFake(() => {
@@ -139,7 +139,7 @@ describe('Class PluginRegistry', () => {
         })
     })
 
-    describe('.getStatus method', () => {
+    describe('getStatus method', () => {
         it('should return status, if plugin is registered', (done) => {
             let pluginId = 'testPlugin123';
             let metaDataProviderStub = Sinon.stub(metaDataProvider, 'getMeta').callsFake(() => {
@@ -171,7 +171,7 @@ describe('Class PluginRegistry', () => {
         })
     })
 
-    describe('.updateStatus method', () => {
+    describe('updateStatus method', () => {
         it('should update the status of the plugin', () => {
             
         })

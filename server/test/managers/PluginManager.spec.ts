@@ -12,7 +12,6 @@ var testConfig: FrameworkConfig = {
     db: {
        cassandra: {
            contactPoints: ['127.0.0.1'],
-           keyspace: 'core_framework_schema',
            defaultKeyspaceSettings: {
                replication: {
                    'class': 'SimpleStrategy',
@@ -32,7 +31,7 @@ var testConfig: FrameworkConfig = {
 
 describe('Class PluginManager', () => {
     
-    describe('.load method', () => {
+    describe('load method', () => {
         it('should call loadPlugin when plugins are given', (done) => {
             let stub = Sinon.stub(PluginManager, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
@@ -62,7 +61,7 @@ describe('Class PluginManager', () => {
         })
     })
 
-    describe('.getPluginInstance method', () => {
+    describe('getPluginInstance method', () => {
         it('should return plugin instance of plugin id', () => {
             class TestPlugin {}
             PluginManager.instances['test-plugin'] = new TestPlugin();
@@ -71,7 +70,7 @@ describe('Class PluginManager', () => {
         })
     })
 
-    describe('.loadPlugin method', () => {
+    describe('loadPlugin method', () => {
         it('should call PluginLoader.loadPlugin method', (done) => {
             let pluginLoader = new PluginLoader(testConfig);
             let plugin = {id: 'test-plugin', ver: '1.0'};
