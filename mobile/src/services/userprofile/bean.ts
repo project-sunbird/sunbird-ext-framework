@@ -87,7 +87,7 @@ export class UserAddress {
     addType: String;
     addressLine1: String;
     addressLine2?: String;
-    city?: String;
+    city: String;
     state?: String;
     country?: String;
     zipcode?: String;
