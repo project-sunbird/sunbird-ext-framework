@@ -75,7 +75,7 @@ export class UserJobProfile {
     jobName: String;
     orgName: String;
     role?: String;
-    subject?: String;
+    subject?: Array<String>;
     isCurrentJob?: Boolean;
     joiningDate?: String;
     endDate?: String;

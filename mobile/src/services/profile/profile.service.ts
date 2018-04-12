@@ -1,14 +1,15 @@
 import { Injectable } from "@angular/core";
+import { Profile } from "./bean"
 
 @Injectable()
 export class ProfileService {
 
-    getProfileById(request: {userId: string, 
-        requiredFields: Array<string>, 
-        refreshUserProfileDetails: boolean}, onSuccess, onError) {
-
-            let requestJson = JSON.stringify(request);
-            (<any>window).GenieSDK.profile.getProfileById(requestJson, onSuccess, onError);
+    createProfile(request: Profile, onSuccess, onError) {
+        (<any>window).GenieSDK.profile.createProfile(JSON.stringify(request), onSuccess, onError);
     }
 
+    setCurrentUser(request: string, onSuccess, onError) {
+        (<any>window).GenieSDK.profile.setCurrentUser(request, onSuccess, onError);
+    }
+    
 }

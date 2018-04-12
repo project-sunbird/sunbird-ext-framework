@@ -13,6 +13,7 @@ export * from "./services/event/bean";
 export * from "./services/event/event.service";
 
 export * from "./services/profile/profile.service";
+export * from "./services/profile/bean";
 
 export * from "./services/telemetry/bean";
 export * from "./services/telemetry/telemetry.service";

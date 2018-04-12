@@ -41,17 +41,21 @@ export enum SearchType {
 export class ContentSearchCriteria {
   query?: string;
   limit?: number;
-  mode?: number;
+  mode?: string;
   age?: number;
-  grade?: number;
-  medium?: string;
-  board?: string;
+  grade?: Array<string>;
+  medium?: Array<string>;
+  board?: Array<string>;
   createdBy?: Array<string>;
   audience?: Array<string>;
   channel?: Array<string>;
+  pragma?: Array<string>;
+  exclPragma?: Array<string>;
   contentStatusArray?: Array<string>;
   facets?: Array<string>;
   contentTypes?: Array<string>;
+  keywords?: Array<string>;
+  dialCode?: Array<string>;
   facetFilters?: Array<ContentSearchFilter>;
   impliedFilters?: Array<ContentSearchFilter>;
   sortCriteria?: Array<ContentSearchFilter>;
