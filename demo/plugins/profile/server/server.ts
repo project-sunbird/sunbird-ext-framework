@@ -19,7 +19,6 @@ export class Server implements IProfileService {
 	}
 
 	public getUser(req: Request, res: Response) {
-		console.log('getUser request', req.header);
 		res.send({ status: 'success', data: this.userDetails[req.params['id']] }).status(200);
 	}
 

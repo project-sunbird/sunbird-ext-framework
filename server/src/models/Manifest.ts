@@ -4,6 +4,7 @@
 
 import { IPlugin } from "../interfaces";
 import * as _ from 'lodash';
+import { FrameworkError, FrameworkErrors } from "../util";
 
 /**
  * 
@@ -165,10 +166,12 @@ export class Manifest {
      * @memberof Manifest
      */
     public static fromJSON(json: IPluginManifest | string): Manifest {
-        if (typeof json === "string") {
-            json = <IPluginManifest>JSON.parse(json);
+        try {
+            if (typeof json === "string") json = <IPluginManifest>JSON.parse(json);
+            return new Manifest(json);
+        } catch(error) {
+            throw new FrameworkError({message: `unable to parse manifest, invalid JSON format!`, code: FrameworkErrors.MANIFEST_NOT_PARSEABLE, rootError: error});
         }
-        return new Manifest(json);
     }
     /**
      * 
