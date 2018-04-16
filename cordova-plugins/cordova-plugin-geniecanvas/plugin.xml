@@ -8,32 +8,9 @@
     <license>MIT</license>
     <keywords></keywords>
 
-    <hook src="scripts/android_after_add.js" type="after_platform_add" />
+    <hook src="scripts/android_after_add.js" type="after_prepare" />
 
-    <edit-config file="AndroidManifest.xml" target="/manifest/application/provider" mode="merge">
-        <provider
-            android:name="org.sunbird.UserProvider"
-            android:authorities="${applicationId}.profiles"
-            android:exported="true" />
-    </edit-config>
-    <edit-config file="AndroidManifest.xml" target="/manifest/application/provider" mode="merge">
-        <provider
-            android:name="org.sunbird.TelemetryProvider"
-            android:authorities="${applicationId}.telemetry"
-            android:exported="true" />
-    </edit-config>
-    <edit-config file="AndroidManifest.xml" target="/manifest/application/provider" mode="merge">
-        <provider
-            android:name="org.sunbird.PartnerProvider"
-            android:authorities="${applicationId}.partner"
-            android:exported="true" />
-    </edit-config>
-    <edit-config file="AndroidManifest.xml" target="/manifest/application/provider" mode="merge">
-        <provider
-            android:name="org.sunbird.ContentProvider"
-            android:authorities="${applicationId}.content"
-            android:exported="true" />
-    </edit-config>
+    
 
     <framework src="build-extras.gradle" custom="true" type="gradleReference"/>
 
@@ -50,6 +27,31 @@
           <param name="onload" value="true" />
         </feature>
       </config-file>
+
+       <config-file target="AndroidManifest.xml" parent="application">
+        <provider
+            android:name="org.sunbird.UserProvider"
+            android:authorities="${applicationId}.profiles"
+            android:exported="true" />
+        </config-file>
+         <config-file target="AndroidManifest.xml" parent="application">
+            <provider
+                android:name="org.sunbird.TelemetryProvider"
+                android:authorities="${applicationId}.telemetry"
+                android:exported="true" />
+        </config-file>
+         <config-file target="AndroidManifest.xml" parent="application">
+            <provider
+                android:name="org.sunbird.PartnerProvider"
+                android:authorities="${applicationId}.partner"
+                android:exported="true" />
+        </config-file>
+         <config-file target="AndroidManifest.xml" parent="application">
+            <provider
+                android:name="org.sunbird.ContentProvider"
+                android:authorities="${applicationId}.content"
+                android:exported="true" />
+        </config-file>
      
       <source-file src="src/android/org/apache/cordova/Util.java" target-dir="src/org/apache/cordova/" />
       <source-file src="src/android/org/sunbird/GenieCanvas.java" target-dir="src/org/sunbird/" />
