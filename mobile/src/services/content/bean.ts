@@ -55,7 +55,7 @@ export class ContentSearchCriteria {
   facets?: Array<string>;
   contentTypes?: Array<string>;
   keywords?: Array<string>;
-  dialCode?: Array<string>;
+  dialCodes?: Array<string>;
   facetFilters?: Array<ContentSearchFilter>;
   impliedFilters?: Array<ContentSearchFilter>;
   sortCriteria?: Array<ContentSearchFilter>;
