@@ -1,29 +1,12 @@
-/*
-       Licensed to the Apache Software Foundation (ASF) under one
-       or more contributor license agreements.  See the NOTICE file
-       distributed with this work for additional information
-       regarding copyright ownership.  The ASF licenses this file
-       to you under the Apache License, Version 2.0 (the
-       "License"); you may not use this file except in compliance
-       with the License.  You may obtain a copy of the License at
-
-         http://www.apache.org/licenses/LICENSE-2.0
-
-       Unless required by applicable law or agreed to in writing,
-       software distributed under the License is distributed on an
-       "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-       KIND, either express or implied.  See the License for the
-       specific language governing permissions and limitations
-       under the License.
-*/
-
 package org.sunbird;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
@@ -33,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
 import org.json.JSONArray;
@@ -41,11 +26,16 @@ import org.json.JSONException;
 public class SplashScreen extends CordovaPlugin {
 
     private static final String LOG_TAG = "SplashScreen";
+    private static final String KEY_LOGO = "app_logo";
+    private static final String KEY_NAME = "app_name";
+
+
     private static final int DEFAULT_SPLASHSCREEN_DURATION = 3000;
     private static final int DEFAULT_FADE_DURATION = 500;
     private static Dialog splashDialog;
     private ImageView splashImageView;
     private int orientation;
+    private SharedPreferences sharedPreferences;
 
     // Helper to be compile-time compatible with both Cordova 3.x and 4.x.
     private View getView() {
@@ -68,6 +58,7 @@ public class SplashScreen extends CordovaPlugin {
 
     @Override
     protected void pluginInitialize() {
+        sharedPreferences = cordova.getActivity().getSharedPreferences("SUNBIRD_SPLASH", Context.MODE_PRIVATE);
         cordova.getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -110,12 +101,18 @@ public class SplashScreen extends CordovaPlugin {
         } else if (action.equals("setContent")) {
             String appName = args.getString(0);
             String logoUrl = args.getString(1);
+            cacheImageAndAppName(appName, logoUrl);
         } else {
             return false;
         }
 
         callbackContext.success();
         return true;
+    }
+
+    private void cacheImageAndAppName(String appName, String logoUrl) {
+        sharedPreferences.edit().putString(KEY_NAME, appName).putString(KEY_LOGO, logoUrl).apply();
+        Picasso.with(cordova.getActivity()).load(logoUrl);
     }
 
     @Override
@@ -168,6 +165,9 @@ public class SplashScreen extends CordovaPlugin {
         final int splashscreenTime = DEFAULT_SPLASHSCREEN_DURATION;
         final int drawableId = getSplashId();
 
+        final String appName = sharedPreferences.getString(KEY_NAME, "SUNBIRD");
+        final String logoUrl = sharedPreferences.getString(KEY_LOGO, "");
+
         final int fadeSplashScreenDuration = getFadeDuration();
         final int effectiveSplashDuration = Math.max(0, splashscreenTime - fadeSplashScreenDuration);
 
@@ -189,8 +189,8 @@ public class SplashScreen extends CordovaPlugin {
 
                 LinearLayout splashContent = createParentContentView(context);
 
-                createLogoImageView(context, splashDim, drawableId);
-                TextView appNameTextView = createAppNameView(context);
+                createLogoImageView(context, splashDim, drawableId, logoUrl);
+                TextView appNameTextView = createAppNameView(context, appName);
 
                 splashContent.addView(splashImageView);
                 splashContent.addView(appNameTextView);
@@ -212,21 +212,21 @@ public class SplashScreen extends CordovaPlugin {
     }
 
     @NonNull
-    private TextView createAppNameView(Context context) {
+    private TextView createAppNameView(Context context, String appName) {
         TextView appNameTextView = new TextView(context);
         LinearLayout.LayoutParams textViewParam = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-        textViewParam.setMargins(10, 30, 10, 10);
-        appNameTextView.setText("SUNBIRD");
-        appNameTextView.setTextSize(30);
-        appNameTextView.setTextColor(Color.BLACK);
+        textViewParam.setMargins(10, 10, 10, 10);
+        appNameTextView.setText(appName);
+        appNameTextView.setTextSize(20);
+        appNameTextView.setTextColor(Color.GRAY);
         appNameTextView.setGravity(Gravity.CENTER_HORIZONTAL);
         appNameTextView.setLayoutParams(textViewParam);
         return appNameTextView;
     }
 
-    private void createLogoImageView(Context context, int splashDim, int drawableId) {
+    private void createLogoImageView(Context context, int splashDim, int drawableId, String logoUrl) {
         splashImageView = new ImageView(context);
-        splashImageView.setImageResource(drawableId);
+//        splashImageView.setImageResource(drawableId);
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(splashDim, splashDim);
         layoutParams.setMargins(10, splashDim/4, 10, 0);
         splashImageView.setLayoutParams(layoutParams);
@@ -238,6 +238,13 @@ public class SplashScreen extends CordovaPlugin {
         // TODO: Use the background color of the webView's parent instead of using the preference.
 
         splashImageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+        if (TextUtils.isEmpty(logoUrl)) {
+            splashImageView.setImageResource(drawableId);
+        } else {
+            Picasso.with(cordova.getActivity()).load(logoUrl).placeholder(drawableId).into(splashImageView);
+        }
+
     }
 
     @NonNull
