@@ -72,7 +72,6 @@ android {
             buildConfigField 'String', 'CHANNEL_ID', '"b00bc992ef25f1a9a8d63291e20efc8d"'
             buildConfigField 'String', 'LOG_LEVEL', '"INFO"'
             buildConfigField 'String', 'PROFILE_CONFIG', '"org.ekstep.genie.base.ProfileConfig"'
-            buildConfigField 'String', 'PLAYER_CONFIG', '"org.ekstep.genie.util.geniesdk.PlayerConfig"'
             buildConfigField 'int', 'MAX_COMPATIBILITY_LEVEL', "4"
             buildConfigField 'String', 'MOBILE_APP_CONSUMER', '"mobile_device"'
             buildConfigField 'String', 'MOBILE_APP_KEY', '"sunbird-0.1"'
