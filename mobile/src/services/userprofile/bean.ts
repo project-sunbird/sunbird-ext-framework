@@ -49,6 +49,7 @@ export class UpdateUserInfoRequest {
     dob?: String;
     grade?: Array<String>;
     location?: String;
+    avatar?: string;
     webPages?: Array<UserWebPages>;
     education?: Array<UserEducation>;
     jobProfile?: Array<UserJobProfile>;
