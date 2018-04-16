@@ -40,6 +40,9 @@ describe('Class PluginRegistry', () => {
                 isRegisteredStub.restore();
                 metaDataProviderStub.restore();
                 done()
+            }).catch(() => {
+                isRegisteredStub.restore();
+                metaDataProviderStub.restore();
             })
         })
 
@@ -63,6 +66,9 @@ describe('Class PluginRegistry', () => {
                 isRegisteredStub.restore();
                 metaDataProviderStub.restore();
                 done()
+            }).catch(() => {
+                isRegisteredStub.restore();
+                metaDataProviderStub.restore();
             })
         })
 
@@ -87,6 +93,9 @@ describe('Class PluginRegistry', () => {
                 isRegisteredStub.restore();
                 metaDataProviderStub.restore();
                 done()
+            }).catch(() => {
+                isRegisteredStub.restore();
+                metaDataProviderStub.restore();
             })
         })
     })
@@ -103,6 +112,8 @@ describe('Class PluginRegistry', () => {
                 Sinon.assert.calledWith(updateStatusStub, pluginId ,PluginStatusEnum.unregistered);
                 updateStatusStub.restore();
                 done();
+            }).catch(() => {
+                updateStatusStub.restore();
             })
         })
     })
@@ -120,6 +131,8 @@ describe('Class PluginRegistry', () => {
                 result.should.be.true;
                 metaDataProviderStub.restore();
                 done();
+            }).catch(() => {
+                metaDataProviderStub.restore();  
             })
         })
 
@@ -135,6 +148,8 @@ describe('Class PluginRegistry', () => {
                 result.should.be.false;
                 metaDataProviderStub.restore();
                 done();
+            }).catch(() => {
+                metaDataProviderStub.restore();
             })
         })
     })
@@ -152,6 +167,8 @@ describe('Class PluginRegistry', () => {
                 status.should.be.equal(PluginStatusEnum.resolved);
                 metaDataProviderStub.restore()
                 done()
+            }).catch(() => {
+                metaDataProviderStub.restore()
             })
         })
 
@@ -167,6 +184,8 @@ describe('Class PluginRegistry', () => {
                 (status === undefined).should.be.true
                 metaDataProviderStub.restore()
                 done()
+            }).catch(() => {
+                metaDataProviderStub.restore()
             })
         })
     })

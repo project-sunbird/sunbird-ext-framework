@@ -30,9 +30,11 @@ var testConfig: FrameworkConfig = {
 };
 
 describe('Class PluginManager', () => {
-    let pluginManager;
+    let pluginManager: PluginManager;
+    let pluginLoader: PluginLoader;
     before(() => {
-        pluginManager = new PluginManager(new PluginLoader(testConfig))
+        pluginLoader = new PluginLoader(testConfig);
+        pluginManager = new PluginManager(pluginLoader)
     })
     
     describe('load method', () => {
@@ -46,6 +48,8 @@ describe('Class PluginManager', () => {
                 Sinon.assert.calledTwice(stub);
                 stub.restore();
                 done()
+            }).catch(() => {
+                stub.restore();
             });
         })
 
@@ -61,23 +65,24 @@ describe('Class PluginManager', () => {
                 Sinon.assert.notCalled(stub);
                 stub.restore();
                 done()
-            });
+            }).catch(() => {
+                stub.restore();
+            });;
         })
     })
 
-    xdescribe('getPluginInstance method', () => {
+    describe('getPluginInstance method', () => {
         it('should return plugin instance of plugin id', () => {
-            // class TestPlugin {}
-            // PluginManager.instances['test-plugin'] = new TestPlugin();
-            // let pluginInstance = PluginManager.getPluginInstance('test-plugin');
-            // pluginInstance.should.deep.equal(new TestPlugin());
+            let spyFn = Sinon.spy(pluginLoader, 'getPluginInstance');
+            pluginManager.getPluginInstance('test-plugin');
+            Sinon.assert.calledWith(spyFn, 'test-plugin')
         })
     })
 
     describe('loadPlugin method', () => {
         it('should call PluginLoader.loadPlugin method', (done) => {
             let plugin = {id: 'test-plugin', ver: '1.0'};
-            let stub = Sinon.stub(pluginManager.pluginLoader, "loadPlugin").callsFake(() => {
+            let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve();
                 });
@@ -87,12 +92,14 @@ describe('Class PluginManager', () => {
                 Sinon.assert.calledWith(stub, plugin);
                 stub.restore();
                 done();
+            }).catch(() => {
+                stub.restore();
             });
         });
 
         it('should throw error when PluginLoader.loadPlugin method throws error!', (done) => {
             let plugin = {id: 'test-plugin', ver: '1.0'};
-            let stub = Sinon.stub(pluginManager.pluginLoader, "loadPlugin").callsFake(() => {
+            let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     reject();
                 });
@@ -106,6 +113,8 @@ describe('Class PluginManager', () => {
                 Sinon.assert.calledWith(stub, plugin);
                 stub.restore();
                 done();
+            }).catch(() => {
+                stub.restore();
             });
         });
     });
