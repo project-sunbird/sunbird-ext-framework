@@ -43,23 +43,9 @@ export class OAuthService {
         let that = this;
 
         return new Promise(function(resolve, reject) {
-            let body = {
-                redirect_uri: that.redirect_url,
-                grant_type: "authorization_code", 
-                client_id: "android", 
-                code: token
-            };
-            let contentType = "application/x-www-form-urlencoded";
-            let url = "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/token";
-
-            that.http.post(
-                url, 
-                body, 
-                { headers:  'Content-Type: application/x-www-form-urlencoded' }
-            )
-            .then(data => {
+              that.authService.createSession(token,(response)=>{
                 try {
-                    let dataJson = JSON.parse(data.data);
+                    let dataJson = JSON.parse(response);
                     let refreshToken = dataJson["refresh_token"];
                 
                     let accessToken: string = dataJson["access_token"];
@@ -76,11 +62,10 @@ export class OAuthService {
                 } catch (error) {
                     reject(error);
                 }
-            })
-            .catch(e => {
-                reject(e);
+            },(error)=>{
+                
             });
-            
+               
         });
     }
 

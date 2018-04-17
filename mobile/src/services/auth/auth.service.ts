@@ -3,6 +3,17 @@ import { Injectable } from "@angular/core";
 @Injectable()
 export class AuthService {
 
+    createSession(callbackUrl: String,
+        successCallback: (response: string) => void, 
+        errorCallback: (error: string) => void) {
+            (<any>window).GenieSDK.auth.createSession(callbackUrl,successCallback, errorCallback);
+    }
+
+    refreshSession(refreshToken: String,
+        successCallback: (response: string) => void, 
+        errorCallback: (error: string) => void) {
+            (<any>window).GenieSDK.auth.refreshSession(refreshToken,successCallback, errorCallback);
+    }
     
     getBearerToken(
         successCallback: (response: string) => void, 
