@@ -8,6 +8,7 @@ var profile = require("./profile");
 var course = require("./course");
 var userProfile = require("./userprofile");
 var pageAssemble = require("./pageAssemble");
+var permission = require("./permission");
 var announcement = require("./announcement");
 
 var GenieSDK = {
@@ -20,6 +21,7 @@ var GenieSDK = {
   course: course,
   userProfile: userProfile,
   pageAssemble: pageAssemble,
+  permission: permission,
   announcement: announcement
 };
 
