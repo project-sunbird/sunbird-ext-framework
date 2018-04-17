@@ -15,6 +15,7 @@ export * from "./services/event/event.service";
 export * from "./services/profile/profile.service";
 export * from "./services/profile/bean";
 
+export * from "./services/telemetry/constant";
 export * from "./services/telemetry/bean";
 export * from "./services/telemetry/telemetry.service";
 export * from "./services/geniesdk.service"
