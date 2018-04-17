@@ -13,10 +13,9 @@ export * from "./services/event/bean";
 export * from "./services/event/event.service";
 
 export * from "./services/profile/profile.service";
+export * from "./services/profile/bean";
 
-export * from "./services/userprofile/userprofile.service";
-export * from "./services/userprofile/bean"
-
+export * from "./services/telemetry/constant";
 export * from "./services/telemetry/bean";
 export * from "./services/telemetry/telemetry.service";
 export * from "./services/geniesdk.service"
@@ -35,6 +34,12 @@ export * from "./services/permission.sevice";
 
 export * from "./services/userprofile/bean";
 export * from "./services/userprofile/userprofile.service";
+
+
+export * from "./services/announcement/bean";
+export * from "./services/announcement/announcement.service";
+
+export * from "./services/qrscanner.service";
 
 export * from "./framework.module";
 

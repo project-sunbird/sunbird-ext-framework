@@ -12,7 +12,6 @@ var testConfig: FrameworkConfig = {
     db: {
        cassandra: {
            contactPoints: ['127.0.0.1'],
-           keyspace: 'core_framework_schema',
            defaultKeyspaceSettings: {
                replication: {
                    'class': 'SimpleStrategy',
@@ -31,75 +30,82 @@ var testConfig: FrameworkConfig = {
 };
 
 describe('Class PluginManager', () => {
+    let pluginManager: PluginManager;
+    let pluginLoader: PluginLoader;
+    before(() => {
+        pluginLoader = new PluginLoader(testConfig);
+        pluginManager = new PluginManager(pluginLoader)
+    })
     
-    describe('.load method', () => {
+    describe('load method', () => {
         it('should call loadPlugin when plugins are given', (done) => {
-            let stub = Sinon.stub(PluginManager, "loadPlugin").callsFake(() => {
+            let stub = Sinon.stub(pluginManager, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve();
                 });
             });
-            PluginManager.load(testConfig).then(() => {
+            pluginManager.load(testConfig).then(() => {
                 Sinon.assert.calledTwice(stub);
                 stub.restore();
                 done()
+            }).catch(() => {
+                stub.restore();
             });
         })
 
         it('should not call loadPlugin when plugins are not specified', (done) => {
-            let stub = Sinon.stub(PluginManager, "loadPlugin").callsFake(() => {
+            let stub = Sinon.stub(pluginManager, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve();
                 });
             });
             let config = {...testConfig};
             config.plugins = [];
-            PluginManager.load(config).then(() => {
+            pluginManager.load(config).then(() => {
                 Sinon.assert.notCalled(stub);
                 stub.restore();
                 done()
-            });
+            }).catch(() => {
+                stub.restore();
+            });;
         })
     })
 
-    describe('.getPluginInstance method', () => {
+    describe('getPluginInstance method', () => {
         it('should return plugin instance of plugin id', () => {
-            class TestPlugin {}
-            PluginManager.instances['test-plugin'] = new TestPlugin();
-            let pluginInstance = PluginManager.getPluginInstance('test-plugin');
-            pluginInstance.should.deep.equal(new TestPlugin());
+            let spyFn = Sinon.spy(pluginLoader, 'getPluginInstance');
+            pluginManager.getPluginInstance('test-plugin');
+            Sinon.assert.calledWith(spyFn, 'test-plugin')
         })
     })
 
-    describe('.loadPlugin method', () => {
+    describe('loadPlugin method', () => {
         it('should call PluginLoader.loadPlugin method', (done) => {
-            let pluginLoader = new PluginLoader(testConfig);
             let plugin = {id: 'test-plugin', ver: '1.0'};
-            PluginManager.initialize(pluginLoader);
             let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve();
                 });
             });
 
-            PluginManager.loadPlugin(plugin).then(() => {
+            pluginManager.loadPlugin(plugin).then(() => {
                 Sinon.assert.calledWith(stub, plugin);
                 stub.restore();
                 done();
+            }).catch(() => {
+                stub.restore();
             });
         });
 
         it('should throw error when PluginLoader.loadPlugin method throws error!', (done) => {
-            let pluginLoader = new PluginLoader(testConfig);
             let plugin = {id: 'test-plugin', ver: '1.0'};
-            PluginManager.initialize(pluginLoader);
             let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     reject();
                 });
             });
 
-            PluginManager.loadPlugin(plugin)
+            pluginManager.loadPlugin(plugin)
             .then(() => {
                 console.log('shouldnt call this method');
             })
@@ -107,6 +113,8 @@ describe('Class PluginManager', () => {
                 Sinon.assert.calledWith(stub, plugin);
                 stub.restore();
                 done();
+            }).catch(() => {
+                stub.restore();
             });
         });
     });

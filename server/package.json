@@ -8,7 +8,7 @@
     "start": "npm run build:live",
     "build:live": "nodemon --exec ts-node -r ./src/index.ts",
     "test": "mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "sudo rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "build": "npm run test && rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
     "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts"
   },
   "keywords": [],
@@ -39,13 +39,18 @@
     "typescript-eslint-parser": "^13.0.0"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^7.2.6",
+    "@types/kafka-node": "^2.0.6",
     "cassandra-driver": "^3.4.1",
     "elasticsearch": "^14.1.0",
     "express": "^4.16.2",
     "glob": "^7.1.2",
     "harmony-proxy": "^1.0.1",
     "hashids": "^1.1.4",
+    "jsonwebtoken": "^8.2.0",
+    "kafka-node": "^2.4.1",
     "lodash": "^4.17.5",
+    "node-zookeeper-client": "^0.2.2",
     "uuid": "^3.2.1",
     "winston": "^3.0.0-rc1"
   },

@@ -20,6 +20,8 @@ import org.ekstep.genieservices.commons.bean.ContentImportRequest;
 import org.ekstep.genieservices.commons.bean.ContentImportResponse;
 import org.ekstep.genieservices.commons.bean.ContentSearchCriteria;
 import org.ekstep.genieservices.commons.bean.ContentSearchResult;
+import org.ekstep.genieservices.commons.bean.SunbirdContentSearchResult;
+import org.ekstep.genieservices.commons.bean.SunbirdContentSearchCriteria;
 import org.ekstep.genieservices.commons.bean.EcarImportRequest;
 import org.ekstep.genieservices.commons.bean.GenieResponse;
 import org.ekstep.genieservices.commons.bean.enums.DownloadAction;
@@ -77,7 +79,7 @@ public class ContentHandler {
             } else if (type.equals(TYPE_SET_DOWNLOAD_ACTION)) {
                 setDownloadAction(args, callbackContext);
             } else if (type.equals(TYPE_GET_DOWNLOAD_STATE)) {
-                getDownloadState(args, callbackContext);
+                getDownloadState(callbackContext);
             }
 
         } catch (JSONException e) {
@@ -157,18 +159,18 @@ public class ContentHandler {
     private static void searchContent(JSONArray args, final CallbackContext callbackContext) throws JSONException {
         final String requestJson = args.getString(1);
 
-        ContentSearchCriteria.SearchBuilder builder = GsonUtil.fromJson(requestJson,
-                ContentSearchCriteria.SearchBuilder.class);
+        SunbirdContentSearchCriteria.SearchBuilder builder = GsonUtil.fromJson(requestJson,
+        SunbirdContentSearchCriteria.SearchBuilder.class);
 
-        GenieService.getAsyncService().getContentService().searchContent(builder.build(),
-                new IResponseHandler<ContentSearchResult>() {
+        GenieService.getAsyncService().getContentService().searchSunbirdContent(builder.build(),
+                new IResponseHandler<SunbirdContentSearchResult>() {
                     @Override
-                    public void onSuccess(GenieResponse<ContentSearchResult> genieResponse) {
+                    public void onSuccess(GenieResponse<SunbirdContentSearchResult> genieResponse) {
                         callbackContext.success(GsonUtil.toJson(genieResponse));
                     }
 
                     @Override
-                    public void onError(GenieResponse<ContentSearchResult> genieResponse) {
+                    public void onError(GenieResponse<SunbirdContentSearchResult> genieResponse) {
                         callbackContext.error(GsonUtil.toJson(genieResponse));
                     }
                 });

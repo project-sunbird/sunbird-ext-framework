@@ -80,8 +80,5 @@
 				"ionic-angular": "ionicBundle"
 			}
 		}
-	},
-	"dependencies": {
-		"style-loader": "^0.20.2"
 	}
 }

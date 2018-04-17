@@ -11,6 +11,9 @@ import { FrameworkConfig } from './interfaces';
 import {Manifest} from './models/Manifest';
 import { PluginLoader } from './managers/PluginLoader';
 import {RegistrySchema} from './meta/RegistrySchema';
+//import { KafkaClient } from './messaging';
+import { cassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
+import { PluginRegistry } from './managers/PluginRegistry';
 
 export * from './interfaces';
 export * from './test-framework';
@@ -22,7 +25,7 @@ export class Framework {
 	private _api: FrameworkAPI;
 	private static _initialized = false;
 	private static _instance: Framework;
-	private static _FRAMEWORK_DB_SCHEMA: string = "core_framework_schema";
+	private static _pluginManager: PluginManager;
 
 	public get config(): FrameworkConfig {
 		return this._config;
@@ -33,15 +36,17 @@ export class Framework {
 	}
 
 	constructor(config: FrameworkConfig, app: Express) {
-		this._config = Object.assign(defaultConfig, config);
+		this._config = config;
 		this._db = new db(config);
 		this._api = new FrameworkAPI(config);
-		RouterRegistry.initialize(app);
-		console.log('=====> Framework initialized!');
 	}
 
 	public static get db(): db {
 		return Framework._instance._db;
+	}
+
+	public static get pluginManager(): PluginManager {
+		return Framework._pluginManager;
 	}
 
 	public static get api(): FrameworkAPI {
@@ -49,13 +54,24 @@ export class Framework {
 	}
 
 	public static async initialize(config: FrameworkConfig, app: Express) {
-		
 		if (!Framework._initialized) {
+			config = Object.assign(defaultConfig, config);
 			Framework._instance = new Framework(config, app);
-			Framework._initialized = true;
+			
+			// Initialize Managers, Registry and other services 
+			RouterRegistry.initialize(app, config.secureContextParams);
+			PluginRegistry.initialize(cassandraMetaDataProvider);
+			Framework._pluginManager = new PluginManager(new PluginLoader(Framework._instance.config))
+			//if(config.kafka) KafkaClient.initialize(config.kafka)
+			
+			// Load the schema for plugin registry before plugins are loaded
 			await Framework.laodPluginRegistrySchema();
-			PluginManager.initialize(new PluginLoader(Framework._instance.config))
-			await PluginManager.load(Framework._instance.config);
+
+			// Set Framework initialized to `true` after above tasks are performed
+			Framework._initialized = true;
+			console.log('=====> Framework initialized!');
+			
+			await Framework._pluginManager.load(Framework._instance.config);
 			console.log('=====> Plugins load complete. ');
 		}
 	}
@@ -63,9 +79,9 @@ export class Framework {
 	public static async laodPluginRegistrySchema() {
 		try {
 			let schemaLoader = <ISchemaLoader>SchemaLoader.getLoader(RegistrySchema.type);
-			await schemaLoader.create(Framework._FRAMEWORK_DB_SCHEMA, RegistrySchema);
-		} catch(e) {
-			console.log(e);
+			await schemaLoader.create(RegistrySchema.db, RegistrySchema);
+		} catch(error) {
+			console.log(error);
 		}
 	}
 }

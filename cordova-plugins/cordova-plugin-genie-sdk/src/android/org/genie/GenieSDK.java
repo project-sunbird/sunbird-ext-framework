@@ -52,6 +52,8 @@ public class GenieSDK extends CordovaPlugin {
             PageHandler.handle(args, callbackContext);
         } else if (action.equals("permission")) {
             PermissionHandler.handle(this, args, callbackContext);
+        } else if (action.equals("announcement")){
+            AnnouncementHandler.handle(args, callbackContext);
         }
         return true;
     }

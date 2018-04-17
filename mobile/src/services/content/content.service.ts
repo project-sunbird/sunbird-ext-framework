@@ -44,7 +44,7 @@ export class ContentService {
     }
   }
 
-  getAllLocalContents(request: ContentFilterCriteria,
+   getAllLocalContents(request: ContentFilterCriteria,
     successCallback: (response: string) => void,
     errorCallback: (response: string) => void) {
     try {

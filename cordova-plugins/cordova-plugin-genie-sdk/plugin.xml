@@ -42,6 +42,9 @@
     <js-module src="www/permission.js" name="permission">
         <clobbers target="permission" />
     </js-module>
+    <js-module src="www/announcement.js" name="announcement">
+        <clobbers target="announcement" />
+    </js-module>
     <!-- android -->
     <platform name="android">
 
@@ -64,8 +67,7 @@
       <source-file src="src/android/org/genie/CourseHandler.java" target-dir="src/org/genie/" />
       <source-file src="src/android/org/genie/PageHandler.java" target-dir="src/org/genie/" />
       <source-file src="src/android/org/genie/PermissionHandler.java" target-dir="src/org/genie/" />
-      
-
+      <source-file src="src/android/org/genie/AnnouncementHandler.java" target-dir="src/org/genie/" />
     </platform>
 
     <!-- ios -->

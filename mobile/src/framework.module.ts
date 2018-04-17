@@ -14,9 +14,10 @@ import { BasePlugin } from "./plugin.base";
 import { AuthService } from "./services/auth/auth.service";
 import { ProfileService } from "./services/profile/profile.service";
 import { CourseService } from "./services/course/course.service"
-import { UserProfileService } from "./services/userprofile/userprofile.service"
+import { UserProfileService } from "./services/userprofile/userprofile.service";
 import { PageAssembleService } from "./services/page/page.service";
 import { PermissionService } from "./services/permission.sevice";
+import { QRScanner } from "./services/qrscanner.service";
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { PermissionService } from "./services/permission.sevice";
         { provide: ServiceProvider, useClass: GenieSDKServiceProvider },
         TelemetryService,
         PageAssembleService,
-        PermissionService
+        PermissionService,
+        QRScanner
     ],
     exports: [
     ]
