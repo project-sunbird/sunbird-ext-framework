@@ -1,7 +1,5 @@
 {
 	"cordova" : [
-		"cordova-plugin-camera",
-		"cordova-sqlite-storage",
-		"file:cordova-plugin-genie-sdk"
+		"https://github.com/project-sunbird/cordova-plugin-genie-sdk.git"
 	]
 }

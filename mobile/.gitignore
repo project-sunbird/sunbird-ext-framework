@@ -1,3 +1,3 @@
-dist
+dist/*
+!dist/sunbird-1.0.0.tgz
 node_modules
-sunbird-1.0.0.tgz
