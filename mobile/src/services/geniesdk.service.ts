@@ -20,4 +20,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.pageAssemble;
     }
 
+    getFrameworkService(): any {
+        return (<any>window).GenieSDK.framework;
+    }
+
 }

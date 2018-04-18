@@ -17,4 +17,8 @@ export class ServiceProvider {
     getPageAssembleService(): any {
         
     }
+
+    getFrameworkService(): any {
+        
+    }
 }

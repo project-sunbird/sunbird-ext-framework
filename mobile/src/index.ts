@@ -30,6 +30,8 @@ export * from "./services/permission.sevice";
 export * from "./services/userprofile/bean";
 export * from "./services/userprofile/userprofile.service";
 
+export * from "./services/framework/bean";
+export * from "./services/framework/framework.service";
 
 export * from "./services/announcement/bean";
 export * from "./services/announcement/announcement.service";

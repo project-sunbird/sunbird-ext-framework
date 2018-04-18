@@ -11,9 +11,7 @@ export class TabsPage {
 
   @ViewChild('myTabs') tabRef: Tabs;
 
-
   tabs = [];
-
 
   constructor(private container: ContainerService, private navParams: NavParams) {
   }
@@ -24,12 +22,10 @@ export class TabsPage {
     setTimeout(() => {
       let tabIndex = 0;
       if (this.navParams.get('loginMode') == 'guest') {
-        tabIndex = 2;
+        tabIndex = 1;
       }
       this.tabRef.select(tabIndex);
     }, 300);
-
-
 
   }
 }

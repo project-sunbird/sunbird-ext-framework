@@ -14,6 +14,7 @@ import { UserProfileService } from "./services/userprofile/userprofile.service";
 import { PageAssembleService } from "./services/page/page.service";
 import { PermissionService } from "./services/permission.sevice";
 import { QRScanner } from "./services/qrscanner.service";
+import { FrameworkService } from "./services/framework/framework.service";
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { QRScanner } from "./services/qrscanner.service";
         ProfileService,
         CourseService,
         UserProfileService,
+        FrameworkService,
         { provide: ServiceProvider, useClass: GenieSDKServiceProvider },
         TelemetryService,
         PageAssembleService,
