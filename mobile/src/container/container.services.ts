@@ -5,6 +5,7 @@ export interface TabOptions {
   icon?: string;
   label?: string;
   index?: number;
+  tabsHideOnSubPages?: boolean;
 }
 
 @Injectable()
