@@ -61,6 +61,7 @@ export class ContentSearchCriteria {
   sortCriteria?: Array<ContentSearchFilter>;
   // 1 - indicates search, 2 - filter
   searchType?: SearchType;
+  offlineSearch?: boolean;
 }
 
 export class ContentImport {
