@@ -38,4 +38,6 @@ export * from "./services/announcement/announcement.service";
 
 export * from "./services/qrscanner.service";
 
+export * from "./services/utils/file.service";
+
 export * from "./framework.module";

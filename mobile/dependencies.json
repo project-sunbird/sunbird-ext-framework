@@ -1,5 +1,6 @@
 {
 	"cordova" : [
+		"cordova-plugin-file",
 		"https://github.com/project-sunbird/cordova-plugin-genie-sdk.git"
 	]
 }

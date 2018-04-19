@@ -15,6 +15,7 @@ import { PageAssembleService } from "./services/page/page.service";
 import { PermissionService } from "./services/permission.sevice";
 import { QRScanner } from "./services/qrscanner.service";
 import { FrameworkService } from "./services/framework/framework.service";
+import { FileUtil } from "./services/utils/file.service";
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { FrameworkService } from "./services/framework/framework.service";
         TelemetryService,
         PageAssembleService,
         PermissionService,
+        FileUtil,
         QRScanner
     ],
     exports: [
