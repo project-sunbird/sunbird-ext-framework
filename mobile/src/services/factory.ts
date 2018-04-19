@@ -21,4 +21,8 @@ export class ServiceProvider {
     getFrameworkService(): any {
         
     }
+
+    getSharedPreference(): any {
+        
+    }
 }

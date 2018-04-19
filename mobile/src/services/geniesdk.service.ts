@@ -24,4 +24,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.framework;
     }
 
+    getSharedPreference(): any {
+        return (<any>window).GenieSDK.preferences;;
+    }
+
 }

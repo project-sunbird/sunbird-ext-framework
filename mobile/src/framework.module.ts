@@ -16,6 +16,7 @@ import { PermissionService } from "./services/permission.sevice";
 import { QRScanner } from "./services/qrscanner.service";
 import { FrameworkService } from "./services/framework/framework.service";
 import { FileUtil } from "./services/utils/file.service";
+import { SharedPreferences } from "./services/utils/preferences.service";
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { FileUtil } from "./services/utils/file.service";
         PageAssembleService,
         PermissionService,
         FileUtil,
+        SharedPreferences,
         QRScanner
     ],
     exports: [
