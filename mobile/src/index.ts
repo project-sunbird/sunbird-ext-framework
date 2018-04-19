@@ -38,7 +38,10 @@ export * from "./services/announcement/announcement.service";
 
 export * from "./services/qrscanner.service";
 
+export * from "./services/utils/connection.service";
+export * from "./services/utils/device.service";
 export * from "./services/utils/file.service";
+export * from "./services/utils/location.service";
 
 export * from "./services/utils/preferences.service";
 

@@ -4,21 +4,24 @@ import {
     AnnouncementDetailsRequest, AnnouncementListRequest,
     UpdateAnnouncementStateRequest
 } from "./bean";
+import { ServiceProvider } from "../factory";
 
 @Injectable()
 export class AnnouncementService {
+
+    constructor(private factory: ServiceProvider) {
+
+    }
+
     getAnnouncementDetails(request: AnnouncementDetailsRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.announcement.
-            getAnnouncementDetails(JSON.stringify(request), onSuccess, onError);
+        this.factory.getAnnouncementService().getAnnouncementDetails(JSON.stringify(request), onSuccess, onError);
     }
 
     getAnnouncementList(request: AnnouncementListRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.announcement.
-            getAnnouncementList(JSON.stringify(request), onSuccess, onError);
+        this.factory.getAnnouncementService().getAnnouncementList(JSON.stringify(request), onSuccess, onError);
     }
 
     updateAnnouncementState(request: UpdateAnnouncementStateRequest, onSuccess, onError) {
-        (<any>window).GenieSDK.announcement.
-            updateAnnouncementState(JSON.stringify(request), onSuccess, onError);
+        this.factory.getAnnouncementService().updateAnnouncementState(JSON.stringify(request), onSuccess, onError);
     }
 }

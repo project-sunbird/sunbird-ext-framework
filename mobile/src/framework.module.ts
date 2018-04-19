@@ -17,6 +17,9 @@ import { QRScanner } from "./services/qrscanner.service";
 import { FrameworkService } from "./services/framework/framework.service";
 import { FileUtil } from "./services/utils/file.service";
 import { SharedPreferences } from "./services/utils/preferences.service";
+import { ConnectionInfoService } from "./services/utils/connection.service";
+import { DeviceInfoService } from "./services/utils/device.service";
+import { LocationInfoService } from "./services/utils/location.service";
 
 @NgModule({
     declarations: [
@@ -39,6 +42,9 @@ import { SharedPreferences } from "./services/utils/preferences.service";
         PermissionService,
         FileUtil,
         SharedPreferences,
+        ConnectionInfoService,
+        DeviceInfoService,
+        LocationInfoService,
         QRScanner
     ],
     exports: [
