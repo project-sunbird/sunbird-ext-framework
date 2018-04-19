@@ -13,8 +13,8 @@ export class UserSearchCriteria {
     query: string;
     offset: number;
     limit: number;
-    identifiers: Array<String>
-    fields: Array<String>;
+    identifiers: Array<string>
+    fields: Array<string>;
 }
 
 export class UserProfileSkillsRequest {
@@ -23,13 +23,13 @@ export class UserProfileSkillsRequest {
 
 export class EndorseOrAddSkillRequest {
     userId: string;
-    skills: Array<String>;
+    skills: Array<string>;
 }
 
 export class ProfileVisibilityRequest {
     userId: string;
     privateFields: Array<string>;
-    publicFields: Array<String>;
+    publicFields: Array<string>;
 }
 
 export class UploadFileRequest {
@@ -38,17 +38,17 @@ export class UploadFileRequest {
 }
 
 export class UpdateUserInfoRequest {
-    userId: String;
-    firstName: String;
-    lastName?: String;
-    language: Array<String>;
-    phone: String;
-    profileSummary?: String;
-    subject?: Array<String>;
-    gender?: String;
-    dob?: String;
-    grade?: Array<String>;
-    location?: String;
+    userId: string;
+    firstName?: string;
+    lastName?: string;
+    language?: Array<string>;
+    phone?: string;
+    profileSummary?: string;
+    subject?: Array<string>;
+    gender?: string;
+    dob?: string;
+    grade?: Array<string>;
+    location?: string;
     avatar?: string;
     webPages?: Array<UserWebPages>;
     education?: Array<UserEducation>;
@@ -57,41 +57,41 @@ export class UpdateUserInfoRequest {
 }
 
 export class UserWebPages {
-    type: String;
-    url: String;
+    type: string;
+    url: string;
 }
 
 export class UserEducation {
-    degree: String;
-    name: String;
+    degree: string;
+    name: string;
     yearOfPassing?: Number;
     percentage?: Number;
     isDeleted?: Boolean;
-    grade?: String;
-    boardOrUniversity?: String;
-    id?: String;
+    grade?: string;
+    boardOrUniversity?: string;
+    id?: string;
 }
 
 export class UserJobProfile {
-    jobName: String;
-    orgName: String;
-    role?: String;
-    subject?: Array<String>;
+    jobName: string;
+    orgName: string;
+    role?: string;
+    subject?: Array<string>;
     isCurrentJob?: Boolean;
-    joiningDate?: String;
-    endDate?: String;
-    id?: String;
+    joiningDate?: string;
+    endDate?: string;
+    id?: string;
     isDeleted?: Boolean;
 }
 
 export class UserAddress {
-    addType: String;
-    addressLine1: String;
-    addressLine2?: String;
-    city: String;
-    state?: String;
-    country?: String;
-    zipcode?: String;
+    addType: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    state?: string;
+    country?: string;
+    zipcode?: string;
     isDeleted?: Boolean;
-    id?: String;
+    id?: string;
 }

@@ -15,11 +15,27 @@ export class ServiceProvider {
     }
 
     getPageAssembleService(): any {
-        
+
+    }
+
+    getAnnouncementService(): any {
+
     }
 
     getFrameworkService(): any {
-        
+
+    }
+
+    getConnectionService(): any {
+
+    }
+
+    getDeviceService(): any {
+
+    }
+
+    getLocationService(): any {
+
     }
 
     getSharedPreference(): any {

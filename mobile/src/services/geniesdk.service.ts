@@ -20,12 +20,28 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.pageAssemble;
     }
 
+    getAnnouncementService(): any {
+        return (<any>window).GenieSDK.announcement;
+    }
+
     getFrameworkService(): any {
         return (<any>window).GenieSDK.framework;
     }
 
     getSharedPreference(): any {
-        return (<any>window).GenieSDK.preferences;;
+        return (<any>window).GenieSDK.preferences;
+    }
+
+    getConnectionService(): any {
+        return (<any>window).GenieSDK.genieSdkUtil;
+    }
+
+    getDeviceService(): any {
+        return (<any>window).GenieSDK.genieSdkUtil;
+    }
+
+    getLocationService(): any {
+        return (<any>window).GenieSDK.genieSdkUtil;
     }
 
 }
