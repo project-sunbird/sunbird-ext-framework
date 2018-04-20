@@ -9,6 +9,8 @@ export class OAuthService {
 
     redirect_url = "https://staging.open-sunbird.org/oauth2callback";
 
+    logout_url = "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/logout?redirect_uri=https://staging.open-sunbird.org/oauth2callback";
+
     auth_url= "https://staging.open-sunbird.org/auth/realms/sunbird/protocol/openid-connect/auth?redirect_uri=${R}&response_type=code&scope=offline_access&client_id=${CID}";
 
     constructor(private platform: Platform, private http: HTTP, private authService: AuthService) {
@@ -68,5 +70,21 @@ export class OAuthService {
                
         });
     }
+
+    doLogOut(): Promise<any> {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            let browserRef = (<any>window).cordova.InAppBrowser.open(that.logout_url);
+            browserRef.addEventListener("loadstart", (event) => {
+                if ((event.url).indexOf(that.redirect_url) === 0) {
+                    browserRef.removeEventListener("exit", (event) => {});
+                    browserRef.close();
+                    that.authService.endSession();
+                    resolve();
+                }
+            });
+        }) 
+    }
+
 
 }
