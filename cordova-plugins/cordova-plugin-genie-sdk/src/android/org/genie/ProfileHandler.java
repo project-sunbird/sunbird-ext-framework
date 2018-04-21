@@ -31,15 +31,21 @@ import org.json.JSONException;
 public class ProfileHandler {
 
     private static final String TYPE_CREATE_PROFILE = "createProfile";
+    private static final String TYPE_UPDTATE_PROFILE = "updateProfile";
     private static final String TYPE_SET_CURRENT_USER = "setCurrentUser";
+    private static final String TYPE_GET_CURRENT_USER = "getCurrentUser";
 
     public static void handle(JSONArray args, final CallbackContext callbackContext) {
         try {
             String type = args.getString(0);
             if (type.equals(TYPE_CREATE_PROFILE)) {
                 createProfile(args, callbackContext);
-            } else if (type.equals(TYPE_SET_CURRENT_USER)) {
+            } else if (type.equals(TYPE_UPDTATE_PROFILE)) {
+                updateProfile(args, callbackContext);
+            }else if (type.equals(TYPE_SET_CURRENT_USER)) {
                 setCurrentUser(args, callbackContext);
+            }else if (type.equals(TYPE_GET_CURRENT_USER)) {
+                getCurrentUser(callbackContext);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -67,6 +73,26 @@ public class ProfileHandler {
     }
 
     /**
+     * create profile
+     */
+    private static void updateProfile(JSONArray args, final CallbackContext callbackContext) throws JSONException {
+        String requestJson = args.getString(1);
+        Profile request = GsonUtil.fromJson(requestJson, Profile.class);
+
+        GenieService.getAsyncService().getUserService().updateUserProfile(request, new IResponseHandler<Profile>() {
+            @Override
+            public void onSuccess(GenieResponse<Profile> genieResponse) {
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
+            }
+
+            @Override
+            public void onError(GenieResponse<Profile> genieResponse) {
+                callbackContext.error(genieResponse.getError());
+            }
+        });
+    }
+
+    /**
      * set current user
      */
     private static void setCurrentUser(JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -80,6 +106,23 @@ public class ProfileHandler {
 
             @Override
             public void onError(GenieResponse<Void> genieResponse) {
+                callbackContext.error(genieResponse.getError());
+            }
+        });
+    }
+
+    /**
+     * get current user
+     */
+    private static void getCurrentUser(final CallbackContext callbackContext) throws JSONException {
+        GenieService.getAsyncService().getUserService().getCurrentUser( new IResponseHandler<Profile>() {
+            @Override
+            public void onSuccess(GenieResponse<Profile> genieResponse) {
+                callbackContext.success(GsonUtil.toJson(genieResponse.getResult()));
+            }
+
+            @Override
+            public void onError(GenieResponse<Profile> genieResponse) {
                 callbackContext.error(genieResponse.getError());
             }
         });

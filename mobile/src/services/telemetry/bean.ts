@@ -114,11 +114,12 @@ export class Impression {
   pageId: string;
   subType: string;
   uri: string;
-  objectId: string;
+  objId: string;
   correlationData: Array<CorrelationData>;
-  objectType: string;
-  objectVersion: string;
-  rollup?: Rollup
+  objType: string;
+  objVer: string;
+  rollup?: Rollup;
+  env: string;
 }
 
 
