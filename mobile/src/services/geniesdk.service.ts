@@ -8,6 +8,10 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.telemetry;
     }
 
+    getProfileService(): any {
+        return (<any>window).GenieSDK.profile;
+    }
+
     getCourseService(): any {
         return (<any>window).GenieSDK.course;
     }

@@ -14,12 +14,14 @@ export class AuthService {
         errorCallback: (error: string) => void) {
             (<any>window).GenieSDK.auth.refreshSession(refreshToken,successCallback, errorCallback);
     }
-    
+
     getBearerToken(
         successCallback: (response: string) => void, 
         errorCallback: (error: string) => void) {
             (<any>window).GenieSDK.auth.getBearerToken(successCallback, errorCallback);
     }
+
+    
 
     startSession(accessToken, refreshToken, userToken) {
         let sessionJson = {accessToken: accessToken, refreshToken: refreshToken, userToken: userToken};

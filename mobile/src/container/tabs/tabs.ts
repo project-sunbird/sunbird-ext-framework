@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ContainerService } from '../container.services';
-import { Tabs } from 'ionic-angular';
+import { Tabs, Tab, Events } from 'ionic-angular';
 import { NavParams } from 'ionic-angular';
 
 @Component({
@@ -13,7 +13,7 @@ export class TabsPage {
 
   tabs = [];
 
-  constructor(private container: ContainerService, private navParams: NavParams) {
+  constructor(private container: ContainerService, private navParams: NavParams,private events : Events) {
   }
 
   ionViewWillEnter() {
@@ -27,5 +27,9 @@ export class TabsPage {
       this.tabRef.select(tabIndex);
     }, 300);
 
+  }
+
+  public ionChange(tab: Tab) {
+    this.events.publish("tab.change",tab.tabTitle);
   }
 }

@@ -6,6 +6,10 @@ export class ServiceProvider {
 
     }
 
+    getProfileService(): any {
+
+    }
+
     getCourseService(): any {
 
     }
