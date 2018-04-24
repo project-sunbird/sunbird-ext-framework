@@ -48,4 +48,8 @@ export class GenieSDKServiceProvider extends ServiceProvider {
         return (<any>window).GenieSDK.genieSdkUtil;
     }
 
+    getShareService(): any {
+        return (<any>window).GenieSDK.share;
+    }
+
 }

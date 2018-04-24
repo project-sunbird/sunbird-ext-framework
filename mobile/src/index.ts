@@ -45,4 +45,6 @@ export * from "./services/utils/location.service";
 
 export * from "./services/utils/preferences.service";
 
+export * from "./services/utils/share.service";
+
 export * from "./framework.module";

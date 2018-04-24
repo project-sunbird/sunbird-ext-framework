@@ -20,6 +20,7 @@ import { SharedPreferences } from "./services/utils/preferences.service";
 import { ConnectionInfoService } from "./services/utils/connection.service";
 import { DeviceInfoService } from "./services/utils/device.service";
 import { LocationInfoService } from "./services/utils/location.service";
+import { ShareUtil } from "./services/utils/share.service";
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import { LocationInfoService } from "./services/utils/location.service";
         ConnectionInfoService,
         DeviceInfoService,
         LocationInfoService,
-        QRScanner
+        QRScanner,
+        ShareUtil
     ],
     exports: [
     ]

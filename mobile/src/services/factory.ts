@@ -45,4 +45,8 @@ export class ServiceProvider {
     getSharedPreference(): any {
         
     }
+
+    getShareService(): any {
+        
+    }
 }
