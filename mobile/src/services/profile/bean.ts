@@ -14,6 +14,7 @@ export class Profile {
     profileType?: ProfileType;
     subject?: string[];
     grade?: string[];
+    createdAt?: string;
 }
 
 
