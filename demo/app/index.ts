@@ -22,7 +22,6 @@ const config: FrameworkConfig = {
     },
     plugins: [{id: 'profile-server', ver: '1.0'}],
     pluginBasePath: __dirname + '/node_modules/',
-    secureContextParams: ["x-authenticated-user-token", "user-id"],
     kafka: {
         connectionString: '127.0.0.1:2181' //default
     },

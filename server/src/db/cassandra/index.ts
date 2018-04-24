@@ -7,6 +7,7 @@ import { CassandraConnection } from './CassandraConnection';
 import * as cassandraDriver from 'cassandra-driver';
 import {Util} from '../../util';
 import { ICassandraConfig } from "../../interfaces";
+export { cassandraDriver };
 
 export class CassandraDB {
 
