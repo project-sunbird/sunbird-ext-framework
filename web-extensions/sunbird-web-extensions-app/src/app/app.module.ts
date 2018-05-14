@@ -2,7 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import {WebFrameworkModule} from 'sunbird-web-extension';
+import { WebFrameworkModule } from 'sunbird-web-extension';
+
 @NgModule({
   declarations: [
     AppComponent

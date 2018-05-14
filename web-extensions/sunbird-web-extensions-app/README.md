@@ -1,7 +1,13 @@
-# FrameworkApp
+# Sunbird-web-extensions-app
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.0.
 
+# Setup:
+
+1. `cd web-extensions/sunbird-web-extensions-app`
+2. `npm install`
+3. `ng build sunbird-web-extension`  // to build library dist
+4. `ng serve`
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

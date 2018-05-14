@@ -1,5 +1,5 @@
 {
-  "name": "framework-app",
+  "name": "sunbird-web-extensions-app",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

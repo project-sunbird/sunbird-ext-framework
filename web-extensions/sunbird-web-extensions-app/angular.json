@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "frameworkApp": {
+    "sunbird-web-extensions-app": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/frameworkApp",
+            "outputPath": "dist/sunbird-web-extensions-app",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "frameworkApp:build"
+            "browserTarget": "sunbird-web-extensions-app:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "frameworkApp:build:production"
+              "browserTarget": "sunbird-web-extensions-app:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "frameworkApp:build"
+            "browserTarget": "sunbird-web-extensions-app:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "frameworkApp-e2e": {
+    "sunbird-web-extensions-app-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -103,7 +103,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "frameworkApp:serve"
+            "devServerTarget": "sunbird-web-extensions-app:serve"
           }
         },
         "lint": {
@@ -158,5 +158,5 @@
       }
     }
   },
-  "defaultProject": "frameworkApp"
+  "defaultProject": "sunbird-web-extensions-app"
 }
