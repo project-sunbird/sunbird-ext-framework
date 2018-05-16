@@ -138,6 +138,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
+            "codeCoverage": true,
             "main": "projects/sunbird-web-extension/src/test.ts",
             "tsConfig": "projects/sunbird-web-extension/tsconfig.spec.json",
             "karmaConfig": "projects/sunbird-web-extension/karma.conf.js"

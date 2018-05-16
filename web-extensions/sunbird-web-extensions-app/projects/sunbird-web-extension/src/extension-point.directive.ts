@@ -21,8 +21,8 @@ export class ExtensionPointDirective implements OnInit, OnChanges, OnDestroy {
   public componentRefs: Array<any> = [];
   public pluginChangeSubscription: Subscription;
 
-  constructor(@Inject(ViewContainerRef) viewContainerRef, @Inject(ComponentFactoryResolver) componentResolver,
-    @Inject(PluginService) pluginService) {
+  constructor(viewContainerRef: ViewContainerRef, componentResolver: ComponentFactoryResolver,
+    pluginService: PluginService) {
     this.viewContainerRef = viewContainerRef;
     this.componentResolver = componentResolver;
     this.pluginService = pluginService;
@@ -47,7 +47,7 @@ export class ExtensionPointDirective implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public instantiatePluginComponent(pluginData) {
+  public instantiatePluginComponent(pluginData: PluginData): ComponentRef<any> {
     if (!pluginData) {
       return;
     }
@@ -66,7 +66,7 @@ export class ExtensionPointDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    if (this.componentRefs.length) {
+    if (this.componentRefs.length > 0) {
       this.componentRefs.forEach(componentRef => {
         componentRef.instance.input = this.input;
         return componentRef.instance.ngOnChanges ? componentRef.instance.ngOnChanges() : undefined;
@@ -75,7 +75,7 @@ export class ExtensionPointDirective implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.componentRefs.length) {
+    if (this.componentRefs.length > 0) {
       this.componentRefs.forEach(componentRef => componentRef.destroy());
       this.componentRefs = [];
     }
