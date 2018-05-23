@@ -83,6 +83,23 @@ export class Manifest {
     /**
      * 
      * 
+     * @static
+     * @param {(IPluginManifest | string)} json 
+     * @returns {Manifest} 
+     * @memberof Manifest
+     */
+    public static fromJSON(json: IPluginManifest | string): Manifest {
+        try {
+            if (typeof json === "string") json = JSON.parse(json) as IPluginManifest;
+            return new Manifest(json);
+        } catch(error) {
+            throw new FrameworkError({message: `unable to parse manifest, invalid JSON format!`, code: FrameworkErrors.MANIFEST_NOT_PARSEABLE, rootError: error});
+        }
+    }
+
+    /**
+     * 
+     * 
      * @readonly
      * @type {string}
      * @memberof Manifest
@@ -155,24 +172,9 @@ export class Manifest {
      * @memberof Manifest
      */
     public validate() {
-        //TODO: validate schema structure;
+        // TODO: validate schema structure;
     }
-    /**
-     * 
-     * 
-     * @static
-     * @param {(IPluginManifest | string)} json 
-     * @returns {Manifest} 
-     * @memberof Manifest
-     */
-    public static fromJSON(json: IPluginManifest | string): Manifest {
-        try {
-            if (typeof json === "string") json = <IPluginManifest>JSON.parse(json);
-            return new Manifest(json);
-        } catch(error) {
-            throw new FrameworkError({message: `unable to parse manifest, invalid JSON format!`, code: FrameworkErrors.MANIFEST_NOT_PARSEABLE, rootError: error});
-        }
-    }
+    
     /**
      * 
      * 

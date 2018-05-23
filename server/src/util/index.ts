@@ -2,6 +2,7 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 import * as Hashids from 'hashids';
+import * as UUID from 'uuid';
 
 export class Util {
     public static hash(text: string): string {
@@ -11,6 +12,10 @@ export class Util {
 
     public static generateId(prefix: string, id: string): string {
 		return (Util.hash(prefix) + '_' + id).toLowerCase();
+    }
+
+    public static UUID() {
+        return UUID();
     }
 }
 
@@ -53,8 +58,8 @@ export class ErrorSubclass {
     }
 }
 
-//ErrorSubclass.prototype = <any>Object.create( Error.prototype );
-Object.defineProperty(ErrorSubclass, 'prototype', <any>Object.create(Error.prototype));
+// ErrorSubclass.prototype = <any>Object.create( Error.prototype );
+Object.defineProperty(ErrorSubclass, 'prototype', Object.create(Error.prototype));
 
 export interface FrameworkErrorOptions {
     message?: string;

@@ -39,12 +39,30 @@ describe('Class PluginLoader', () => {
       })
     })
 
-    it('should not register the plugin if already registered and throw error', () => {
+    it('should not load the plugin again if already loaded', (done) => {
+      let testPlugin: IPlugin = { id: 'test-plugin', ver: '1.0'};
+      let stubFn = () => {
+        return new Promise((resolve, reject) => {
+          resolve();
+        })
+      };
+      let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(stubFn)
+      let PluginRegistryStub = Sinon.stub(PluginRegistry, 'register').callsFake(stubFn);
 
+      pluginLoader.loadPlugin(testPlugin).then(() => {
+        Sinon.assert.notCalled(buildPluginStub);
+        Sinon.assert.notCalled(PluginRegistryStub);
+        buildPluginStub.restore();
+        PluginRegistryStub.restore();
+        done();
+      }).catch(() => {
+        buildPluginStub.restore();
+        PluginRegistryStub.restore();
+      })
     })
 
     it('should load plugin dependencies', () => {
-
+      
     })
 
     it('should not call loadDependecies if dependencies are not defined', () => {

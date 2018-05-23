@@ -56,7 +56,7 @@ export class PluginRegistry {
      * @memberof PluginRegistry
      */
     public static async unregister(id: string) {
-        return await PluginRegistry.updateStatus(id, PluginStatusEnum.unregistered);
+        await PluginRegistry.updateStatus(id, PluginStatusEnum.unregistered);
     }
     /**
      * 
@@ -104,7 +104,7 @@ export class PluginRegistry {
         if (result) {
             let plugin = result.rows.find((row) => row.id === id);
             plugin.status = status;
-            return await PluginRegistry.metaDataProvider.updateMeta(id, plugin);
+            await PluginRegistry.metaDataProvider.updateMeta(id, plugin);
         } else return;
     }
 }

@@ -7,7 +7,7 @@ import { CassandraConnection } from './CassandraConnection';
 import * as cassandraDriver from 'cassandra-driver';
 import {Util} from '../../util';
 import { ICassandraConfig } from "../../interfaces";
-export { cassandraDriver };
+import { ICassandraConnector } from '../..';
 
 export class CassandraDB {
 
@@ -17,7 +17,7 @@ export class CassandraDB {
 		this._config = config;
 	}
 
-	public getConnectionByKeyspace(keyspace?: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]): cassandraDriver.Client {
+	public getConnectionByKeyspace(keyspace?: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]): ICassandraConnector {
 		return this.getConnection({
 			contactPoints: this._config.contactPoints,
 			keyspace: keyspace || this._config.keyspace,
@@ -25,7 +25,7 @@ export class CassandraDB {
 		});
 	}
 
-	public getConnection(config: ICassandraConfig): cassandraDriver.Client {
+	public getConnection(config: ICassandraConfig): ICassandraConnector {
 		return new cassandraDriver.Client(config);
 	}
 }

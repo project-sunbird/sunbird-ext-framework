@@ -1,11 +1,11 @@
-import { Router } from "express";
-import { Manifest, IPluginManifest } from "../models/Manifest";
+import { Router, NextFunction } from 'express';
+import { Manifest, IPluginManifest } from '../models/Manifest';
 import { ClientOptions, Client } from 'cassandra-driver';
 import { ConfigOptions, Client as ESClient } from 'elasticsearch';
 import * as kafka from 'kafka-node';
 
 export interface IRouter {
-    init(app: Router, auth: any, manifest: Manifest): void
+    init(app: Router, auth: any, manifest: Manifest): void;
 }
 
 export interface IRouterConstructor {
@@ -57,8 +57,9 @@ export interface FrameworkConfig {
     plugins: Array<IPlugin>;
     pluginBasePath: string;
     secureContextParams?: Array<string>;
-    port?: number,
+    port?: number;
     kafka?: KafkaConfig;
+    enableLogs?: Boolean;
 }
 
 export interface KafkaConfig {
@@ -112,7 +113,7 @@ export interface IMessageProvider {
     /**
      * Initialize the provider with config details
      * 
-     * @param {object} config 
+     * @param {object} config
      * @memberof IMessageProvider
      */
     initialize(config: object);
@@ -127,15 +128,15 @@ export interface IMessageProvider {
     /**
      * 
      * To unregister producer. Producer cannot publish message or create topic after unregisteration 
-     * @param {string} id 
+     * @param {string} id
      * @memberof IMessageProvider
      */
     unregisterProducer(id: string);
     /**
-     * 
+     *
      * To publish message to all consumers
-     * @param {string} topic 
-     * @param {object} payload 
+     * @param {string} topic
+     * @param {object} payload
      * @memberof IMessageProvider
      */
     publishMessage(topic: string, payload: object);

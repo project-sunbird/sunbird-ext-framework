@@ -8,13 +8,13 @@ import { FrameworkConfig } from '../interfaces';
 import './cassandra/CassandraSchemaLoader';
 import './elasticsearch/ESSchemaLoader';
 
-export class db {
+export class Db {
 
 	private _elasticsearch: ElasticSearchDB;
 	private _cassandra: CassandraDB;
 
 	constructor(config: FrameworkConfig) {
-		this._elasticsearch = new ElasticSearchDB(config.db.elasticsearch);
+		this._elasticsearch = ElasticSearchDB.initialize(config.db.elasticsearch);
 		this._cassandra = new CassandraDB(config.db.cassandra);
 	}
 

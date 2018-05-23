@@ -22,7 +22,8 @@ export const defaultConfig: FrameworkConfig = {
     plugins: [],
     pluginBasePath: '',
     kafka: {
-        connectionString: '127.0.0.1:56855' //default
+        connectionString: '127.0.0.1:56855' // default
     },
-    port: 9000 //default
+    enableLogs: true,
+    port: 9000 // default
 }

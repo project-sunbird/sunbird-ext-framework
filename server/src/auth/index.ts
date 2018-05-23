@@ -1,1 +1,2 @@
-export * from './JwtAuthService';
+export * from './KeycloakAuthProvider';
+export * from './IAuthProvider';

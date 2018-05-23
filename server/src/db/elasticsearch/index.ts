@@ -4,22 +4,23 @@
 
 import { Manifest } from '../../models/Manifest';
 import * as elasticsearch from 'elasticsearch';
-import * as Proxy from 'harmony-proxy';
+// import * as Proxy from 'harmony-proxy';
 import { Util } from '../../util';
-import { IElasticSearchConfig } from "../../interfaces";
+import { IElasticSearchConfig, IElasticSearchConnector } from "../../interfaces";
+import { logger } from '../../logger';
 
-function proxyMethodCalls(obj: any, indexPrefix: string) {
+function proxyMethodCalls(obj: IElasticSearchConnector, disableAPI: Array<string>) {
+    logger.info('===> configuring proxy method for Elasticsearch client Instance!');
     let handler = {
-        get(target: any, propKey: any, receiver: any) {
-            const origMethod = target[propKey];
-            if (propKey == 'transport') {
-                return origMethod;
+        get(target, propKey, receiver) {
+            const originalMethod = target[propKey];
+            if (disableAPI.findIndex(propKey) !== -1) {
+                logger.info(` ${propKey}: this api is disabled!`);
+                return;
             }
-            return function (this: void, ...args: any[]) {
-                args[0].index = indexPrefix + '_' + args[0].index;
-                let result = origMethod.apply(this, args);
-                return result;
-            };
+            return function (...args) {
+                return originalMethod.apply(this, args);
+            }
         }
     };
     return new Proxy(obj, handler);
@@ -27,15 +28,19 @@ function proxyMethodCalls(obj: any, indexPrefix: string) {
 
 export class ElasticSearchDB {
 
-    private _config: IElasticSearchConfig;
+    private static _config: IElasticSearchConfig;
+    private static _client: IElasticSearchConnector;
 
-    constructor(config: IElasticSearchConfig) {
-        this._config = config;
+    public static initialize(config: IElasticSearchConfig): ElasticSearchDB {
+        ElasticSearchDB._config = config;
+        return ElasticSearchDB;
     }
 
-    getConnection(pluginId: string, proxy?: boolean): any {
-        let client = new elasticsearch.Client(this._config);
-        if (proxy) return proxyMethodCalls(client, Util.hash(pluginId));
-        return client;
+    public static getConnection(pluginId: string, proxy?: boolean): IElasticSearchConnector {
+        // Elasticsearch.js allows only one instance of 'Client'
+        // src: https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/configuration.html
+        ElasticSearchDB._client = ElasticSearchDB._client || new elasticsearch.Client(ElasticSearchDB._config); // || proxyMethodCalls(new elasticsearch.Client(ElasticSearchDB._config), ElasticSearchDB._config.disabledApis);
+        // logger.log('target', ElasticSearchDB._client.search);  
+        return ElasticSearchDB._client;
     }
-}
+};

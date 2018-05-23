@@ -13,15 +13,21 @@ import { ESSchemaMapper } from './ESSchemaMapper';
 class ESSchemaLoader implements ISchemaLoader {
 	
 	private _config: IElasticSearchConfig;
-	private elasticSearchDB: ElasticSearchDB; 
 	private dbConnection: IElasticSearchConnector;
 	
 	constructor(config: IElasticSearchConfig) {
 		this._config = config;
-		this.elasticSearchDB = new ElasticSearchDB(config);
 	}
 
-	getType(): string {
+	public async alter(pluginId: string, schemaData: object) {
+		// TODO: complete implementation
+	}
+
+	public async migrate(pluginId: string, schemaData: object) {
+		// TODO: complete implementation
+	}
+
+	public getType(): string {
 		return 'elasticsearch';
 	}
 
@@ -30,7 +36,7 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	async create(pluginId: string, schemaData: any) {
-		this.dbConnection = this.elasticSearchDB.getConnection(pluginId);
+		this.dbConnection = ElasticSearchDB.getConnection(pluginId);
 		let indexName = this.generateESIndex(pluginId, schemaData.db);
 		let indexDefined = await this.isIndexDefined(indexName);
 		if (!indexDefined) {
@@ -45,7 +51,7 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	private async createIndex(index: string) {
-		return await this.dbConnection.indices.create({index});
+		await this.dbConnection.indices.create({index});
 	}
 
 	private generateESIndex(pluginId: string, db: string): string {
@@ -57,7 +63,7 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	private async isIndexDefined(index: string) {
-		return await this.dbConnection.indices.exists({index})
+		await this.dbConnection.indices.exists({index})
 	}
 
 	private async createMapping(pluginId: string, schemaData: any) {
@@ -70,15 +76,7 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	private async createIndexAlias(index: string, alias: string) {
-		return await this.dbConnection.indices.putAlias({ index, name: alias })
-	}
-
-	async alter(pluginId: string, schemaData: object) {
-
-	}
-
-	async migrate(pluginId: string, schemaData: object) {
-
+		await this.dbConnection.indices.putAlias({ index, name: alias })
 	}
 }
 

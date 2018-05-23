@@ -4,62 +4,50 @@
 
 import { Router, Express } from 'express';
 import { IRouteSchema, Manifest } from '../models/Manifest';
-import { JwtAuthService } from '../auth';
 import * as _ from 'lodash';
 import { FrameworkConfig } from '..';
-import { FrameworkError, FrameworkErrors } from '../util';
+import { FrameworkError, FrameworkErrors, Util } from '../util';
+import * as cls from 'continuation-local-storage';
 
 export class RouterRegistry {
     private static rootApp: Express;
-    private manifest: Manifest;
-    private router: Router;
     private static routerInstances: Array<{ [key: string]: Router }> = [];
-    private static contextParams: FrameworkConfig['secureContextParams'];
-    private static tokenIssuerId: string = 'framework_router_service';
+    private static threadLocalNamespace: any;
 
-    public static initialize(app: Express, contextParams: FrameworkConfig['secureContextParams']) {
+    public static initialize(app: Express) {
         RouterRegistry.rootApp = app;
-        RouterRegistry.contextParams = contextParams;
+        RouterRegistry.threadLocalNamespace = cls.createNamespace('com.sunbird');
     }
     /**
-     * 
-     * 
+     *
+     *
      * @static
-     * @param {Manifest} manifest 
-     * @returns {Router} 
+     * @param {Manifest} manifest
+     * @returns {Router}
      * @memberof RouterRegistry
      */
     public static bindRouter(manifest: Manifest): Router {
-        let router = Router();
-        let prefix = _.get(manifest, 'server.routes.prefix')
-        if (!prefix) throw new FrameworkError({message: `cannot bind "Router" object to App`, code: FrameworkErrors.ROUTE_REGISTRY_FAILED});
-        router.use(RouterRegistry.signContext);
-        RouterRegistry.routerInstances.push({ [manifest.id]: router })
+        const router = Router();
+        const prefix = _.get(manifest, 'server.routes.prefix');
+        if (!prefix) throw new FrameworkError({ message: `cannot bind "Router" object to App`, code: FrameworkErrors.ROUTE_REGISTRY_FAILED });
+        router.use(RouterRegistry.threadLocal(RouterRegistry.getThreadNamespace()));
+        RouterRegistry.routerInstances.push({ [manifest.id]: router });
         RouterRegistry.rootApp.use(prefix, router);
         return router;
     }
 
-    private static signContext(req, res, next) {
-        if (req.get('signed-context')) {
-            req.header['signed-context'] = req.get('signed-context')
-            next();
-        } else if (!_.isEmpty(RouterRegistry.getContextParams(req))) {
-            JwtAuthService.generateToken(RouterRegistry.getContextParams(req), { issuer: RouterRegistry.tokenIssuerId, expiresIn: '1h' }).then((token) => {
-                req.header['signed-context'] = token;
-                next();
-            }).catch((error) => {
-                res.send({ status: "error", message: "Request could not be authenticated due to server error!" }).status(500);
-            })
-        } else {
-            next();
-        }
+    public static getThreadNamespace() {
+        return RouterRegistry.threadLocalNamespace;
     }
 
-    private static getContextParams(req: any): object {
-        let returnObject: any = {};
-        for (let param of RouterRegistry.contextParams) {
-            if (req.get(param)) returnObject[param] = req.get(param);
-        }
-        return returnObject;
+    private static threadLocal(namespace: any) {
+        return function (req, res, next) {
+            namespace.bindEmitter(req);
+            namespace.bindEmitter(res);
+            namespace.run(() => {
+                namespace.set('requestId', Util.UUID());
+                next();
+            });
+        };
     }
 }

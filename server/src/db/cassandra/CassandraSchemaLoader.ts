@@ -29,7 +29,15 @@ export class CassandraSchemaLoader implements ISchemaLoader {
 	}
 
 	public async exists(pluginId: string, db: string, table: string) {
+		// TODO: complete implementation
+	}
 
+	public async alter(pluginId: string, schemaData: object) {
+		// TODO: complete implementation
+	}
+
+	public async migrate(pluginId: string, schemaData: object) {
+		// TODO: complete implementation
 	}
 
 	public async create(pluginId: string, schemaData: any) {
@@ -55,7 +63,7 @@ export class CassandraSchemaLoader implements ISchemaLoader {
 
 	private async createKeyspace(name: string, defaultSettings: ICassandraConfig["defaultKeyspaceSettings"]) {
 		this.dbConnection = this.cassandraDB.getConnection(this._config);
-		return await this.dbConnection.connect()
+		await this.dbConnection.connect()
 				.then(() => {
 					const query = `CREATE KEYSPACE IF NOT EXISTS ${name} WITH replication = ` + JSON.stringify(defaultSettings.replication).split("\"").join("'");
 					this.dbConnection.execute(query);
@@ -63,20 +71,11 @@ export class CassandraSchemaLoader implements ISchemaLoader {
 				.then(delayPromise(100))
 				.catch((err) => {
 					throw new FrameworkError({code: FrameworkErrors.DB_ERROR, rootError: err})
-				})
+				});
 	}
 
 	private generateKeyspaceName(pluginId: string, db: string): string {
 		return Util.generateId(pluginId, db);
-	}
-
-
-	public async alter(pluginId: string, schemaData: object) {
-
-	}
-
-	public async migrate(pluginId: string, schemaData: object) {
-
 	}
 }
 

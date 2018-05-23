@@ -31,7 +31,7 @@ export class PluginManager {
 			console.log('=====> ' + plugin.id + ' plugin loaded');
 		} catch (e) {
 			if(e instanceof FrameworkError) {
-				console.log('=====> ' + plugin.id + ' plugin load failed due to ' + (<FrameworkError> e).print());
+				console.log('=====> ' + plugin.id + ' plugin load failed due to ' + (e as FrameworkError).stack);
 			}
 			throw e;	
 		}
