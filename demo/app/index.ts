@@ -17,7 +17,7 @@ const config: FrameworkConfig = {
         },
         elasticsearch: {
             host: "127.0.0.1:9200",
-            disabledApis: ["cat", "cluster", "indices", "ingest", "nodes", "remote", "snapshot", "tasks"]
+            disabledApis: ["cat", "cluster", "ingest", "nodes", "remote", "snapshot", "tasks"]
         }
     },
     plugins: [{id: 'profile-server', ver: '1.0'}],

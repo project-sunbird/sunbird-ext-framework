@@ -63,7 +63,8 @@ class ESSchemaLoader implements ISchemaLoader {
 	}
 
 	private async isIndexDefined(index: string) {
-		await this.dbConnection.indices.exists({index})
+		const isDefined = await this.dbConnection.indices.exists({index});
+    return isDefined;
 	}
 
 	private async createMapping(pluginId: string, schemaData: any) {
