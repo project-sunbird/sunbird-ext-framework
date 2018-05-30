@@ -2,7 +2,7 @@ import { Manifest } from 'ext-framework-server/models/manifest';
 import { Request, Response } from 'express';
 import { IProfileService } from './interfaces';
 import { Framework } from 'ext-framework-server';
-import * as casssandraSchema from './db/cassandra/schema_1.0.json';
+import * as cassandraSchema from './db/cassandra/schema_1.0.json';
 import * as esSchema from './db/es/schema_1.0.json';
 import * as _ from 'lodash';
 import { IElasticSearchConnector, ICassandraConnector } from 'ext-framework-server/interfaces';
@@ -15,7 +15,7 @@ export class Server implements IProfileService {
 	private elasticsearch: IElasticSearchConnector;
 	constructor(manifest: Manifest) {
 		this.manifest = manifest;
-		this.cassandra = Framework.api.getCassandraInstance(manifest.id, (casssandraSchema));
+		this.cassandra = Framework.api.getCassandraInstance(manifest.id, (cassandraSchema));
 		this.elasticsearch = Framework.api.getElasticsearchInstance(manifest.id, (esSchema));
 	}
 

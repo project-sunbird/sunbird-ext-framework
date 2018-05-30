@@ -10,7 +10,7 @@
     "test": "mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
     "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
     "standard": "standard --parser typescript-eslint-parser --plugin typescript **/*.ts",
-    "lint": "tslint --config ./tslint.json ./src/**/*.ts --force"
+    "lint": "tslint --config ./tslint.json **/*.ts --force"
   },
   "keywords": [],
   "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
@@ -44,8 +44,10 @@
     "typescript-eslint-parser": "^13.0.0"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
     "@types/jsonwebtoken": "^7.2.6",
     "@types/kafka-node": "^2.0.6",
+    "axios": "^0.18.0",
     "cassandra-driver": "^3.4.1",
     "continuation-local-storage": "^3.2.1",
     "elasticsearch": "^14.1.0",
