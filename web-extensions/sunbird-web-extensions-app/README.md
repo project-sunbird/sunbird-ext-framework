@@ -24,5 +24,6 @@ Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.gi
 Run these commands 
 
 1. `cd demo`
-2. `ng serve`
-3. go to `http://localhost:4200` 
+2. `npm i`
+3. `ng serve`
+4. go to `http://localhost:4200` 
