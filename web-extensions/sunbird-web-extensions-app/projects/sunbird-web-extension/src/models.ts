@@ -1,8 +1,8 @@
-export const PluginConfig = (config) => {
-  return (type) => {
+export function PluginConfig(config) {
+  return function(type) {
     type._pluginConfig = config;
   };
-};
+}
 
 export class PluginPlacement {
   public name;

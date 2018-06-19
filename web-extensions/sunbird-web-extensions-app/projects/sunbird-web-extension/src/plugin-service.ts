@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { PluginData } from './models';
+import { PluginData, PluginPlacement } from './models';
 import { ReplaySubject } from 'rxjs';
-import { PluginPlacement } from 'sunbird-web-extension';
 
 export interface IPluginData {
   type: IPluginClass;

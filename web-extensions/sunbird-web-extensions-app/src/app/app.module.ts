@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { WebFrameworkModule } from 'sunbird-web-extension';
+import { WebExtensionModule } from 'sunbird-web-extension';
 
 @NgModule({
   declarations: [
@@ -10,7 +10,7 @@ import { WebFrameworkModule } from 'sunbird-web-extension';
   ],
   imports: [
     BrowserModule,
-    WebFrameworkModule
+    WebExtensionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

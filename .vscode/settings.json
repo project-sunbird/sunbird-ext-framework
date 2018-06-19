@@ -4,11 +4,14 @@
     "Sunil",
     "Vasabhaktula",
     "edata",
+    "hashids",
     "ilimi",
     "keycloak",
     "keyspace",
+    "mochawesome",
     "pdata",
-    "sunils"
+    "sunils",
+    "typedoc"
   ],
   "editor.tabSize": 2,
   "editor.detectIndentation": false,

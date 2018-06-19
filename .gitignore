@@ -1,6 +1,8 @@
 **/**/dist/**
 **/**/node_modules
 **/mochawesome-report
+**/coverage
+**/.nyc_output
 package-lock.json
 **/docs/**
 **/coverage/**
