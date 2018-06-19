@@ -1,0 +1,133 @@
+
+
+<h2>Libraries in Angular 6</h2>
+
+<p>To generate a library in Angular-CLI just run the following command.</p>
+
+<app-codeblock>
+    ng generate library library-name
+</app-codeblock>
+<br>
+<p> and it will scaffold the necessary files in the
+  <code>projects</code> directory.</p>
+<p>The important thing is that you can directly import from the library into your applications in the same CLI project, even
+  without publishing the library on NPM.</p>
+
+<p>For example, let’s say you generated a
+  <code>shared</code> library. By default the CLI will produce a
+  <code>shared</code> directory inside
+  <code>projects</code>, with a
+  <code>ShareComponent</code> and a
+  <code>SharedService</code>. You’ll have something like:</p> 
+<div class="ui ignored message">
+  <div class="ui list">
+    <div class="item">
+      <i class="folder icon"></i>
+      <div class="content">
+        <div class="header">your-angular-app-folder</div>
+        <div class="description">Source files for project</div>
+        <div class="list">
+          <div class="item">
+            <i class="folder icon"></i>
+            <div class="content">
+              <div class="header">projects</div>
+              <div class="list">
+                <div class="item">
+                  <i class="folder icon"></i>
+                  <div class="content">
+                    <div class="header">shared</div>
+                    <div class="list">
+                      <div class="item">
+                        <i class="folder icon"></i>
+                        <div class="content">
+                          <div class="header">src</div>
+                          <div class="list">
+                            <div class="item">
+                              <i class="folder icon"></i>
+                              <div class="content">
+                                <div class="header">lib</div>
+                                <div class="list">
+                                  <div class="item">
+                                    <i class="file icon"></i>
+                                    <div class="content">
+                                      <div class="header">shared.module.ts</div>
+                                    </div>
+                                  </div>
+                                  <div class="item">
+                                    <i class="file icon"></i>
+                                    <div class="content">
+                                      <div class="header">shared.component.ts</div>
+                                    </div>
+                                  </div>
+                                  <div class="item">
+                                    <i class="file icon"></i>
+                                    <div class="content">
+                                      <div class="header">shared.service.ts</div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list">
+          <div class="item">
+            <i class="folder icon"></i>
+            <div class="content">
+              <div class="header">src</div>
+            </div>
+          </div>
+        </div>
+        <div class="list">
+          <div class="item">
+            <i class="folder icon"></i>
+            <div class="content">
+              <div class="header">...</div>
+              <div class="list">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br>
+<p>If you want to use the <code>SharedService</code> inside your application, for example in <code>app.component.ts</code>, you simply have to import:
+</p>
+<app-codeblock>
+  import {{ '{' }} Component {{ '}' }} from '@angular/core';
+  <br> import {{ '{' }} SharedService {{ '}' }} from 'shared';
+  <br> @Component({{ '{' }}
+  <br>&nbsp; selector: 'app-root',
+  <br>&nbsp; templateUrl: './app.component.html',
+  <br>&nbsp; styleUrls: ['./app.component.css']
+  <br> {{ '}' }})
+  <br> export class AppComponent {{ '{' }}
+  <br>&nbsp; title = 'app';
+  <br>
+  <br>&nbsp; constructor(sharedService: SharedService) {{ '{' }}
+  <br> // note the import at the top!
+  <br>&nbsp; {{ '}' }}
+  <br> {{ '}' }}
+  <br>
+</app-codeblock>
+<br>
+<p>And the CLI will handle it!</p>
+
+<p>    This opens great possibilities for large project, and for developers to open source libraries of useful components and services!</p>
+
+<p>Obviously, these developers will not be familiar with all of the intricacies of the code for the application they are plugging into. Once the plugins are developed, other even less technical users may simply install the application and any selected plugins.</p>
+
+<h4><a routerLink="/build-plugin">Build a real world plugin? Urrm, What is that?</a></h4>
+<br>
+
+<br>

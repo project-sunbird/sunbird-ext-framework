@@ -1,0 +1,122 @@
+<h1>Integration</h1>  
+
+<p><strong>1.</strong> To integrate the plugin that we just built into the Sunbird Platform we'll create a framework.config.ts file on the root of
+our application and add the following content:</p>
+
+<app-codeblock>export const WebExtensionsConfig = {{ '{' }}
+    <br>&nbsp; plugins: [
+    <br>&nbsp; {{ '{' }}
+    <br>&nbsp;&nbsp;   'id': 'table-generator',
+    <br>&nbsp;&nbsp;   'ver': '1.0.0',
+    <br>&nbsp;&nbsp;   'module': TableGeneratorModule,
+    <br>&nbsp;&nbsp;   'main': TableGeneratorPlugin
+    <br>&nbsp; {{ '}' }}]
+    <br>&nbsp;{{ '}' }};
+</app-codeblock>
+<br>
+
+
+<p>Next, we will import the build of
+    <code>sunbird-web-extension</code> module and <code>framework.config.ts</code> into your main <code>app.module.ts</code></p>
+  
+  <app-codeblock>{{"import { BootstrapFramework, WebFrameworkModule } from '../../libs/sunbird-web-extension';"}}
+    <br>{{"import { WebExtensionsConfig } from '../framework.config';
+    " }}
+  </app-codeblock>
+  <br>
+  
+  <p>
+    This will import
+    <code>BootstrapFramework</code> and
+    <code>WebFrameworkModule</code> classes. and the config file which has the array of plugins that we want to extend on the fly.
+  </p>
+
+
+<p>
+  Now, if we launch our application, the plugin will be loaded by the <code>PluginService</code> and
+  <code>ExtensionPoint</code> directives will instantiate the <code>TableGenerator</code> plugin components where appropriate.
+</p>
+
+
+  <br>
+  <p> <strong>2.</strong> Next, create a file called
+    <code>framework.config.ts</code> file under the
+    <code>src/</code> folder of your angular app</p>
+  <div class="ui ignored message">
+  <div class="ui list">
+    <div class="item">
+      <i class="folder icon"></i>
+      <div class="content">
+        <div class="header">your-angular-app-folder</div>
+        <div class="list">
+          <div class="item">
+            <i class="folder icon"></i>
+            <div class="content">
+              <div class="header">libs</div>
+              <div class="list">
+                <div class="item">
+                  <i class="folder icon"></i>
+                  <div class="content">
+                    <div class="header">sunbird-web-extension</div>
+                    <div class="description">bundled web extension folder</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="list">
+          <div class="item">
+            <i class="folder icon"></i>
+            <div class="content">
+              <div class="header">src</div>
+              <div class="description">built files</div>
+              <div class="list">
+                <div class="item">
+                  <i class="file icon"></i>
+                  <div class="content">
+                    <div class="header" style="color: crimson">framework.config.ts</div>
+                    <div class="description">Config file that contains the array of all plugins</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="item">
+            <i class="file icon"></i>
+            <div class="content">
+              <div class="header">angular.json</div>
+              <div class="description">Config file for setting packaged themes</div>
+            </div>
+          </div>
+        </div>
+        <div class="list">
+          <div class="item">
+            <i class="folder icon"></i>
+            <div class="content">
+              <div class="header">...</div>
+              <div class="list">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+  <h3>Summarizing on our first plugin</h3>
+  <p>
+      
+      Well done! You successfully implemented your first plugin! In this section, we used the API of
+      our plugin architecture to create a plugin to manage Table Generation. We used the
+      <code>PluginPlacement</code> class to map our plugin components to different slots in the UI of our
+      application. We also made use of the <code>PluginData</code> object that is provided to each instantiated
+      component in the plugin slot in order to access the plugin instance.
+      The advantage of implementing functionality like this inside a plugin should be obvious. We
+      added an additional feature to our application without building up additional dependencies.
+      Our Table Generator feature is completely portable. Third-party developers can write independent
+      plugins, and they can be loaded by our system. This is a big advantage, and it helps us keep
+      our core slim while providing great extensibility.
+  </p>

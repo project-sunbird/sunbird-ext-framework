@@ -1,0 +1,32 @@
+<h1>Pluggable UI Components</h1>
+
+<p>The system that we're going to build in this chapter borrows a lot of mechanisms that are
+  already present in the Angular framework. In order to implement extensibility using plugins,
+  we rely on the following core concepts:</p>
+
+<ul class="ui list">
+  <li>We use directives to indicate extension points in the UI, which we call plugin extension points. These
+    plugin extension point directives will be responsible for the dynamic instantiation of plugin
+    components and will insert them into the application UI at the given position</li>
+  <li>Plugins expose components using a concept that we call plugin placements. Plugin
+    placements declare what components of a plugin should be placed into which plugin extension points
+    in the application. We also use plugin placements to decide the order in which
+    components from different plugins should be inserted into the plugin extension points. For this, we'll
+    use a property called <strong>priority</strong>.</li>
+  <li>We use the dependency injection of Angular to provide the instantiated plugin
+    information into the plugin components. As the plugin components will be placed in a
+    spot where there's already an injector present, they will be able to inject surrounding
+    components and dependencies in order to connect to the application.</li>
+</ul>
+
+<br>
+<p>Let's look at the following illustration to picture the architecture of our plugin system before
+  we start implementing it:</p>
+
+  <img src="https://i.imgur.com/i2Ykbz0.jpg"  style="width: 650px" alt="">
+
+  <br>
+
+  <h4> <a routerLink="/implementing-plugin-api">Checkout the Additional Documentation to learn to implement Plugin API</a></h4>
+
+  <br>

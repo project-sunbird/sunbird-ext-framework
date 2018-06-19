@@ -1,0 +1,60 @@
+/* You can add global styles to this file, and also import other style files */
+ 
+/* Navigation link styles */
+nav a {
+    padding: 5px 10px;
+    text-decoration: none;
+    margin-right: 10px;
+    margin-top: 10px;
+    display: inline-block;
+    background-color: #eee;
+    border-radius: 4px;
+}
+  pre {
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
+  }
+  nav a:visited, a:link {
+    color: #607D8B;
+  }
+  nav a:hover {
+    color: #039be5;
+    background-color: #CFD8DC;
+  }
+  nav a.active {
+    color: #039be5;
+  }
+
+  *{
+    transition: all 0.5s ease;
+    outline: none;
+
+  }
+ul li{cursor:pointer;}
+.active{
+  color:blue;
+  transition: all 0.5s ease;
+}
+a.item.active-link {
+  background: #cecece !important;
+  color: #000 !important;
+}
+.menu{
+  transition: all 25s ease;
+
+}
+.active div{
+  transition: all 19s ease;
+
+  display:block !important;
+}
+.vertical.menu.extensible-document{
+  padding-top: 55px;
+}
+
+code {
+  background-color: rgba(0, 0, 0, 0.06);
+  line-height: 1;
+  padding: 3px 4px;
+}

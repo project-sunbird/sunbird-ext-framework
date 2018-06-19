@@ -1,0 +1,103 @@
+<h1>Introduction</h1>
+
+<p>
+  A web extension, would allow you to write application as pluggable modules and provide additional functionality through it. It helps you manage the scope of your application/project.
+</p>
+<p>Sometimes, a requested feature is really nice and helpful, but it would bloat the application core when its design is not handled carefully. Instead of snowballing your whole application or
+  library with such features, design your whole application in a way that it allows you to build a plugin architecture that has a great effect on the extensibility of your system.  
+  </p>
+  
+ <p> A pluggable framework (or plug-in architecture) means a system which allows third party developers to 
+   create or extend the functionality of a primary application through the use of pluggable 
+   components without having direct access to or knowledge of the primary application's source code or inner workings.</p>
+
+<p> This is because you're making your application open for extensibility but closing it for modification.  This will allow us to develop portable functionality that is packaged into plugins. Our plugin system will load new plugins dynamically.</p>
+
+<img src="http://www.vogella.com/tutorials/EclipseExtensionPoint/img/extensionpointconcept10.png" style="width: 500px" alt="">
+
+<h3>How are we going to achieve this?</h3>
+
+<p>
+    There are a lot of different approaches on how to implement a plugin architecture. Although
+    these approaches can vary a lot, there's almost always a mechanism in place that provides
+    unified extension points. Without this, it will be hard to extend a system uniformly. 
+</p>
+
+<p>This is where Angular comes into picture. <code>Angular 2/4/5/6</code> is a near perfect fit for most of the needs of that system.
+In fact, recent architectural changes in <code>Angular 6</code> do bring us closer to a solution.
+</p>
+
+
+<h4><a routerLink="/pluggagble-ui-components">Click here to deep dive into Angular plugin architecture</a></h4>
+
+or 
+<h4><a routerLink="/setup">Skip to start building a plugin</a></h4>
+
+<br><br>
+<!-- 
+<h5>At a higher level, a plugin architecture should fulfil at least the following requirements:</h5>
+
+<ul>
+  <li>
+      <strong>Extensibility</strong>: The main idea behind plugins is to allow the extension of the core
+      functionality using isolated bundles of code. A great plugin architecture allows you to
+      extend the core seamlessly and without noticeable performance losses.
+  </li>
+  <li>
+      <strong>Portability</strong>: Plugins should be isolated enough so that they can be plugged into the
+      system during runtime. There shouldn't be a necessity to rebuild a system to enable
+      plugins. Ideally, plugins can even be loaded at any time during runtime. They can be
+      deactivated and activated and should not cause the system to run into an inconsistent state.
+  </li>
+  <li>
+      <strong>Composability</strong>: A plugin system should allow the use of many plugins in parallel and
+      allow an extension of the system by compositing multiple plugins together. Ideally, the
+      system also includes dependency management, plugin version management, and plugin
+      intercommunication.
+  </li>
+</ul> -->
+
+
+
+
+
+
+
+
+
+
+<!--     
+
+<p>The documentation is for demonstrating Extensible Framework, a plugin architecture that will help us extend the features
+  of our application without bloating its core.
+</p>
+
+
+
+
+
+<h4>We'll cover the following topics:
+</h4>
+<ul>
+  <li>Designing a plugin architecture, based on the Angular ecosystem</li>
+  <li>Implementing a decorator-based plugin API</li>
+  <li>Using ComponentResolver and ViewContainerRef to instantiate plugin components into
+      predefined extension points in our application</li>
+  <li>Implementing a plugin-loading mechanism using SystemJS</li>
+  <li>Using a reactive approach in our plugin architecture to enable plug and play style
+      plugins</li>
+  <li>Implementing an extensible plugin to enable tools using the new plugin API which are build time configurable</li>
+</ul> -->
+
+<!-- 
+<ul class="ui list">
+  <li>Extension point</li>
+  <li>Design
+      <ul>
+          <li>Each plugin is an angular library (NPM ready)</li>
+          <li>Should extend an Extension point in an app/plugin</li>
+          <li>Build time configurable</li>
+        </ul>
+  </li>
+</ul> -->
+

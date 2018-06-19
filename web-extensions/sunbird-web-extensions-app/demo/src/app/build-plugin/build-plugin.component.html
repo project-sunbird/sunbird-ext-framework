@@ -1,0 +1,163 @@
+<h1>Build a plugin</h1>
+
+<p>
+  Before we get into the plugin details, we should first agree on where to make our application extensible. Our plugin system
+  is based on the
+  <code>ExtensionPoint</code> directives, which should be placed somewhere in our component tree so that plugins can expose components
+  to these extension points.
+</p>
+
+<p>For now, we decide to make one menu items at the top in our application extensible:</p>
+
+<ul>
+  <li>
+    <strong>Table Generator:</strong> A menu item that takes the user to generate a table in their content editor. </li>
+</ul>
+
+<p>
+    Firstly, lets set the plugin placement by setting out <code>ExtensionPoint</code> directive into your <code>app.component.ts</code> which is going to load our top menu.
+</p>    
+
+<app-codeblock>
+        {{"<"}}extension-point name="table-generator"{{">"}}{{"<"}}/extension-point{{">"}}
+</app-codeblock>
+
+<br>
+
+<p>Let's start building this
+  <code>Table Generator</code> plugin/library using the following CLI command. </p>
+
+<app-codeblock>ng generate library table-generator</app-codeblock>
+<br>
+<p>
+  It creates all the necessary files.
+</p>
+
+<img src="https://i.imgur.com/LpTsBGk.png" style="width: 500px" alt="">
+<br>
+<br>
+<p>The files are create at a location based on the path mentioned in the
+  <code>angular.json</code> file.</p>
+
+
+<app-codeblock>
+
+  {{"{"}}
+
+  <br>&nbsp; "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  <br>&nbsp; "version": 1,
+  <strong style="color: red">
+    <br>&nbsp; "newProjectRoot": "projects",</strong>
+  <br> &nbsp; "projects": {{"{"}}
+</app-codeblock>
+<br>
+<p>Here the path mentioned is
+        <code>content-editor/projects</code>
+      </p>
+
+<br>
+
+<p>We have now created
+  <code>TableGeneratorComponent</code> that we want to expose.
+</p>
+
+<app-codeblock>
+&nbsp;import {{"{"}} Component, OnInit {{"}"}} from '@angular/core';
+
+        <br>&nbsp;    @Component({{"{"}}
+        <br>&nbsp;&nbsp;     selector: 'lib-table-generator',
+        <br>&nbsp;&nbsp;     template: `
+        <br>&nbsp;&nbsp;&nbsp;    {{"<"}}p{{">"}}
+                   table-generator works!{{"<"}}/p{{">"}}
+                <br>&nbsp;&nbsp;      `,
+                <br>&nbsp; &nbsp;     styles: []
+                <br>&nbsp;       {{"}"}})
+                <br>&nbsp;     export class TableGeneratorComponent implements OnInit {{"{"}}
+                <br>&nbsp;&nbsp;        constructor() {{"{"}} {{"}"}}
+                <br>&nbsp;&nbsp;       ngOnInit() {{"{"}}   {{"}"}}
+          <br>     {{"}"}}
+        
+</app-codeblock>
+
+<br>
+<p>You can see that we implemented a regular component here. There's nothing special about this
+        component at all.</p>
+
+<!-- <img src="https://i.imgur.com/3PKp29P.png" style="width: 500px" alt=""> -->
+<br>
+<p>Create
+  <code>plugin.ts</code> file inside
+  <code>table-generator/src/lib</code>
+</p>
+
+<img src="https://i.imgur.com/EInPHiN.png" style="width: 500px" alt="">
+<br>
+<br>
+
+<p>
+    This <code>plugin.ts</code> will contain the plugin configuration.
+</p>
+
+<p>
+Alright, now we can import the  <code>sunbird-web-extension</code> module and also can expose the plugin component in the plugin configuration using a <code>PluginPlacement</code> object. Let's make the necessary modification to our <code>plugin.ts</code> module file:
+</p>
+
+<app-codeblock>import {{ '{' }} PluginConfig, PluginPlacement {{ '}' }} from 'sunbird-web-extension';
+  <br>import {{ '{' }} TableGeneratorComponent {{ '}' }} from '../public_api';
+  <br>
+  <br>@PluginConfig({{ '{' }}
+  <br> name: 'table generator plugin',
+  <br> description: 'TableGenerator',
+  <br> placements: [
+  <br> ]
+  <br>{{ '}' }})
+  <br>export class TableGeneratorPlugin {{ '{' }}
+  <br>{{ '}' }}
+</app-codeblock>
+
+<br>
+
+
+<p>
+    Now, we include a new <code>PluginPlacement</code> object in our plugin configuration, which maps our
+    <code>TableGenerator</code> component to be exposed into the application extension point with the name <code>table-generator</code>:
+</p>
+
+<app-codeblock>import {{ '{' }} PluginConfig, PluginPlacement {{ '}' }} from 'sunbird-web-extension';
+        <br>import {{ '{' }} TableGeneratorComponent {{ '}' }} from '../public_api';
+        <br>
+        <br>@PluginConfig({{ '{' }}
+        <br> name: 'table generator plugin',
+        <br> description: 'TableGenerator',
+        <br> placements: [
+        <p style="color:cornflowerblue"> new PluginPlacement({{ '{' }}name: 'table-generator', priority: 1, component: TableGeneratorComponent{{ '}' }})</p>
+         ]
+        <br>{{ '}' }})
+        <br>export class TableGeneratorPlugin {{ '{' }}
+        <br>{{ '}' }}
+      </app-codeblock>
+<br>
+
+
+<p>Let us create an <code>index.ts</code> and export the plugin's module, component and the plugin configurations.</p>
+
+
+<app-codeblock>
+        export * from './src/lib/plugin';
+       <br> export * from './src/lib/table-generator.module';
+      <br>  export * from './src/lib/table-generator.component';
+</app-codeblock>
+
+<br>
+<p>
+    This would already be enough for the plugin to work.
+</p>
+
+<p>
+    The only thing that is left is to add the plugin to the list of plugins that should be loaded
+    initially by the <code>PluginService</code> directive.
+</p>
+
+<h4><a routerLink="/integrate-plugin-with-portal">We will cover this in the next section</a></h4>
+
+<br><br>

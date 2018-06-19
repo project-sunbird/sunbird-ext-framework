@@ -1,0 +1,220 @@
+<h1>Implementing Plugin API</h1>
+
+<p>
+  Let's start with the less complex entities of our plugin API. We create a new
+<code>projects/sunbird-web-extension/model.ts</code> file to create the <code>PluginConfig</code> decorator and the <code>PluginPlacement</code>
+class, which stores the information where plugin components should be placed. We also
+create the <code>PluginData</code> class in this file, which is used to inject plugin runtime information into
+plugin components:
+</p>
+
+<app-codeblock>
+  export const PluginConfig = (config) => {{ '{' }}
+   <br> &nbsp; return (type) => {{ '{' }}
+    <br> &nbsp;&nbsp;  type._pluginConfig = config;
+     <br> &nbsp; {{ '}' }};
+  <br>  {{ '}' }};
+</app-codeblock>
+
+<br>
+<p>The <code>PluginConfig</code> decorator contains the very simple logic of accepting a configuration
+  parameter, which will then be stored on the annotated class (the constructor function) on the
+  <code>_pluginConfig</code> property. </p>
+
+
+<app-codeblock>
+  export class PluginPlacement {{ '{' }}
+  <br> &nbsp; public name;
+  <br> &nbsp; public priority;
+  <br> &nbsp; public component;
+  <br> &nbsp; constructor(options) {{ '{' }}
+  <br> &nbsp;&nbsp;    this.name = options.name;
+  <br> &nbsp;&nbsp;   this.priority = options.priority;
+  <br> &nbsp;&nbsp;    this.component = options.component;
+  <br> &nbsp;    {{ '}' }};
+  <br>{{ '}' }};
+</app-codeblock>  
+<br>
+<p>The <code>PluginPlacement</code> class represents the configuration object to expose plugin components
+  into different extension points in the application UI:</p>
+
+  <app-codeblock>
+    export class PluginData {{ '{' }}
+    <br> &nbsp;  public plugin;
+    <br> &nbsp;  public placement;
+    <br> &nbsp;  constructor(plugin, placement) {{ '{' }}
+    <br> &nbsp;&nbsp;    this.plugin = plugin;
+    <br> &nbsp;&nbsp;    this.placement = placement;
+    <br> &nbsp;   {{ '}' }};
+    <br>{{ '}' }};
+    
+  </app-codeblock>
+  <br>
+
+<p>The <code>PluginData</code> class represents the plugin runtime information that was created during
+  instantiation of the plugin as well as one <code>PluginPlacement</code> object. This class will be used by
+  the <code>PluginService</code> to convey information about plugin components to the extension points in the
+  application.</p>
+
+  <p>
+    These three classes are the main interaction points when implementing a plugin.
+  </p>
+
+  <p>
+    Let's look at a simple example plugin, to get a picture of how we can use the PluginConfig
+decorator and the <code>PluginPlacement</code> class to configure a plugin:
+  </p>
+
+
+  <app-codeblock>
+    @PluginConfig({{ '{' }}
+    <br> &nbsp; name: 'my-example-plugin',
+    <br> &nbsp; description: 'A simple example plugin',
+    <br> &nbsp;  placements: [
+    <br> &nbsp;&nbsp;  new PluginPlacement({{ '{' }}
+    <br> &nbsp;&nbsp;&nbsp;    name: 'plugin-name-1',   priority: 1,  component: PluginComponent1
+    <br> &nbsp;  {{ '}' }})
+    <br> &nbsp;  ]
+    <br> &nbsp;  {{ '}' }})
+    <br><br> export default class ExamplePlugin {{ '{' }} {{ '}' }}
+  </app-codeblock>
+
+  <br>
+  <p>Using the <code>PluginConfig</code> decorator, implementing a new plugin is a breeze. We decide the
+    name, description, and where we'd like to place plugin components in the application at
+    design time.</p>
+
+    <p>
+        Our plugin system uses named <code>ExtensionPoint</code> directives to indicate extension points in our
+        application component tree. In the <code>PluginPlacement</code> objects, we reference the Angular
+        components built into the plugin and indicate in which extension point they should be placed by
+        referencing the extension point name. The priority of the placement will tell the extension point how to
+        order the plugin component when created. This gets important when components of different
+        plugins get created in the same extension point.
+    </p>
+
+    <p>Okay, let's dive right into the core of our plugin architecture by implementing the plugin
+        service. We'll create a new <code>your-app/projects/sunbird-web-extension/src/plugin-service.ts</code> file and create a new
+        <code>PluginService</code> class:
+    </p>
+
+
+<app-codeblock>import {{'{'}} Injectable {{'}'}} from '@angular/core';
+  <br>import {{'{'}}ReplaySubject {{'}'}} from 'rxjs/Rx';
+    <br> &nbsp;  @Injectable()
+    <br> &nbsp;  export class PluginService {{'{'}}
+    <br> &nbsp;  ...
+    <br> &nbsp;  {{'}'}}
+</app-codeblock>
+<br><br>
+<p>
+    As we will create an injectable service, we'll annotate our PluginService class using the
+    @Injectable annotation. We use the RxJS ReplaySubject type in order to emit events on any
+    changes of the activated plugins.</p>
+<p>
+    Let's look at the constructor of our service:
+</p>
+
+<app-codeblock>
+    constructor() {{'{'}}
+    <br> &nbsp;  this.plugins = [];
+    <br> &nbsp;   // Change observable if the list of active plugin changes
+    <br> &nbsp;    this.change = new ReplaySubject(1);
+    <br> &nbsp;   this.loadPlugins();
+    <br> &nbsp;{{'}'}}
+</app-codeblock>
+
+<br><br>
+
+<p>First, we initialize a new empty plugins array. This will be the list of active plugins, which
+    contains runtime plugin data such as the URL where the plugin was loaded from, the plugin
+    type (constructor of the class), a shortcut to the configuration stored on the plugin (created by
+    the <code>PluginConfig</code> decorator) and finally, the instance of the plugin class itself</p>
+
+<p>
+    We also add a change member that we initialize with a new <code>RxJS ReplaySubject</code>. We'll use this
+    subject in order to emit the list of active plugins once it changes. This allows us to build our
+    plugin system in a reactive way and enable plug and play style plugins.
+</p>    
+
+<p>As a last action in the constructor, we call the loadPlugins method of the service. This will
+    perform the initial loading with the registered plugins:</p>
+
+  <app-codeblock>
+  <br> &nbsp; loadPlugins() {{'{'}}
+  <br> &nbsp;&nbsp; if(config.plugins) {{'{'}}
+  <br> &nbsp;&nbsp;&nbsp;     config.plugins.map((data) => data.main);
+  <br> &nbsp;&nbsp;&nbsp;    for (const plugin of plugins) {{'{'}}
+  <br> &nbsp;&nbsp;&nbsp;        this.loadPlugin(plugin);
+  <br> &nbsp;&nbsp;  {{'}'}}
+  <br> &nbsp;  {{'}'}}
+  </app-codeblock>
+  <br><br>
+  <p>The <code>loadPlugins</code> method asynchronously loads a file with the name plugins.ts from the
+      root path of our application using SystemJS. The plugins.ts file is expected to default export
+      an array, which contains preconfigured paths to plugins that should be loaded with the
+      application startup. This allows us to configure the plugins that we're already aware of and
+      which should be present by default. Using a separate and asynchronously loaded file for this
+      configuration gives us a better separation from the main application. We can run the same
+      application code but using a different plugins.ts file and control what plugins should be
+      present by default.</p>
+
+<p>
+    The <code>loadPlugins</code> method then loads each plugin using the URL present in the plugins.ts
+    file by calling the <code>loadPlugin</code> method:
+</p>
+
+  <app-codeblock>
+      loadPlugin(plugin) {{'{'}}
+      <br> &nbsp;   if (plugin) {{'{'}}
+      <br> &nbsp;&nbsp;     const Plugin = {{'<'}}any{{'>'}}plugin;
+      <br> &nbsp;&nbsp;    const pluginData = {{'{'}}
+      <br> &nbsp;&nbsp;      type: Plugin,
+      <br> &nbsp;&nbsp;      config: Plugin._pluginConfig,
+      <br> &nbsp;&nbsp;      instance: new Plugin()
+     <br> &nbsp; {{'}'}};
+     <br> &nbsp;    this.plugins = this.plugins.concat([pluginData]);
+     <br> &nbsp;    this.change.next(this.plugins);
+     <br> &nbsp;    {{'}'}}
+     <br>   {{'}'}}
+  </app-codeblock>
+
+   <br>
+   <br>
+   <p>
+     The <code>loadPlugin</code> method is responsible for the loading and instantiation of individual plugin
+  modules. 
+   </p>
+
+
+   <p>
+     Finally, we'll need a method to gather the <code>PluginPlacement</code> data from all our plugins and
+  filter them by a extension point name. This gets important when our plugin extension points need to know which
+  components they should instantiate. Plugins can expose any number of components into any
+  number of application plugin extension points. This function will be used by our plugin extension points when they
+  need to know which of the exposed Angular components are relevant to them:
+   </p>
+
+
+   <app-codeblock>
+      <br>getPluginData(name: string) {{'{'}}
+      <br> &nbsp;   return this.plugins.reduce((components, pluginData) => {{'{'}}
+      <br> &nbsp;&nbsp;     return components.concat(
+        <br> &nbsp;&nbsp;       pluginData.config.placements
+        <br> &nbsp;&nbsp;         .filter((placement) => placement.name === name)
+        <br> &nbsp;&nbsp;         .map((placement) => new PluginData(pluginData, placement))
+        <br> &nbsp;     );
+        <br> &nbsp;   {{'}'}}, []);
+        <br>{{'}'}}
+
+   </app-codeblock>
+
+   <br><br>
+
+   <p>This is already it for the <code>PluginService</code> class so far, and we created the core of our plugin
+      system.</p>
+<br>
+      <!-- <p>
+          In the next topic, we will deal with the plugin extension points and look at how we can
+          instantiate plugin components dynamically.
+      </p> -->
