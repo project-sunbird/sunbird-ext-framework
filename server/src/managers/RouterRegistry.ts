@@ -2,7 +2,7 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 
-import { Router, Express } from 'express';
+import { Router, Express, Response, Request, NextFunction, RequestHandler } from 'express';
 import { IRouteSchema, Manifest } from '../models/Manifest';
 import * as _ from 'lodash';
 import { FrameworkConfig } from '..';
@@ -40,12 +40,13 @@ export class RouterRegistry {
         return RouterRegistry.threadLocalNamespace;
     }
 
-    private static threadLocal(namespace: any) {
-        return function (req, res, next) {
+    public static threadLocal(namespace: any): RequestHandler {
+        return (req: Request, res: Response, next: NextFunction) => {
             namespace.bindEmitter(req);
             namespace.bindEmitter(res);
             namespace.run(() => {
                 namespace.set('requestId', Util.UUID());
+                namespace.set('headers', _.clone(req.headers));
                 next();
             });
         };

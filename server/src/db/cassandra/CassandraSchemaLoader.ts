@@ -6,77 +6,77 @@ import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
 import { defaultConfig } from '../../config';
 import { CassandraDB } from './index';
-import { ICassandraConfig, ICassandraConnector } from '../../interfaces';
-import { CassandraQueryBuilder } from './CassandraQueryBuilder';
+import { ICassandraConfig, ICassandraConnector, IMetaDataProvider } from '../../interfaces';
 import { Util, FrameworkError, FrameworkErrors, delayPromise } from '../../util';
 import * as _ from 'lodash';
-
+import * as ExpressCassandra from 'express-cassandra';
+import { schemaService } from './schemaService';
+import * as util from 'util';
+import { cassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
+import { logger } from '../../logger';
 export class CassandraSchemaLoader implements ISchemaLoader {
 
-	private _config: ICassandraConfig;
-	private cassandraDB: CassandraDB;
-	private dbConnection: ICassandraConnector;
-	private queryBuilder: CassandraQueryBuilder;
-	
-	constructor(config: ICassandraConfig) {
-		this._config = config;
-		this.cassandraDB = new CassandraDB(config);
-		this.queryBuilder = new CassandraQueryBuilder();
-	}
+  private _config: ICassandraConfig;
+  private cassandraDB: CassandraDB;
+  private dbConnection: any;
+  private metaDataProvider: IMetaDataProvider;
 
-	getType(): string {
-		return 'cassandra';
-	}
+  constructor(config: ICassandraConfig, cassandraDB: CassandraDB, metaDataProvider: IMetaDataProvider) {
+    this._config = config;
+    this.cassandraDB = cassandraDB;
+    this.metaDataProvider = metaDataProvider;
+  }
 
-	public async exists(pluginId: string, db: string, table: string) {
-		// TODO: complete implementation
-	}
+  getType(): string {
+    return 'cassandra';
+  }
 
-	public async alter(pluginId: string, schemaData: object) {
-		// TODO: complete implementation
-	}
+  public async exists(pluginId: string, schema: object) {
+    // TODO: complete implementation
+  }
 
-	public async migrate(pluginId: string, schemaData: object) {
-		// TODO: complete implementation
-	}
+  public async alter(pluginId: string, schema: object) {
+    // TODO: complete implementation
+  }
 
-	public async create(pluginId: string, schemaData: any) {
-		let defaultKeyspaceSettings: ICassandraConfig["defaultKeyspaceSettings"]= _.get(schemaData, "dbConfig.defaultKeyspaceSettings");
-		await this.createKeyspace(this.generateKeyspaceName(pluginId, schemaData.db), Object.assign(this._config.defaultKeyspaceSettings, defaultKeyspaceSettings));
-		await this.createTables(pluginId, schemaData)
-	}
+  public async migrate(pluginId: string, schema: object) {
+    // TODO: complete implementation
+  }
 
-	private async createTables(pluginId: string, schemaData: any) {
-		let keyspaceName = this.generateKeyspaceName(pluginId, schemaData.db);
-		this.dbConnection = this.cassandraDB.getConnectionByKeyspace(keyspaceName);
-		for(let table of schemaData.tables) {
-			await this.dbConnection.connect()
-				.then(() => {
-					this.dbConnection.execute(this.queryBuilder.createTable(schemaData, table, keyspaceName));
-					console.log(`====> Table: ${keyspaceName}.${table.name} created for "${pluginId}"`)
-				})
-				.catch((err) => {
-					throw new FrameworkError({code: FrameworkErrors.DB_ERROR, rootError: err})
-				});
-		}
-	}
+  public async create(pluginId: string, schema: any) {
+    logger.info('loading schema for plugin: ', pluginId);
+    this.validateSchema(schema);
+    const keyspaceName = Util.generateId(pluginId, schema.keyspace_name);
+    schemaService.setSchema(pluginId, Object.assign({}, schema, { keyspace_name: keyspaceName }));
+    if (!schema.private) await this.metaDataProvider.updateMeta(pluginId, { cassandra_keyspace: keyspaceName });
+    this.dbConnection = await this.cassandraDB.getConnectionByKeyspace(keyspaceName, schema.config);
+    for (const table of schema.column_families) {
+      const model = this.dbConnection.loadSchema(table.table_name, table);
+      const syncDBAsync = util.promisify(model.syncDB.bind(model))
+      await syncDBAsync()
+        .then((result) => {
+          if (result) {
+            logger.info(`cassandra schema updated successfully for "${pluginId}"`);
+          } else {
+            logger.info(`no Cassandra schema change detected for plugin "${pluginId}"!`);
+          }
+        })
+        .catch((err) => {
+          if (err) throw new FrameworkError({ message: `"${pluginId}" : unable to sync database model with cassandra`, code: FrameworkErrors.DB_ERROR });
+        })
+    };
+  }
 
-	private async createKeyspace(name: string, defaultSettings: ICassandraConfig["defaultKeyspaceSettings"]) {
-		this.dbConnection = this.cassandraDB.getConnection(this._config);
-		await this.dbConnection.connect()
-				.then(() => {
-					const query = `CREATE KEYSPACE IF NOT EXISTS ${name} WITH replication = ` + JSON.stringify(defaultSettings.replication).split("\"").join("'");
-					this.dbConnection.execute(query);
-				})
-				.then(delayPromise(100))
-				.catch((err) => {
-					throw new FrameworkError({code: FrameworkErrors.DB_ERROR, rootError: err})
-				});
-	}
+  private validateSchema(schema) {
+    if (!schema.column_families || !Array.isArray(schema.column_families)) {
+      throw new FrameworkError({ message: 'invalid cassandra schema! "column_families" not defined!', code: FrameworkErrors.DB_ERROR });
+    }
 
-	private generateKeyspaceName(pluginId: string, db: string): string {
-		return Util.generateId(pluginId, db);
-	}
+    if (!schema.keyspace_name) {
+      throw new FrameworkError({ message: 'invalid cassandra schema! "keyspace_name" not defined!', code: FrameworkErrors.DB_ERROR });
+    }
+  }
 }
 
-SchemaLoader.registerLoader(new CassandraSchemaLoader(defaultConfig.db.cassandra));
+export const cassandraSchemaLoader = new CassandraSchemaLoader(defaultConfig.db.cassandra, new CassandraDB(defaultConfig.db.cassandra), cassandraMetaDataProvider)
+SchemaLoader.registerLoader(cassandraSchemaLoader);

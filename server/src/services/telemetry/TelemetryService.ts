@@ -9,9 +9,9 @@ import {
   ITelemetryContextData, IEventData
 } from './interfaces/TelemetryService';
 import * as _ from 'lodash';
-
+import { HTTPService } from '../http-service';
 /**
- * Telemetry Service to log server side telemetry events
+ * Telemetry Service to log telemetry v3 events
  * 
  * @class TelemetryService
  */
@@ -147,7 +147,10 @@ export class TelemetryService {
       },
       'http': {
         dispatch: event => {
-          // TODO: log telemetry through rest endpoint
+          // TODO: config object for http service
+          HTTPService.post(this.config.endpoint, JSON.stringify(event)).subscribe((result) => {
+            // console.log(result)
+          });
         }
       }
     };

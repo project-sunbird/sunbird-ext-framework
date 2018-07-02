@@ -6,79 +6,100 @@ import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
 import { IElasticSearchConfig, IElasticSearchConnector } from '../../interfaces';
 import { ElasticSearchDB } from './index';
-import {defaultConfig} from '../../config';
-import { Util } from '../../util';
-import { ESSchemaMapper } from './ESSchemaMapper';
-
+import { defaultConfig } from '../../config';
+import { Util, FrameworkError, FrameworkErrors } from '../../util';
+import * as _ from 'lodash';
+import { Framework, IMetaDataProvider } from '../..';
+import { cassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
+import {logger } from '../../logger';
 class ESSchemaLoader implements ISchemaLoader {
-	
-	private _config: IElasticSearchConfig;
-	private dbConnection: IElasticSearchConnector;
-	
-	constructor(config: IElasticSearchConfig) {
-		this._config = config;
-	}
 
-	public async alter(pluginId: string, schemaData: object) {
-		// TODO: complete implementation
-	}
+  private _config: IElasticSearchConfig;
+  private dbConnection: IElasticSearchConnector;
+  private metaDataProvider: IMetaDataProvider;
 
-	public async migrate(pluginId: string, schemaData: object) {
-		// TODO: complete implementation
-	}
+  constructor(config: IElasticSearchConfig, metaDataProvider: IMetaDataProvider) {
+    this._config = config;
+    this.metaDataProvider = metaDataProvider;
+  }
 
-	public getType(): string {
-		return 'elasticsearch';
-	}
+  public async alter(pluginId: string, schemaData: object) {
+    // TODO: complete implementation
+  }
 
-	async exists(pluginId: string, db: string, table: string) {
-		await this.isIndexDefined(this.generateESIndex(pluginId, db));
-	}
+  public async migrate(pluginId: string, schemaData: object) {
+    // TODO: complete implementation
+  }
 
-	async create(pluginId: string, schemaData: any) {
-		this.dbConnection = ElasticSearchDB.getConnection(pluginId);
-		let indexName = this.generateESIndex(pluginId, schemaData.db);
-		let indexDefined = await this.isIndexDefined(indexName);
-		if (!indexDefined) {
-			await this.createIndex(indexName);
-			console.log(`=====> Index: "${indexName}" :New Index has been created in Elasticsearch`);
-			await this.createIndexAlias(indexName, this.generateESIndexAlias(pluginId));
-			console.log(`=====> Index Alias: "${this.generateESIndexAlias(pluginId)}"`);
-			await this.createMapping(pluginId, schemaData);
-		} else {
-			console.log(`=====> index: "${indexName}" already defined!`);
-		}
-	}
+  public getType(): string {
+    return 'elasticsearch';
+  }
 
-	private async createIndex(index: string) {
-		await this.dbConnection.indices.create({index});
-	}
+  async exists(pluginId: string, schema: any) {
+    for (const index of schema.indexes) {
+      await this.isIndexDefined(index);
+    }
+  }
 
-	private generateESIndex(pluginId: string, db: string): string {
-		return Util.generateId(pluginId, db);
-	}
+  async create(pluginId: string, schema: any) {
+    this.dbConnection = ElasticSearchDB.getConnection(pluginId);
+    this.validateSchema(schema);
+    await this.createSchema(pluginId, schema).then(() => {
+      logger.info(`mappings successfully created for plugin "${pluginId}" `);
+    })
+  }
 
-	private generateESIndexAlias(pluginId: string): string {
-		return Util.hash(pluginId);
-	}
+  private validateSchema(schema) {
+    if (!schema.indexes || !Array.isArray(schema.indexes)) {
+      throw new FrameworkError({ message: `invalid schema, "indexes" is not defined`, code: FrameworkErrors.DB_ERROR })
+    }
+    for (const index of schema.indexes) {
+      if (!index.mappings || typeof index.mappings !== "object") {
+        throw new FrameworkError({ message: `invalid schema, "mappings" should be of type Object!`, code: FrameworkErrors.DB_ERROR })
+      }
 
-	private async isIndexDefined(index: string) {
-		const isDefined = await this.dbConnection.indices.exists({index});
+      if (!index.name) {
+        throw new FrameworkError({ message: `invalid schema, "name" should be defined for index!`, code: FrameworkErrors.DB_ERROR })
+      }
+    }
+  }
+
+  private async createIndex(index: string, body: any) {
+    await this.dbConnection.indices.create({ index, body });
+  }
+
+  private generateESIndexAlias(id: string): string {
+    return Util.hash(id);
+  }
+
+  private async isIndexDefined(index: string) {
+    const isDefined = this.dbConnection.indices.exists({ index });
     return isDefined;
-	}
+  }
 
-	private async createMapping(pluginId: string, schemaData: any) {
-		let indexName = this.generateESIndex(pluginId, schemaData.db);
-		schemaData.tables.forEach(async (table) => {
-			let body = ESSchemaMapper.getFieldsfromJSON(table);
-			console.log(`====> creating mappings for type: "${table.table}" under index: "${indexName}"`);
-			await this.dbConnection.indices.putMapping({ index: indexName, type: table.table, body})
-		})
-	}
+  private async createSchema(pluginId: string, schema: any) {
+    if (!schema || !schema.indexes) return;
+    for (const indexMapping of schema.indexes) {
+      let indexName: string = Util.generateId(pluginId, indexMapping.name);
+      let indexDefined = await this.isIndexDefined(indexMapping.name);
+      if (!indexDefined) {
+        await this.createIndex(indexMapping.name, _.omit(indexMapping, ['name']));
+        logger.info(`Index "${indexName}" has been created in Elasticsearch for ${pluginId}`);
+        const alias = this.generateESIndexAlias(pluginId + indexName);
+        await this.createIndexAlias(indexMapping.name, alias);
+        await this.metaDataProvider.updateMeta(pluginId, { elasticsearch_index: { '$add': {[indexName]: alias} }});
+        logger.info(`creating mappings for index "${indexName}"`);
+      } else {
+        logger.info(`index "${indexName}" already defined! for "${pluginId}"`);
+      }
+    }
+  }
 
-	private async createIndexAlias(index: string, alias: string) {
-		await this.dbConnection.indices.putAlias({ index, name: alias })
-	}
+  private async createIndexAlias(index: string, alias: string) {
+    await this.dbConnection.indices.putAlias({ index, name: alias }).then(() => {
+      logger.debug(`=====> Alias created for index: "${index}", alias: "${alias}"`);
+    })
+  }
 }
 
-SchemaLoader.registerLoader(new ESSchemaLoader(defaultConfig.db.elasticsearch))
+SchemaLoader.registerLoader(new ESSchemaLoader(defaultConfig.db.elasticsearch, cassandraMetaDataProvider))

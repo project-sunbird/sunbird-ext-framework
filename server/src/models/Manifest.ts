@@ -166,14 +166,6 @@ export class Manifest {
     public getDependencies() {
         return this.server.dependencies;
     }
-    /**
-     * 
-     * 
-     * @memberof Manifest
-     */
-    public validate() {
-        // TODO: validate schema structure;
-    }
     
     /**
      * 

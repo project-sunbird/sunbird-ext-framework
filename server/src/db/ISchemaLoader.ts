@@ -4,13 +4,13 @@
 
 export interface ISchemaLoader {
 
-	getType(): string;
+  getType(): string;
 
-	exists(pluginId: string, db: string, table: string);
+  exists(pluginId: string, schema: any)
 
-	create(pluginId: string, schemaData: object);
+  create(pluginId: string, schema: any)
 
-    alter(pluginId: string, schemaData: object);
+  alter(pluginId: string, schema: any)
 
-    migrate(pluginId: string, schemaData: object);
+  migrate(pluginId: string, schema: any)
 }

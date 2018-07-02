@@ -1,43 +1,56 @@
-import * as winston from 'winston';
+import { configure, getLogger, Logger } from 'log4js';
+import * as path from 'path';
+const logger: Logger = getLogger();
+logger.level = 'debug';
 
-const myLogFormatter = function (options) {
-  return winston.config.colorize(options.level, options.level.toUpperCase())
-    + ": [" + options.timestamp() + "| " + options.meta.codePath + "] "
-    + options.message + " " + JSON.stringify(options.meta);
-};
+/**
+ * make a log directory, just in case it isn't there.
+ */
+try {
+  require('fs').mkdirSync(path.join(__dirname, 'log'));
+} catch (e) {
+  if (e.code !== 'EEXIST') {
+    console.error("Could not set up log directory, error was: ", e);
+    process.exit(1);
+  }
+}
 
-const options = {
-  file: {
-    // level: 'info',
-    // filename: `./logs/app.log`,
-    // handleExceptions: true,
-    // json: true,
-    // maxsize: 5242880, // 5MB
-    // maxFiles: 5,
-    // colorize: false,
+
+configure({
+  "appenders": {
+    "access": {
+      "type": "dateFile",
+      "filename": "log/access.log",
+      "pattern": "-yyyy-MM-dd",
+      "category": "http"
+    },
+    "app": {
+      "type": "file",
+      "filename": "log/app.log",
+      "maxLogSize": 10485760, // 10MB
+      "numBackups": 3
+    },
+    "errorFile": {
+      "type": "file",
+      "filename": "log/errors.log"
+    },
+    "errors": {
+      "type": "logLevelFilter",
+      "level": "ERROR",
+      "appender": "errorFile"
+    },
+    "console": {
+      "type": "console",
+      "layout": {
+        "type": "coloured"
+      }
+    }
   },
-  console: {
-    level: 'debug',
-    handleExceptions: true,
-    json: false,
-    colorize: true,
-    formatter: myLogFormatter
-  },
-};
-
-export const logger = winston.createLogger({
-  level: 'info',
-  format: winston.format.json(),
-  transports: [new winston.transports.Console(options.console)],
-  exitOnError: false // do not exit on handled exceptions
+  "categories": {
+    "default": { "appenders": ["app", "errors", "console"], "level": "DEBUG" },
+    "http": { "appenders": ["access"], "level": "DEBUG" }
+  }
 });
 
-//
-// If we're not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-// 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
-}
+export { logger };
+export * from 'log4js';

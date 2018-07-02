@@ -13,12 +13,12 @@ export class FrameworkAPI {
         this.config = config;
     }
 
-    public getCassandraInstance(pluginId: string, schema: any): ICassandraConnector {
+    public getCassandraInstance(pluginId: string) {
         let instance = new CassandraDB(this.config.db.cassandra);
-        return instance.getConnectionByKeyspace(Util.generateId(pluginId, schema.db));
+        return instance.getConnectionByPlugin(pluginId);
     }
 
-    public getElasticsearchInstance(pluginId: string, schema: any): IElasticSearchConnector {
+    public getElasticsearchInstance(pluginId: string): IElasticSearchConnector {
         return ElasticSearchDB.getConnection(pluginId);
     }
 

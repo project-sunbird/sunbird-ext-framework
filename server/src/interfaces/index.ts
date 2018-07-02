@@ -17,7 +17,7 @@ export interface IServer {
 }
 
 export interface IServerConstructor {
-    new(config: object, manifest: Manifest): IServer;
+    new(manifest: Manifest): IServer;
 }
 
 export interface IElasticSearchConfig extends ConfigOptions {
@@ -36,7 +36,8 @@ export interface ICassandraConfig extends ClientOptions {
             class: string,
             replication_factor: string
         }
-    }
+    },
+    port?: number
 }
 
 export interface ICassandraConnector extends Client {
@@ -84,16 +85,15 @@ export enum PluginStatusEnum {
 }
 
 export interface PluginMeta {
-    id: string;
-    uuid: string;
-    name: string;
-    version: string;
-    repo: string;
-    registered_on: Date;
-    cassandra_keyspace: string;
-    elasticsearch_index: string;
-    status: PluginStatusEnum;
-    manifest: string;
+    id?: string;
+    name?: string;
+    version?: string;
+    repo?: string;
+    registered_on?: Date;
+    cassandra_keyspace?: string;
+    elasticsearch_index?: any;
+    status?: PluginStatusEnum;
+    manifest?: string;
 }
 
 export interface IMetaDataProvider {

@@ -4,6 +4,7 @@ import 'mocha';
 import { PluginManager } from '../../src/managers/PluginManager';
 import { FrameworkConfig } from '../../src/interfaces';
 import { PluginLoader } from '../../src/managers/PluginLoader';
+import { FrameworkError, FrameworkErrors } from '../../src/util';
 //TODO: remove all relative path reference with module alias path
 
 chai.should();
@@ -101,7 +102,7 @@ describe('Class PluginManager', () => {
             let plugin = {id: 'test-plugin', ver: '1.0'};
             let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
-                    reject();
+                    reject(new FrameworkError({ code: FrameworkErrors.PLUGIN_LOAD_FAILED, rootError: new Error(), message: 'plugin load failed!' }));
                 });
             });
 
@@ -113,8 +114,6 @@ describe('Class PluginManager', () => {
                 Sinon.assert.calledWith(stub, plugin);
                 stub.restore();
                 done();
-            }).catch(() => {
-                stub.restore();
             });
         });
     });

@@ -1,46 +1,46 @@
 {
-    "db": "profile",
-    "type": "cassandra",
-    "dbConfig": {},
-    "tables": [{
-        "name": "profile",
-        "fields": [{
-                "key": "user_id",
-                "type": "text",
-                "nullable": false
-            },
-            {
-                "key": "first_name",
-                "type": "text",
-                "nullable": false
-            },
-            {
-                "key": "last_name",
-                "type": "text",
-                "nullable": true
-            }
-        ],
-        "primary_key": ["user_id"],
-        "index": ["user_id", "first_name"]
-    }, {
-        "name": "profile2",
-        "fields": [{
-                "key": "user_id",
-                "type": "text",
-                "nullable": false
-            },
-            {
-                "key": "first_name",
-                "type": "text",
-                "nullable": false
-            },
-            {
-                "key": "last_name",
-                "type": "text",
-                "nullable": true
-            }
-        ],
-        "primary_key": ["user_id"],
-        "index": ["user_id", "first_name"]
-    }]
+  "type": "cassandra",
+  "config": {
+    "replication": {
+      "class": "SimpleStrategy",
+      "replication_factor": 1
+    }
+  },
+  "keyspace_name": "profile",
+  "column_families": [
+    {
+      "table_name": "profile",
+      "fields": {
+        "user_id": {
+          "type": "uuid"
+        },
+        "first_name": {
+          "type": "varchar",
+          "default": "no name provided"
+        },
+        "last_name": {
+          "type": "varchar",
+          "default": "no surname provided"
+        },
+        "created": {
+          "type": "timestamp",
+          "default": {"$db_function": "toTimestamp(now())"}
+        }
+      },
+      "key": [ "user_id", "created" ],
+      "clustering_order": {
+        "created": "desc"
+      },
+      "indexes": [
+        "first_name"
+      ],
+      "custom_indexes": [
+        {
+          "on": "last_name",
+          "using": "org.apache.cassandra.index.sasi.SASIIndex",
+          "options": {}
+        }
+      ]
+    }
+  ]
 }

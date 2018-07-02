@@ -60,6 +60,7 @@ describe('Class PluginRegistry', () => {
             })
             let manifest: IPluginManifest = { id: 'test-plugin', name: 'Test Plugin', version: '1.0.0', author: 'sunil A S <sunils@ilimi.in>', server: {} };
             PluginRegistry.register(Manifest.fromJSON(manifest)).then((registered) => {
+                // tslint:disable-next-line:no-unused-expression
                 registered.should.be.true;
                 Sinon.assert.calledOnce(isRegisteredStub);
                 Sinon.assert.notCalled(metaDataProviderStub);
@@ -128,11 +129,13 @@ describe('Class PluginRegistry', () => {
             })
 
             PluginRegistry.isRegistered(pluginId).then((result) => {
+                // tslint:disable-next-line:no-unused-expression
                 result.should.be.true;
                 metaDataProviderStub.restore();
                 done();
             }).catch(() => {
                 metaDataProviderStub.restore();  
+                done();
             })
         })
 
@@ -145,11 +148,13 @@ describe('Class PluginRegistry', () => {
             })
 
             PluginRegistry.isRegistered(pluginId).then((result) => {
+              // tslint:disable-next-line:no-unused-expression
                 result.should.be.false;
                 metaDataProviderStub.restore();
                 done();
             }).catch(() => {
                 metaDataProviderStub.restore();
+                done();
             })
         })
     })
@@ -181,18 +186,43 @@ describe('Class PluginRegistry', () => {
             })
 
             PluginRegistry.getStatus(pluginId).then((status) => {
+              // tslint:disable-next-line:no-unused-expression
                 (status === undefined).should.be.true
                 metaDataProviderStub.restore()
                 done()
             }).catch(() => {
                 metaDataProviderStub.restore()
+                done();
             })
         })
     })
 
     describe('updateStatus method', () => {
-        it('should update the status of the plugin', () => {
-            
+        it('should update the status of the plugin', (done) => {
+            let pluginId = 'testPlugin123';
+            let plugin = { id: pluginId, status: PluginStatusEnum.resolved };
+            let metaDataGetMetaStub = Sinon.stub(metaDataProvider, 'getMeta').callsFake(() => {
+                return new Promise((resolve, reject) => {
+                    resolve({ rows: [plugin]});
+                })  
+            });
+            let metaDataUpdateMetaStub = Sinon.stub(metaDataProvider, 'updateMeta').callsFake(() => {
+                return new Promise((resolve, reject) => {
+                    resolve(true);
+                });  
+            });
+            PluginRegistry.updateStatus(pluginId, PluginStatusEnum.stopped).then((status) => {
+                status.should.be.equal(PluginStatusEnum.stopped);
+                plugin.status.should.be.equals(PluginStatusEnum.stopped);
+                metaDataUpdateMetaStub.restore();
+                Sinon.assert.calledOnce(metaDataUpdateMetaStub);
+                metaDataGetMetaStub.restore();
+                done()
+            }).catch(() => {
+                metaDataGetMetaStub.restore();
+                metaDataUpdateMetaStub.restore();
+                done();
+            })
         })
     })
 })

@@ -1,9 +1,12 @@
-import { IAuthProvider } from './IAuthProvider';
+import { IAuthProvider, IAuthProviderConstructor } from './IAuthProvider';
 import * as Keycloak from 'keycloak-connect';
 import { NextFunction } from 'express';
+import { authProvider } from './AuthProvider';
+import * as _ from 'lodash';
+import { Request, Response } from 'express-serve-static-core';
 
 export interface IKeycloakConfig {
-  'strore': any;
+  'store': any;
   'realm': string;
   'resource': string;
   'realm-public-key'?: string;
@@ -17,7 +20,7 @@ export interface IKeycloakConfig {
   'bearer-only'?: Boolean;
   'enable-basic-auth'?: Boolean;
   'expose-token': Boolean;
-  'credentials'?: any,
+  'credentials'?: any;
   'connection-pool-size'?: Number;
   'disable-trust-manager'?: Boolean;
   'allow-any-hostname'?: Boolean;
@@ -26,25 +29,30 @@ export interface IKeycloakConfig {
   'client-keystore'?: string;
   'client-keystore-password'?: string;
   'client-key-password'?: string;
-  'token-minimum-time-to-live'?: Number,
-  'min-time-between-jwks-requests'?: Number,
-  'public-key-cache-ttl'?: Number,
+  'token-minimum-time-to-live'?: Number;
+  'min-time-between-jwks-requests'?: Number;
+  'public-key-cache-ttl'?: Number;
   'redirect-rewrite-rules'?: any;
+  'middleware-options': any; // options for keycloak middleware method
 }
 
 export class KeycloakAuthProvider implements IAuthProvider {
 
   private connection: Keycloak;
+  private options: IKeycloakConfig;
 
   configure(options: IKeycloakConfig): void {
-    this.connection = new Keycloak({ store: options.strore}, options)
+    this.options = _.cloneDeep(options);
+    this.connection = new Keycloak({ store: this.options.store}, this.options)
   }
 
-  authenticate(req: Request, res: Response, next: NextFunction, options?: any): void {
-    this.connection.middleware(options)(...arguments);
+  authenticate(req: Request, res: Response, next: NextFunction): void {
+    this.connection.middleware(this.options['middleware-options'])(...arguments);
   }
 
-  protect(req: Request, res: Response, next: NextFunction, options?: any): void {
+  protect(req: Request, res: Response, next: NextFunction): void {
     this.connection.protect()(...arguments);
   }
 }
+
+authProvider.register(KeycloakAuthProvider);

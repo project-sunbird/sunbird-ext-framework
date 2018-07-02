@@ -14,7 +14,6 @@ import { RegistrySchema } from './meta/RegistrySchema';
 import { cassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
 import { PluginRegistry } from './managers/PluginRegistry';
 import * as cls from 'continuation-local-storage';
-import { logger as loggers, errorLogger } from 'express-winston';
 import * as Winston from 'winston'; // for transports.Console
 import { logger } from './logger';
 import { FrameworkError, FrameworkErrors } from './util';
@@ -59,8 +58,7 @@ export class Framework {
   public static async initialize(config: FrameworkConfig, app: Express) {
     try {
       if (!Framework._initialized) {
-        config.enableLogs && this.enableLogger(app);
-        config = Object.assign(defaultConfig, config);
+        config = Object.assign({}, defaultConfig, config);
         Framework._instance = new Framework(config, app);
 
         // Initialize Managers, Registry and other services 
@@ -73,28 +71,24 @@ export class Framework {
 
         // Set Framework initialized to `true` after above tasks are performed
         Framework._initialized = true;
-        logger.log('debug', '=====> Framework initialized!');
+        logger.info('Framework is initialized!');
 
         await Framework._pluginManager.load(Framework._instance.config);
-        logger.log('debug', '=====> Plugins load complete. ');
+        logger.info('All plugins are loaded!');
       }
     } catch (error) {
-      logger.error(new FrameworkError({ code: FrameworkErrors.UNKNOWN_ERROR, message: 'error while initializing the framework', rootError: error }));
+      logger.error('Error while initializing the framework', new FrameworkError({ code: FrameworkErrors.UNKNOWN_ERROR, message: 'error while initializing the framework', rootError: error }));
     }
   }
 
   public static async loadPluginRegistrySchema() {
     try {
       let schemaLoader: ISchemaLoader = SchemaLoader.getLoader(RegistrySchema.type);
-      await schemaLoader.create(RegistrySchema.db, RegistrySchema);
+      await schemaLoader.create(RegistrySchema.keyspace_prefix, RegistrySchema);
+      logger.info('loading registry schema');
     } catch (error) {
-      logger.error(error);
+      logger.error('failed to load registry schema', error);
     }
   }
-
-  private static enableLogger(app: Express) {
-    app.use(loggers({ transports: [new Winston.transports.Console({ json: true, colorize: true })] }));
-  }
-
 }
 

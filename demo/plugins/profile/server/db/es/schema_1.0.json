@@ -1,23 +1,53 @@
 {
-    "db": "profile",
-    "type": "elasticsearch",
-    "dbConfig": {},
-    "tables": [{
-        "table": "profile",
-        "fields": [{
-                "key": "user_id",
-                "type": "text"
+  "type": "elasticsearch",
+  "indexes": [
+    {
+      "name": "profile",
+      "mappings": {
+        "doc": {
+          "properties": {
+            "user_id": {
+              "type": "text"
             },
-            {
-                "key": "first_name",
-                "type": "text"
+            "first_name": {
+              "type": "text"
             },
-            {
-                "key": "last_name",
-                "type": "text"
+            "last_name": {
+              "type": "text"
             }
-        ],
-        "primary_key": ["user_id"],
-        "index": ["user_id", "first_name", "last_name"]
-    }]
+          }
+        }
+      },
+      "settings": {
+        "index": {
+          "number_of_shards": 1,
+          "number_of_replicas": 0
+        }
+      }
+    },
+    {
+      "name": "profile2",
+      "mappings": {
+        "doc": {
+          "properties": {
+            "user_id": {
+              "type": "text"
+            },
+            "first_name": {
+              "type": "text"
+            },
+            "last_name": {
+              "type": "text"
+            }
+          }
+        }
+      },
+      "settings": {
+        "index": {
+          "number_of_shards": 1,
+          "number_of_replicas": 0
+        }
+      }
+    }
+  ]
 }

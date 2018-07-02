@@ -11,7 +11,7 @@ export class Util {
     }
 
     public static generateId(prefix: string, id: string): string {
-		return (Util.hash(prefix) + '_' + id).toLowerCase();
+		  return (Util.hash(prefix) + '_' + id).toLowerCase();
     }
 
     public static UUID() {
@@ -35,10 +35,9 @@ export enum FrameworkErrors {
     SCHEMA_LOADER_FAILED,
     INVALID_SCHEMA_PATH,
     PLUGIN_REGISTERED,
-    INVALID_JWT_PAYLOAD,
-    INVALID_JWT_SECRET,
-    INVALID_JWT_TOKEN,
-    JWT_ERROR
+    PLUGIN_REGISTER_FAILED,
+    INVALID_AUTH_PROVIDER,
+    AUTH_PROVIDER_ALREADY_CONFIGURED
 }
 
 export interface ErrorSubclass extends Error {

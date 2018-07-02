@@ -1,68 +1,63 @@
 import { IMetaDataProvider, PluginMeta, ICassandraConfig } from "../interfaces";
-import { CassandraDB } from "../db";
+import { CassandraDB } from "../db/cassandra";
 import { defaultConfig } from "../config";
 import { Util, delayPromise, FrameworkError, FrameworkErrors } from "../util";
 import { RegistrySchema } from "./RegistrySchema";
+import * as _ from 'lodash';
+import { logger } from '../logger';
 
 export class CassandraMetaDataProvider implements IMetaDataProvider {
-    private connection: any;
-    private cassandraDB: CassandraDB;
+  private connection: any;
+  private cassandraDB: CassandraDB;
 
-    constructor(cassandraDB: CassandraDB) {
-        this.cassandraDB = cassandraDB;
-    }
+  constructor(cassandraDB: CassandraDB) {
+    this.cassandraDB = cassandraDB;
+  }
 
-    public async getMeta(id: string) {
-        let connection = await this.getConnection()
-        let result = await connection.execute(`SELECT * FROM REGISTRY WHERE id=?`, [id]);
-        if (result.rowLength > 0) return result;
-        else return;
-    }
+  public async getMeta(id: string) {
+    const model = await this.getConnection();
+    await model.instance.plugin_registry.findAsync({id})
+    .catch(error => {
+      logger.error('error when getting meta data', error)
+    })
+  }
 
-    public async updateMeta(id: string, meta: PluginMeta) {
-        let connection = await this.getConnection()
-        let params = [meta.name, meta.uuid, meta.version, meta.repo, meta.status, new Date(), meta.cassandra_keyspace, meta.elasticsearch_index, meta.manifest];
-        await connection.execute(`UPDATE registry SET name = ?, uuid = ?, version = ?, repo = ?, status = ?, registered_on = ?, cassandra_keyspace = ?,
-            elasticsearch_index = ?, manifest = ? WHERE id = ?`, [...params, meta.id]);
-    }
+  public async updateMeta(id: string, meta: PluginMeta) {
+    const model = await this.getConnection();
+    await model.instance.plugin_registry.updateAsync({id}, {...meta})
+    .catch(error => {
+      logger.error('error when updating meta data', error)
+    })
+  }
 
-    public async createMeta(meta: PluginMeta) {
-        let connection = await this.getConnection()
-        let params = [meta.id, meta.name, meta.uuid, meta.version, meta.repo, meta.status, meta.registered_on, meta.cassandra_keyspace, meta.elasticsearch_index, meta.manifest];
-        await connection.execute(`INSERT INTO REGISTRY (id, name, uuid, version, repo, status, registered_on, cassandra_keyspace,
-            elasticsearch_index, manifest) VALUES (?,?,?,?,?,?,?,?,?,?)`, params, { prepare: true })
-    }
+  public async createMeta(meta: PluginMeta) {
+    const model = await this.getConnection();
+    const record = new model.instance.plugin_registry({ ...meta });
+    await record.saveAsync()
+    .catch(error => {
+      logger.error('error when creating meta data', error)
+    });
+  }
 
-    public async deleteMeta(id: string) {
-        let connection = await this.getConnection()
-        await connection.execute(`DELETE FROM registry where id = ?`, id);
-    }
+  public async deleteMeta(id: string) {
+    const model = await this.getConnection();
+    await model.instance.plugin_registry.deleteAsync({id: id})
+    .catch(error => {
+      logger.error('error when deleting meta data', error)
+    })
+  }
 
-    private async getConnection(): Promise<any> {
-        if (this.connection) return this.connection;
-        this.connection = this.cassandraDB.getConnection(defaultConfig.db.cassandra);
-        let keyspaceName = Util.generateId(RegistrySchema.db, RegistrySchema.db);
-        await this.createKeyspace(keyspaceName, defaultConfig.db.cassandra.defaultKeyspaceSettings)
-        return this.connection = this.cassandraDB.getConnectionByKeyspace(keyspaceName);
-    }
-
-    private async createKeyspace(name: string, defaultSettings: ICassandraConfig["defaultKeyspaceSettings"]) {
-        await this.connection.connect()
-            .then(() => {
-                const query = `CREATE KEYSPACE IF NOT EXISTS ${name} WITH replication = ` + JSON.stringify(defaultSettings.replication).split("\"").join("'");
-                this.connection.execute(query);
-            })
-            .then(delayPromise(100))
-            .catch((err) => {
-                throw new FrameworkError({ code: FrameworkErrors.DB_ERROR, rootError: err })
-            })
-    }
+  private async getConnection() {
+    if (this.connection) return this.connection;
+    this.connection = await this.cassandraDB.getConnectionByKeyspace(Util.generateId(RegistrySchema.keyspace_prefix, RegistrySchema.keyspace_name));
+    return this.connection
+  }
 }
 
 
 let cassandraConfig: ICassandraConfig = {
-    contactPoints: defaultConfig.db.cassandra.contactPoints,
-    keyspace: Util.generateId(defaultConfig.db.cassandra.keyspace, defaultConfig.db.cassandra.keyspace)
+  contactPoints: defaultConfig.db.cassandra.contactPoints,
+  keyspace: Util.generateId(RegistrySchema.keyspace_prefix, RegistrySchema.keyspace_name)
 }
 let cassandraInstance = new CassandraDB(cassandraConfig)
 export const cassandraMetaDataProvider = new CassandraMetaDataProvider(cassandraInstance);
