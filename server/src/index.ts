@@ -34,7 +34,7 @@ export class Framework {
   }
 
   public static get instance(): Framework {
-    return this._instance;
+    return Framework._instance;
   }
 
   constructor(config: FrameworkConfig, app: Express) {

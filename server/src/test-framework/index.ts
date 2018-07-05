@@ -10,10 +10,10 @@ export class TestFramework {
     public static initialize(config: FrameworkConfig) {
         return new Promise((resolve, reject) => {
             let expressApp = express();
+            expressApp.use(bodyParser.json({ limit: '50mb' }))
             config = {...defaultConfig,...config};
             Framework.initialize(config, expressApp).then(()=> {
                 console.log(`=====> Application running on port: ${config.port}`);
-                expressApp.use(bodyParser.json({limit: '50mb'}))
                 expressApp.listen(config.port);
                 resolve();
             });

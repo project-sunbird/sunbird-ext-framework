@@ -1,12 +1,10 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
-import { PluginManager } from "../managers/PluginManager";
 import { FrameworkConfig, ICassandraConnector, IElasticSearchConnector } from "../interfaces";
 import { CassandraDB, ElasticSearchDB } from "../db";
 import { RouterRegistry } from "../managers/RouterRegistry";
-import { Util } from "../util";
-import {defaultConfig} from '../config';
+import { Framework } from "..";
 
 export class FrameworkAPI {
     constructor(private config: FrameworkConfig) {
@@ -24,6 +22,10 @@ export class FrameworkAPI {
 
     public threadLocal() {
         return RouterRegistry.getThreadNamespace();
+    }
+
+    public getPluginInstance(id: string) {
+      return Framework.pluginManager.getPluginInstance(id);
     }
 }
 

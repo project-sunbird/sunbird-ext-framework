@@ -20,7 +20,10 @@ const config: FrameworkConfig = {
       disabledApis: ["cat", "cluster", "ingest", "nodes", "remote", "snapshot", "tasks"]
     }
   },
-  plugins: [{ id: 'profile-server', ver: '1.0' }],
+  plugins: [
+    { id: 'profile-server', ver: '1.0' }, 
+    { id: 'form-service', ver: '1.0' }
+  ],
   pluginBasePath: __dirname + '/node_modules/',
   kafka: {
     connectionString: '127.0.0.1:2181' //default
