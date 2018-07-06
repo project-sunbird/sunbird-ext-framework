@@ -1,9 +1,9 @@
 ### 1. Setup 
-  1. Download `Apache Cassandra` v3.7 or higher
-  2. Download `Elasticsearch` v6.1
-  3. Download `Node.Js` v6.4 or higher
+  1. Download & install `Apache Cassandra` v3.7 or higher
+  2. Download & install `Elasticsearch` v6.1
+  3. Download & install `Node.Js` v6.4 or higher
   4. install nodemon globally: `npm i nodemon -g`
-  5. install Gulp cli globally: `npm install gulp-cli -g`
+  5. install Gulp cli globally: `npm install gulp-cli -g` (Optional)
   
 ### 2. To see in Action
 
