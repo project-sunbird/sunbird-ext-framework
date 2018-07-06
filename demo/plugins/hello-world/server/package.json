@@ -1,0 +1,19 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "test": "echo 'go to '../test' folder to execute test cases!'"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typescript": "^2.7.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

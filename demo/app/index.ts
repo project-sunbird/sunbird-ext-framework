@@ -21,13 +21,11 @@ const config: FrameworkConfig = {
     }
   },
   plugins: [
-    { id: 'profile-server', ver: '1.0' }, 
-    { id: 'form-service', ver: '1.0' }
+    { id: 'hello-world', ver: '1.0' }
+    // { id: 'profile-server', ver: '1.0' }, 
+    // { id: 'form-service', ver: '1.0' }
   ],
   pluginBasePath: __dirname + '/node_modules/',
-  kafka: {
-    connectionString: '127.0.0.1:2181' //default
-  },
   port: 4000
 };
 
