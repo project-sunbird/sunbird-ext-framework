@@ -5,7 +5,7 @@
 ## Sections:
 1. [Setup](https://github.com/ekstep/ext-framework/tree/master/server#setup)
 2. [Getting started](https://github.com/ekstep/ext-framework/tree/master/server#getting-started)
-    * writing your first plugin
+    * [writing your first plugin](https://github.com/ekstep/ext-framework/tree/master/server#writing-your-first-plugin)
 3. [Debugging](https://github.com/ekstep/ext-framework/tree/master/server#debugging)
 4. [Testing](https://github.com/ekstep/ext-framework/tree/master/server#testing)
 5. npm link vs npm install for local modules
@@ -86,7 +86,7 @@ copy the below file and paste it in `package.json` and run `npm install`
 
 create tsconfig.json file inside current folder and paste the below code:
 
-```Javsscript
+```Javascript
 {
     "compilerOptions": {
         "module": "commonjs",
@@ -114,7 +114,7 @@ export class Server {
   }
 }
 ```
-here, we have created a class called `Server` and method called `sayHello()` which is a `express.js` middleware function, which returns 'hello world' when send the request. This file is called `Entry Point` file of the plugin. The class name should be kept as `Server` and should be exported as above. 
+here, we have created a class called `Server` and method called `sayHello()` which is a `express.js` middleware function, which returns 'hello world' when we send the request. This file is called `Entry Point` file of the plugin. The class name should be kept as `Server` and should be exported as above. 
 
 * create an another file inside `./hello-world/server` called `routes.ts` to mention the routes for our plugin
 
@@ -160,6 +160,19 @@ Manifest should have a unique id, name of the plugin, author name and version. I
 
 * Lets build the plugin, run `npm run build`.
 * check the above command has created a `./dist` folder.
+* Folder structure of our plugin will look like this:
+
+```Javascript
+./hello-world
+  |- server
+      |-dist
+      |-node_modules
+      |-manifest.ts
+      |-server.ts
+      |-router.ts
+      |-package.json
+      |-tsconfig.json
+```
 
 **Lets Intergrate plugin to the app:**
 
