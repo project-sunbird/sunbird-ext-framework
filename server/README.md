@@ -51,8 +51,7 @@ I believe the setup is ready as instructed above.
 
 * Now go to folder `demo/plugins` and create a new folder called **"hello-world"**
 * create a new folder inside `./helo-world` called `server`
-* cd `./hello-world/server` & run `npm init` to create `package.json` file. copy the `build` script command from the below code snippet and install `npm install typescript --save-dev`
-* run `npm install`.
+* cd `./hello-world/server` & run `npm install typescript --save-dev`. copy the `build` script command from the below code snippet and add it to `package.json`
 
 or 
 
@@ -139,7 +138,7 @@ Class name should be kept as `Router` and it should have a `init` method which t
 2. manifest: `manifest` of the plugin, explained in below section
 3. auth (optional): auth module instance to authenticate the request.
 
-Inside init method, we are getting the plugin instance created by the framework (when it instantiates the plugin)  by passing `manifest.id` which is plugin Id and we are calling `sayHello()` method when we get the request from the app.
+Inside init method, we will get the plugin instance created by the framework (when it instantiates the plugin during plugin load phase)  by passing `manifest.id` which is plugin Id and we are calling `sayHello()` method when we get the request from the app.
 
 *. Lets create `manifest.ts` file inside `./hello-world/server/` which looks like this:
 
@@ -162,7 +161,7 @@ Manifest should have a unique id, name of the plugin, author name and version. I
 * check the above command has created a `./dist` folder.
 * Folder structure of our plugin will look like this:
 
-```Javascript
+```text
 ./hello-world
   |- server
       |-dist
