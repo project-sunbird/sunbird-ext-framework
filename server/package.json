@@ -9,7 +9,7 @@
     "test": "nyc mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
     "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
     "lint": "tslint --config ./tslint.json **/*.ts --force",
-    "gen-doc": "typedoc --out ./docs ./src --mode file --module commonjs --target ES6"
+    "gen-doc": "typedoc --out ./docs ./src --name Extensible-framework --mode file --module commonjs --target ES6"
   },
   "nyc": {
     "extension": [
