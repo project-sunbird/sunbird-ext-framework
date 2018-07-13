@@ -1,7 +1,7 @@
 import { FrameworkConfig } from 'ext-framework-server/interfaces';
 import * as express from 'express'
 import * as bodyParser from 'body-parser'
-import { Framework } from 'ext-framework-server'
+import { frameworkAPI } from 'ext-framework-server/api'
 import * as dotenv from 'dotenv';
 
 const config: FrameworkConfig = {
@@ -21,19 +21,20 @@ const config: FrameworkConfig = {
     }
   },
   plugins: [
-    { id: 'hello-world', ver: '1.0' }
+    { id: 'hello-world', ver: '1.0' },
     // { id: 'profile-server', ver: '1.0' }, 
-    // { id: 'form-service', ver: '1.0' }
+    { id: 'form-service', ver: '1.0' }
   ],
   pluginBasePath: __dirname + '/node_modules/',
-  port: 4000
+  port: 4000,
+  logLevel: 'debug'
 };
 
 const expressApp = express()
 expressApp.use(bodyParser.json({ limit: '50mb' }))
 expressApp.use(express.static('public'));
 
-Framework.initialize(config, expressApp).then(() => {
+frameworkAPI.bootstrap(config, expressApp).then(() => {
   dotenv.config();
   console.log(`=====> Application running on port: ${config.port}`);
   expressApp.listen(config.port);

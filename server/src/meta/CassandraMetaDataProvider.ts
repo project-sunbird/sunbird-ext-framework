@@ -1,50 +1,54 @@
 import { IMetaDataProvider, PluginMeta, ICassandraConfig } from "../interfaces";
 import { CassandraDB } from "../db/cassandra";
-import { defaultConfig } from "../config";
 import { Util, delayPromise, FrameworkError, FrameworkErrors } from "../util";
 import { RegistrySchema } from "./RegistrySchema";
 import * as _ from 'lodash';
 import { logger } from '../logger';
+import { Inject, Singleton } from "typescript-ioc";
 
+@Singleton
 export class CassandraMetaDataProvider implements IMetaDataProvider {
   private connection: any;
+
+  @Inject
   private cassandraDB: CassandraDB;
 
-  constructor(cassandraDB: CassandraDB) {
-    this.cassandraDB = cassandraDB;
+  public initialize(config: ICassandraConfig) {
+    config = Object.assign({}, config, { keyspace: Util.generateId(RegistrySchema.keyspace_prefix, RegistrySchema.keyspace_name) })
+    this.cassandraDB.initialize(config);
   }
 
-  public async getMeta(id: string) {
+  public async getMeta(id: string): Promise<any> {
     const model = await this.getConnection();
-    await model.instance.plugin_registry.findAsync({id})
-    .catch(error => {
-      logger.error('error when getting meta data', error)
-    })
+    await model.instance.plugin_registry.findAsync({ id })
+      .catch(error => {
+        logger.error('error when getting meta data', error)
+      })
   }
 
-  public async updateMeta(id: string, meta: PluginMeta) {
+  public async updateMeta(id: string, meta: PluginMeta): Promise<any> {
     const model = await this.getConnection();
-    await model.instance.plugin_registry.updateAsync({id}, {...meta})
-    .catch(error => {
-      logger.error('error when updating meta data', error)
-    })
+    await model.instance.plugin_registry.updateAsync({ id }, { ...meta })
+      .catch(error => {
+        logger.error('error when updating meta data', error)
+      })
   }
 
-  public async createMeta(meta: PluginMeta) {
+  public async createMeta(meta: PluginMeta): Promise<any> {
     const model = await this.getConnection();
     const record = new model.instance.plugin_registry({ ...meta });
     await record.saveAsync()
-    .catch(error => {
-      logger.error('error when creating meta data', error)
-    });
+      .catch(error => {
+        logger.error('error when creating meta data', error)
+      });
   }
 
-  public async deleteMeta(id: string) {
+  public async deleteMeta(id: string): Promise<any> {
     const model = await this.getConnection();
-    await model.instance.plugin_registry.deleteAsync({id: id})
-    .catch(error => {
-      logger.error('error when deleting meta data', error)
-    })
+    await model.instance.plugin_registry.deleteAsync({ id: id })
+      .catch(error => {
+        logger.error('error when deleting meta data', error)
+      })
   }
 
   private async getConnection() {
@@ -53,11 +57,3 @@ export class CassandraMetaDataProvider implements IMetaDataProvider {
     return this.connection
   }
 }
-
-
-let cassandraConfig: ICassandraConfig = {
-  contactPoints: defaultConfig.db.cassandra.contactPoints,
-  keyspace: Util.generateId(RegistrySchema.keyspace_prefix, RegistrySchema.keyspace_name)
-}
-let cassandraInstance = new CassandraDB(cassandraConfig)
-export const cassandraMetaDataProvider = new CassandraMetaDataProvider(cassandraInstance);

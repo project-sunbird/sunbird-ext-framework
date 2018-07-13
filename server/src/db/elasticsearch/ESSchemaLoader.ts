@@ -1,26 +1,30 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
-
-import { ISchemaLoader } from '../ISchemaLoader'
-import { SchemaLoader } from '../SchemaLoader'
 import { IElasticSearchConfig, IElasticSearchConnector } from '../../interfaces';
 import { ElasticSearchDB } from './index';
-import { defaultConfig } from '../../config';
 import { Util, FrameworkError, FrameworkErrors } from '../../util';
 import * as _ from 'lodash';
-import { Framework, IMetaDataProvider } from '../..';
-import { cassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
 import {logger } from '../../logger';
-class ESSchemaLoader implements ISchemaLoader {
+import { Inject, Singleton } from 'typescript-ioc';
+import { CassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
+import { ISchemaLoader } from '..';
+
+@Singleton
+export class ESSchemaLoader implements ISchemaLoader {
 
   private _config: IElasticSearchConfig;
   private dbConnection: IElasticSearchConnector;
-  private metaDataProvider: IMetaDataProvider;
 
-  constructor(config: IElasticSearchConfig, metaDataProvider: IMetaDataProvider) {
+  @Inject
+  private metaDataProvider: CassandraMetaDataProvider;
+
+  @Inject
+  private elasticSearchDB: ElasticSearchDB;
+
+  constructor(config: IElasticSearchConfig) {
     this._config = config;
-    this.metaDataProvider = metaDataProvider;
+    this.elasticSearchDB.initialize(config)
   }
 
   public async alter(pluginId: string, schemaData: object) {
@@ -42,7 +46,7 @@ class ESSchemaLoader implements ISchemaLoader {
   }
 
   async create(pluginId: string, schema: any) {
-    this.dbConnection = ElasticSearchDB.getConnection(pluginId);
+    this.dbConnection = this.elasticSearchDB.getConnection(pluginId);
     this.validateSchema(schema);
     await this.createSchema(pluginId, schema).then(() => {
       logger.info(`mappings successfully created for plugin "${pluginId}" `);
@@ -102,4 +106,3 @@ class ESSchemaLoader implements ISchemaLoader {
   }
 }
 
-SchemaLoader.registerLoader(new ESSchemaLoader(defaultConfig.db.elasticsearch, cassandraMetaDataProvider))

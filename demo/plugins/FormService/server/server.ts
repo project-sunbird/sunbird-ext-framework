@@ -1,6 +1,5 @@
 import { Manifest, BaseServer } from 'ext-framework-server/models';
 import { Request, Response } from 'express';
-import { Framework } from 'ext-framework-server';
 import { FormResponse } from './models';
 import * as _ from 'lodash';
 

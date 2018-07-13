@@ -6,22 +6,23 @@ import { Manifest } from '../../models/Manifest';
 import * as ExpressCassandra from 'express-cassandra';
 import { Util } from '../../util';
 import { ICassandraConfig } from "../../interfaces";
-import { ICassandraConnector } from '../..';
-import { cassandraSchemaLoader } from './CassandraSchemaLoader';
-import { schemaService } from './schemaService';
+import { SchemaService } from './schemaService';
+import { Inject } from 'typescript-ioc';
 export class CassandraDB {
 
   private _config: ICassandraConfig;
 
+  @Inject
+  private schemaService: SchemaService
 
-  constructor(config: ICassandraConfig) {
+  public initialize(config: ICassandraConfig) {
     this._config = config;
   }
 
   public async getConnectionByKeyspace(keyspace?: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]) {
     const connection = this.getConnection(keyspace, defaultSettings);
     await connection.initAsync()
-    const schema: any = schemaService.getSchemaBykeyspace(keyspace);
+    const schema: any = this.schemaService.getSchemaBykeyspace(keyspace);
     if (schema) {
       schema.column_families.forEach(table => connection.loadSchema(table.table_name, table));
     }
@@ -30,7 +31,7 @@ export class CassandraDB {
 
   public getConnectionByPlugin(pluginId: string) {
     let connection: any;
-    const schema: any = schemaService.getSchemaByPlugin(pluginId);
+    const schema: any = this.schemaService.getSchemaByPlugin(pluginId);
     if (schema) {
       connection = this.getConnection(schema.keyspace_name, schema.config);
       schema.column_families.forEach(table => connection.loadSchema(table.table_name, table));

@@ -1,5 +1,5 @@
 import { Manifest } from "./Manifest";
-import { Framework } from "..";
+import { frameworkAPI } from "../api";
 import * as _ from 'lodash';
 
 /**
@@ -25,7 +25,7 @@ export class BaseServer {
 
   protected constructor(manifest: Manifest) {
     this.manifest = _.cloneDeep(manifest);
-    this.cassandra = Framework.api.getCassandraInstance(this.manifest.id);
-    this.elasticsearch = Framework.api.getElasticsearchInstance(this.manifest.id);
+    this.cassandra = frameworkAPI.getCassandraInstance(this.manifest.id);
+    this.elasticsearch = frameworkAPI.getElasticsearchInstance(this.manifest.id);
   }
 }

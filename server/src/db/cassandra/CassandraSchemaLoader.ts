@@ -4,27 +4,34 @@
 
 import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
-import { defaultConfig } from '../../config';
 import { CassandraDB } from './index';
 import { ICassandraConfig, ICassandraConnector, IMetaDataProvider } from '../../interfaces';
 import { Util, FrameworkError, FrameworkErrors, delayPromise } from '../../util';
 import * as _ from 'lodash';
 import * as ExpressCassandra from 'express-cassandra';
-import { schemaService } from './schemaService';
+import { SchemaService } from './schemaService';
 import * as util from 'util';
-import { cassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
+import { CassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
 import { logger } from '../../logger';
+import { Inject, Singleton } from 'typescript-ioc';
+@Singleton
 export class CassandraSchemaLoader implements ISchemaLoader {
 
   private _config: ICassandraConfig;
-  private cassandraDB: CassandraDB;
   private dbConnection: any;
-  private metaDataProvider: IMetaDataProvider;
 
-  constructor(config: ICassandraConfig, cassandraDB: CassandraDB, metaDataProvider: IMetaDataProvider) {
+  @Inject
+  private metaDataProvider: CassandraMetaDataProvider;
+
+  @Inject
+  private schemaService: SchemaService;
+
+  @Inject
+  private cassandraDB: CassandraDB
+
+  constructor(config: ICassandraConfig) {
     this._config = config;
-    this.cassandraDB = cassandraDB;
-    this.metaDataProvider = metaDataProvider;
+    this.cassandraDB.initialize(config)
   }
 
   getType(): string {
@@ -47,7 +54,7 @@ export class CassandraSchemaLoader implements ISchemaLoader {
     logger.info('loading schema for plugin: ', pluginId);
     this.validateSchema(schema);
     const keyspaceName = Util.generateId(pluginId, schema.keyspace_name);
-    schemaService.setSchema(pluginId, Object.assign({}, schema, { keyspace_name: keyspaceName }));
+    this.schemaService.setSchema(pluginId, Object.assign({}, schema, { keyspace_name: keyspaceName }));
     if (!schema.private) await this.metaDataProvider.updateMeta(pluginId, { cassandra_keyspace: keyspaceName });
     this.dbConnection = await this.cassandraDB.getConnectionByKeyspace(keyspaceName, schema.config);
     for (const table of schema.column_families) {
@@ -77,6 +84,3 @@ export class CassandraSchemaLoader implements ISchemaLoader {
     }
   }
 }
-
-export const cassandraSchemaLoader = new CassandraSchemaLoader(defaultConfig.db.cassandra, new CassandraDB(defaultConfig.db.cassandra), cassandraMetaDataProvider)
-SchemaLoader.registerLoader(cassandraSchemaLoader);

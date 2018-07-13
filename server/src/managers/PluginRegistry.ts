@@ -7,27 +7,26 @@ import { FrameworkError, FrameworkErrors } from "../util";
 import { IMetaDataProvider, PluginMeta, PluginStatusEnum } from "../interfaces";
 import * as UUID from 'uuid/v1';
 import { logger } from '../logger';
-
+import { Singleton, AutoWired, Inject } from "typescript-ioc";
+import { CassandraMetaDataProvider } from "../meta/CassandraMetaDataProvider";
 /**
  * 
  * 
  * @export
  * @class PluginRegistry
  */
+@Singleton
 export class PluginRegistry {
 
-  private static metaDataProvider: IMetaDataProvider;
-  /**
-   * 
-   * 
-   * @static
-   * @param {IMetaDataProvider} metaDataProvider 
-   * @memberof PluginRegistry
-   */
-  public static initialize(metaDataProvider: IMetaDataProvider) {
-    PluginRegistry.metaDataProvider = metaDataProvider;
-  }
+  @Inject
+  public metaDataProvider: CassandraMetaDataProvider;
 
+  private config: any;
+
+  public initialize(config: { metaProviderConfig: any }) {
+    this.config = { ...config }
+    this.metaDataProvider.initialize(config.metaProviderConfig);
+  }
   /**
    * 
    * 
@@ -36,11 +35,11 @@ export class PluginRegistry {
    * @returns {Promise<void>} 
    * @memberof PluginRegistry
    */
-  public static async register(manifest: Manifest): Promise<Boolean> {
-    let isRegistered = await PluginRegistry.isRegistered(manifest.id);
+  public async register(manifest: Manifest): Promise<Boolean> {
+    let isRegistered = await this.isRegistered(manifest.id);
     if (!isRegistered) {
       let metaObject: PluginMeta = { id: manifest.id, name: manifest.name || '', version: manifest.version || '', repo: 'local', registered_on: new Date(), status: PluginStatusEnum.registered, manifest: JSON.stringify(manifest.toJSON()) };
-      await PluginRegistry.metaDataProvider.createMeta(metaObject);
+      await this.metaDataProvider.createMeta(metaObject);
       logger.info(`Plugin "${manifest.id}" is registered!`);
     } else {
       logger.info(`Plugin "${manifest.id}" is already registered!`);
@@ -55,8 +54,8 @@ export class PluginRegistry {
    * @returns 
    * @memberof PluginRegistry
    */
-  public static async unregister(id: string) {
-    await PluginRegistry.updateStatus(id, PluginStatusEnum.unregistered);
+  public async unregister(id: string) {
+    await this.updateStatus(id, PluginStatusEnum.unregistered);
   }
   /**
    * 
@@ -66,8 +65,8 @@ export class PluginRegistry {
    * @returns {Promise<boolean>} 
    * @memberof PluginRegistry
    */
-  public static async isRegistered(id: string): Promise<boolean> {
-    let result = await PluginRegistry.metaDataProvider.getMeta(id);
+  public async isRegistered(id: string): Promise<boolean> {
+    let result = await this.metaDataProvider.getMeta(id);
     if (result) {
       let plugin = result.rows.find((row) => row.id === id);
       return plugin && plugin.status && plugin.status === PluginStatusEnum.registered
@@ -81,8 +80,8 @@ export class PluginRegistry {
    * @returns {Promise<PluginStatusEnum | undefined>}
    * @memberof PluginRegistry
    */
-  public static async getStatus(id: string): Promise<PluginStatusEnum | undefined> {
-    let result = await PluginRegistry.metaDataProvider.getMeta(id);
+  public async getStatus(id: string): Promise<PluginStatusEnum | undefined> {
+    let result = await this.metaDataProvider.getMeta(id);
     if (result) {
       let plugin = result.rows.find((row) => row.id === id);
       return plugin && plugin.status && PluginStatusEnum[PluginStatusEnum[plugin.status]];
@@ -97,7 +96,7 @@ export class PluginRegistry {
    * @returns 
    * @memberof PluginRegistry
    */
-  public static async updateStatus(id: string, status: PluginStatusEnum): Promise<any> {
-    await PluginRegistry.metaDataProvider.updateMeta(id, { status });
+  public async updateStatus(id: string, status: PluginStatusEnum): Promise<any> {
+    await this.metaDataProvider.updateMeta(id, { status });
   }
 }

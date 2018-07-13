@@ -78,6 +78,7 @@
     "log4js": "^2.10.0",
     "node-zookeeper-client": "^0.2.2",
     "rxjs": "^6.2.1",
+    "typescript-ioc": "^1.2.4",
     "uuid": "^3.2.1",
     "winston": "^3.0.0-rc5"
   }

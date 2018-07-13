@@ -3,6 +3,7 @@ import { Manifest, IPluginManifest } from '../models/Manifest';
 import { ClientOptions, Client } from 'cassandra-driver';
 import { ConfigOptions, Client as ESClient } from 'elasticsearch';
 import * as kafka from 'kafka-node';
+import { loggerLevels } from '../logger';
 
 export interface IRouter {
     init(app: Router, auth: any, manifest: Manifest): void;
@@ -60,7 +61,7 @@ export interface FrameworkConfig {
     secureContextParams?: Array<string>;
     port?: number;
     kafka?: KafkaConfig;
-    enableLogs?: Boolean;
+    logLevel?: loggerLevels
 }
 
 export interface KafkaConfig {

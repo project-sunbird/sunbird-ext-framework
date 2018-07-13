@@ -1,4 +1,5 @@
-import { TestFramework, Framework, FrameworkConfig } from 'ext-framework-server';
+import { TestFramework } from 'ext-framework-server/test-framework';
+import { FrameworkConfig } from 'ext-framework-server/interfaces';
 import 'mocha';
 import * as path from 'path';
 import * as sinon from 'sinon';

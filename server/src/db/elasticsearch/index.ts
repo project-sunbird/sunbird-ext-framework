@@ -7,23 +7,22 @@ import * as elasticsearch from 'elasticsearch';
 import { Util } from '../../util';
 import { IElasticSearchConfig, IElasticSearchConnector } from "../../interfaces";
 import { logger } from '../../logger';
-
+import { Singleton } from 'typescript-ioc';
 export class ElasticSearchDB {
 
-  private static _config: IElasticSearchConfig;
+  private _config: IElasticSearchConfig;
 
-  public static initialize(config: IElasticSearchConfig): ElasticSearchDB {
-    ElasticSearchDB._config = config;
-    return ElasticSearchDB;
+  public initialize(config: IElasticSearchConfig) {
+    this._config = config;
   }
 
-  public static getConnection(pluginId: string): IElasticSearchConnector {
-    let connection: any = new elasticsearch.Client(JSON.parse(JSON.stringify(ElasticSearchDB._config)));
+  public getConnection(pluginId: string): IElasticSearchConnector {
+    let connection: any = new elasticsearch.Client(JSON.parse(JSON.stringify(this._config)));
     connection._pluginId = pluginId;
-    return ElasticSearchDB.proxyMethod(connection, ElasticSearchDB._config.disabledApis);
+    return this.proxyMethod(connection, this._config.disabledApis);
   }
 
-  private static proxyMethod(obj: any, disabledAPIs: Array<string>) {
+  private proxyMethod(obj: any, disabledAPIs: Array<string>) {
     let handler = {
       get(target, propKey, receiver) {
         const originalMethod = target[propKey];

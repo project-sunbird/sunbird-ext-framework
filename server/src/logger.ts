@@ -1,20 +1,7 @@
 import { configure, getLogger, Logger } from 'log4js';
 import * as path from 'path';
 const logger: Logger = getLogger();
-logger.level = 'debug';
-
-/**
- * make a log directory, just in case it isn't there.
- */
-try {
-  require('fs').mkdirSync(path.join(__dirname, 'log'));
-} catch (e) {
-  if (e.code !== 'EEXIST') {
-    console.error("Could not set up log directory, error was: ", e);
-    process.exit(1);
-  }
-}
-
+logger.level = 'off';
 
 configure({
   "appenders": {
@@ -51,6 +38,18 @@ configure({
     "http": { "appenders": ["access"], "level": "DEBUG" }
   }
 });
+  
+type loggerLevels = 'all' | 'trace' | 'fatal' | 'error' | 'off' | 'info' | 'warn' |'debug'
 
-export { logger };
-export * from 'log4js';
+function enableLogger(level?: loggerLevels) {
+  try {
+    require('fs').mkdirSync(path.join(__dirname, 'log'));
+  } catch (e) {
+    if (e.code !== 'EEXIST') {
+      console.error("Could not set up log directory, error was: ", e);
+      process.exit(1);
+    }
+  }
+  logger.level = level || 'debug';
+}
+export { logger, enableLogger, loggerLevels };

@@ -1,4 +1,5 @@
-import {TestFramework, Framework, FrameworkConfig} from 'ext-framework-server';
+import { TestFramework } from 'ext-framework-server/test-framework';
+import { FrameworkConfig } from 'ext-framework-server/interfaces';
 import 'mocha';
 import * as chai from 'chai';
 import * as path from 'path';
@@ -6,11 +7,10 @@ import chaiHttp from 'chai-http';
 
 chai.use(require('chai-http'));
 chai.should();
-
-const plugin = {id: 'profile-server', ver: '1.0'};
 const baseURL = "http://127.0.0.1:9000";
 
 describe('Profile server plugin', () => {
+  const plugin = {id: 'profile-server', ver: '1.0'};
     before((done) => {
         let config: FrameworkConfig = { plugins: [plugin], pluginBasePath: path.join(__dirname, 'node_modules/') }
         TestFramework.initialize(config).then(() => {

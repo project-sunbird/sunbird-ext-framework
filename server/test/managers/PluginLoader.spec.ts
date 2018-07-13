@@ -3,9 +3,8 @@ import * as Sinon from 'sinon'
 import 'mocha'
 import { PluginLoader } from '../../src/managers/PluginLoader';
 import { defaultConfig } from '../../src/config'
-import { FrameworkConfig, IPlugin } from '../../src';
+import { IPlugin } from '../../src/interfaces';
 import * as path from 'path';
-import { PluginRegistry } from '../../src/managers/PluginRegistry';
 import { FrameworkError } from '../../src/util';
 
 chai.should()
@@ -27,13 +26,14 @@ describe('Class PluginLoader', () => {
 
     beforeEach(() => {
       let testConfig = { pluginBasePath: path.join(__dirname, '../data/plugins/'), plugins: [{ id: 'test-plugin', ver: '1.0' }] };
-      pluginLoader = new PluginLoader({ ...defaultConfig, ...testConfig })
+      pluginLoader = new PluginLoader()
+      pluginLoader.initialize({ ...defaultConfig, ...testConfig });
     })
 
     it('should register the plugin', (done) => {
       let testPlugin: IPlugin = { id: 'test-plugin', ver: '1.0' };
       let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(resolveStubFn)
-      let PluginRegistryStub = Sinon.stub(PluginRegistry, 'register').callsFake(resolveStubFn);
+      let PluginRegistryStub = Sinon.stub(pluginLoader.pluginRegistry, 'register').callsFake(resolveStubFn);
       let loadDependenciesStub = Sinon.spy(pluginLoader, 'loadDependencies');
 
       pluginLoader.loadPlugin(testPlugin)
@@ -56,8 +56,8 @@ describe('Class PluginLoader', () => {
     it('should unregister the plugin when buildPlugin method fails', (done) => {
       let testPlugin: IPlugin = { id: 'test-plugin', ver: '1.0' };
       let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(rejectStubFn)
-      let registerStub = Sinon.stub(PluginRegistry, 'register').callsFake(resolveStubFn);
-      let unregisterStub = Sinon.stub(PluginRegistry, 'unregister').callsFake(resolveStubFn);
+      let registerStub = Sinon.stub(pluginLoader.pluginRegistry, 'register').callsFake(resolveStubFn);
+      let unregisterStub = Sinon.stub(pluginLoader.pluginRegistry, 'unregister').callsFake(resolveStubFn);
 
       pluginLoader.loadPlugin(testPlugin)
         .then(() => {
@@ -82,7 +82,7 @@ describe('Class PluginLoader', () => {
       let testPlugin: IPlugin = { id: 'test-plugin', ver: '1.0' };
       let isPluginLoadedStub = Sinon.stub(pluginLoader, 'isPluginLoaded').returns(true);
       let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(resolveStubFn)
-      let registerStub = Sinon.stub(PluginRegistry, 'register').callsFake(resolveStubFn);
+      let registerStub = Sinon.stub(pluginLoader.pluginRegistry, 'register').callsFake(resolveStubFn);
 
       pluginLoader.loadPlugin(testPlugin)
         .then(() => {
@@ -105,7 +105,7 @@ describe('Class PluginLoader', () => {
       let dependentPlugin: IPlugin = { id: 'dependent-plugin', ver: '1.0' };
       let testPlugin: IPlugin = { id: 'test-plugin-with-dependencies', ver: '1.0' };
       let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(resolveStubFn)
-      let registerStub = Sinon.stub(PluginRegistry, 'register').callsFake(resolveStubFn);
+      let registerStub = Sinon.stub(pluginLoader.pluginRegistry, 'register').callsFake(resolveStubFn);
       let loadDependenciesStub = Sinon.spy(pluginLoader, 'loadDependencies');
 
       pluginLoader.loadPlugin(testPlugin)
@@ -131,7 +131,7 @@ describe('Class PluginLoader', () => {
     it('should fail to load plugin if registry persistence fails', (done) => {
       let testPlugin: IPlugin = { id: 'test-plugin', ver: '1.0' };
       let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(resolveStubFn)
-      let PluginRegistryStub = Sinon.stub(PluginRegistry, 'register').callsFake(rejectStubFn);
+      let PluginRegistryStub = Sinon.stub(pluginLoader.pluginRegistry, 'register').callsFake(rejectStubFn);
       let loadDependenciesStub = Sinon.spy(pluginLoader, 'loadDependencies');
 
       pluginLoader.loadPlugin(testPlugin)
@@ -160,8 +160,8 @@ describe('Class PluginLoader', () => {
       // when buildPlugin fails to load dependent plugin
       // this should stop loading the actual plugin
       let buildPluginStub = Sinon.stub(pluginLoader, 'buildPlugin').callsFake(rejectStubFn) 
-      let registerStub = Sinon.stub(PluginRegistry, 'register').callsFake(resolveStubFn);
-      let unregisterStub = Sinon.stub(PluginRegistry, 'unregister').callsFake(resolveStubFn);
+      let registerStub = Sinon.stub(pluginLoader.pluginRegistry, 'register').callsFake(resolveStubFn);
+      let unregisterStub = Sinon.stub(pluginLoader.pluginRegistry, 'unregister').callsFake(resolveStubFn);
       let loadDependenciesStub = Sinon.spy(pluginLoader, 'loadDependencies');
 
       pluginLoader.loadPlugin(testPlugin)

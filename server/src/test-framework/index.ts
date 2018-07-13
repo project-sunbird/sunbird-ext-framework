@@ -1,22 +1,22 @@
 import * as bodyParser from 'body-parser'
-import {Framework, FrameworkConfig} from '../index';
-import { Manifest } from '../models/Manifest';
+import { FrameworkConfig } from '../interfaces';
 import * as express from 'express';
-import {defaultConfig} from '../config';
+import { defaultConfig } from '../config';
+import { frameworkAPI } from '../api';
 
 export class TestFramework {
-    private static config: FrameworkConfig;
+  private static config: FrameworkConfig;
 
-    public static initialize(config: FrameworkConfig) {
-        return new Promise((resolve, reject) => {
-            let expressApp = express();
-            expressApp.use(bodyParser.json({ limit: '50mb' }))
-            config = {...defaultConfig,...config};
-            Framework.initialize(config, expressApp).then(()=> {
-                console.log(`=====> Application running on port: ${config.port}`);
-                expressApp.listen(config.port);
-                resolve();
-            });
-        });
-    }
+  public static async initialize(config: FrameworkConfig) {
+    let expressApp = express();
+    process.on('unhandledRejection', (reason, p) => {
+      console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
+    });
+    expressApp.use(bodyParser.json({ limit: '50mb' }))
+    config = { ...defaultConfig, ...config };
+    await frameworkAPI.bootstrap(config, expressApp).then(() => {
+      expressApp.listen(config.port);
+      console.log(`=====> Application running on port: ${config.port}`);
+    });
+  }
 }

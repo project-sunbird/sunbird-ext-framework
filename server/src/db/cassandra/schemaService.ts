@@ -1,6 +1,7 @@
 import { Util } from '../../util';
 import * as _ from 'lodash';
-
+import { Singleton } from 'typescript-ioc';
+@Singleton
 export class SchemaService {
   private schemaMap = {};
 
@@ -20,5 +21,3 @@ export class SchemaService {
     }
   }
 }
-
-export const schemaService = new SchemaService();

@@ -5,11 +5,11 @@ import { PluginManager } from '../../src/managers/PluginManager';
 import { FrameworkConfig } from '../../src/interfaces';
 import { PluginLoader } from '../../src/managers/PluginLoader';
 import { FrameworkError, FrameworkErrors } from '../../src/util';
-//TODO: remove all relative path reference with module alias path
+// TODO: remove all relative path reference with module alias path
 
 chai.should();
 
-var testConfig: FrameworkConfig = {
+let testConfig: FrameworkConfig = {
     db: {
        cassandra: {
            contactPoints: ['127.0.0.1'],
@@ -32,10 +32,9 @@ var testConfig: FrameworkConfig = {
 
 describe('Class PluginManager', () => {
     let pluginManager: PluginManager;
-    let pluginLoader: PluginLoader;
     before(() => {
-        pluginLoader = new PluginLoader(testConfig);
-        pluginManager = new PluginManager(pluginLoader)
+        pluginManager = new PluginManager()
+        pluginManager.initialize(testConfig);
     })
     
     describe('load method', () => {
@@ -74,7 +73,7 @@ describe('Class PluginManager', () => {
 
     describe('getPluginInstance method', () => {
         it('should return plugin instance of plugin id', () => {
-            let spyFn = Sinon.spy(pluginLoader, 'getPluginInstance');
+            let spyFn = Sinon.spy(pluginManager.pluginLoader, 'getPluginInstance');
             pluginManager.getPluginInstance('test-plugin');
             Sinon.assert.calledWith(spyFn, 'test-plugin')
         })
@@ -83,7 +82,7 @@ describe('Class PluginManager', () => {
     describe('loadPlugin method', () => {
         it('should call PluginLoader.loadPlugin method', (done) => {
             let plugin = {id: 'test-plugin', ver: '1.0'};
-            let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
+            let stub = Sinon.stub(pluginManager.pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     resolve();
                 });
@@ -100,7 +99,7 @@ describe('Class PluginManager', () => {
 
         it('should throw error when PluginLoader.loadPlugin method throws error!', (done) => {
             let plugin = {id: 'test-plugin', ver: '1.0'};
-            let stub = Sinon.stub(pluginLoader, "loadPlugin").callsFake(() => {
+            let stub = Sinon.stub(pluginManager.pluginLoader, "loadPlugin").callsFake(() => {
                 return new Promise((resolve, reject) => {
                     reject(new FrameworkError({ code: FrameworkErrors.PLUGIN_LOAD_FAILED, rootError: new Error(), message: 'plugin load failed!' }));
                 });

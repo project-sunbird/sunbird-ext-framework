@@ -8,13 +8,19 @@ import { IRouterConstructor, IServerConstructor, IPlugin, FrameworkConfig } from
 import { PluginLoader } from './PluginLoader';
 import { FrameworkError } from '../util';
 import { logger } from '../logger';
+import { Inject, Singleton } from 'typescript-ioc';
+import * as _ from 'lodash';
 
+@Singleton
 export class PluginManager {
-	private pluginLoader: PluginLoader;
+  @Inject
+	public pluginLoader: PluginLoader;
+  private _config: any;
 
-	constructor(pluginLoader: PluginLoader) {
-		this.pluginLoader = pluginLoader;
-	}
+  public initialize(config: FrameworkConfig) {
+    this._config = _.cloneDeep(config);
+    this.pluginLoader.initialize(config);
+  }
 
 	public async load(config: FrameworkConfig) {
 		for (let plugin of config.plugins) {
@@ -33,7 +39,7 @@ export class PluginManager {
 		try {
 			await this.pluginLoader.loadPlugin(plugin);
 		} catch (e) {
-			(e instanceof FrameworkError) && logger.error(`plugin "${plugin.id}" load failed due to ` + (e as FrameworkError).stack);
+			(e instanceof FrameworkError) && logger.fatal(`plugin "${plugin.id}" load failed due to ` + (e as FrameworkError).stack);
 			throw e;	
 		}
 	}

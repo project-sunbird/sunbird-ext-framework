@@ -4,29 +4,47 @@
 import { FrameworkConfig, ICassandraConnector, IElasticSearchConnector } from "../interfaces";
 import { CassandraDB, ElasticSearchDB } from "../db";
 import { RouterRegistry } from "../managers/RouterRegistry";
-import { Framework } from "..";
+import { Framework } from "../index";
+import { Inject, Singleton } from "typescript-ioc";
+import { Express } from 'express';
 
+export * from '../interfaces';
+
+@Singleton
 export class FrameworkAPI {
-    constructor(private config: FrameworkConfig) {
-        this.config = config;
-    }
+  private config: FrameworkConfig;
 
-    public getCassandraInstance(pluginId: string) {
-        let instance = new CassandraDB(this.config.db.cassandra);
-        return instance.getConnectionByPlugin(pluginId);
-    }
+  @Inject
+  private framework: Framework;
 
-    public getElasticsearchInstance(pluginId: string): IElasticSearchConnector {
-        return ElasticSearchDB.getConnection(pluginId);
-    }
+  @Inject
+  private cassandraDB: CassandraDB;
 
-    public threadLocal() {
-        return RouterRegistry.getThreadNamespace();
-    }
+  @Inject
+  private elasticSearchDB: ElasticSearchDB;
 
-    public getPluginInstance(id: string) {
-      return Framework.pluginManager.getPluginInstance(id);
-    }
+  public async bootstrap(config: FrameworkConfig, app: Express) {
+    this.config = { ...config }
+    this.elasticSearchDB.initialize(this.config.db.elasticsearch);
+    this.cassandraDB.initialize(this.config.db.cassandra);
+    await this.framework.initialize(config, app);
+  }
+
+  public getCassandraInstance(pluginId: string) {
+    return this.cassandraDB.getConnectionByPlugin(pluginId);
+  }
+
+  public getElasticsearchInstance(pluginId: string): IElasticSearchConnector {
+    return this.elasticSearchDB.getConnection(pluginId);
+  }
+
+  public threadLocal() {
+    return this.framework.routerRegistry.getThreadNamespace();
+  }
+
+  public getPluginInstance(id: string) {
+    return this.framework.pluginManager.getPluginInstance(id);
+  }
 }
 
-export const api = FrameworkAPI;
+export const frameworkAPI = new FrameworkAPI();
