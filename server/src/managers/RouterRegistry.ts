@@ -23,7 +23,6 @@ export class RouterRegistry {
     /**
      *
      *
-     * @static
      * @param {Manifest} manifest
      * @returns {Router}
      * @memberof RouterRegistry
