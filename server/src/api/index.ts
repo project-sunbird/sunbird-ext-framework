@@ -1,7 +1,7 @@
 /**
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
-import { FrameworkConfig, ICassandraConnector, IElasticSearchConnector } from "../interfaces";
+import { FrameworkConfig, IElasticSearchConnector } from "../interfaces";
 import { CassandraDB, ElasticSearchDB } from "../db";
 import { RouterRegistry } from "../managers/RouterRegistry";
 import { Framework } from "../index";

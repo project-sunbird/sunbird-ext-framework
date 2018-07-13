@@ -1,8 +1,6 @@
 import { Router, NextFunction } from 'express';
 import { Manifest, IPluginManifest } from '../models/Manifest';
-import { ClientOptions, Client } from 'cassandra-driver';
 import { ConfigOptions, Client as ESClient } from 'elasticsearch';
-import * as kafka from 'kafka-node';
 import { loggerLevels } from '../logger';
 
 export interface IRouter {
@@ -31,17 +29,19 @@ export interface IPlugin {
     ver: string;
 }
 
-export interface ICassandraConfig extends ClientOptions {
+export interface ICassandraConfig {
     defaultKeyspaceSettings?: {
         replication: {
             class: string,
             replication_factor: string
         }
     },
+    contactPoints: Array<string>,
+    keyspace?: string,
     port?: number
 }
 
-export interface ICassandraConnector extends Client {
+export interface ICassandraConnector {
 
 }
 
@@ -60,16 +60,7 @@ export interface FrameworkConfig {
     pluginBasePath: string;
     secureContextParams?: Array<string>;
     port?: number;
-    kafka?: KafkaConfig;
     logLevel?: loggerLevels
-}
-
-export interface KafkaConfig {
-    connectionString: string;
-    clientId?: string;
-    options?: kafka.ZKOptions;
-    noBatchOptions?: kafka.AckBatchOptions;
-    sslOptions?: any;
 }
 
 export enum PluginStatusEnum {

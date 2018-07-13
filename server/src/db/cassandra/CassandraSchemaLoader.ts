@@ -5,7 +5,7 @@
 import { ISchemaLoader } from '../ISchemaLoader'
 import { SchemaLoader } from '../SchemaLoader'
 import { CassandraDB } from './index';
-import { ICassandraConfig, ICassandraConnector, IMetaDataProvider } from '../../interfaces';
+import { ICassandraConfig, IMetaDataProvider } from '../../interfaces';
 import { Util, FrameworkError, FrameworkErrors, delayPromise } from '../../util';
 import * as _ from 'lodash';
 import * as ExpressCassandra from 'express-cassandra';

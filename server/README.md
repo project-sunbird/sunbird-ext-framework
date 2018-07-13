@@ -18,7 +18,6 @@
   2. Download `Elasticsearch` v6.1
   3. Download `Node.Js` v6.4 or higher
   4. install nodemon globally: `npm i nodemon -g` (optional)
-  5. install Gulp cli globally: `npm install gulp-cli -g` (optional)
   
 ## Getting started
 
@@ -121,11 +120,11 @@ copy paste the below code:
 
 ``` Javascript
 import { Manifest } from 'ext-framework-server/models/Manifest';
-import { Framework } from 'ext-framework-server';
+import { frameworkAPI } from 'ext-framework-server/api';
 
 export class Router {
 	init(app: any, manifest: Manifest, auth?: any) {
-		const server = Framework.api.getPluginInstance(manifest.id);
+		const server = frameworkAPI.getPluginInstance(manifest.id);
 		app.get('/get', (req, res, next) => { server.sayHello(req, res, next) })
 	}
 }
@@ -207,6 +206,10 @@ Demo app runs in `debug` mode enabled. Latest `node.js` supports `--inspect` fla
 
 ## Testing:
 cd `server` and run `npm run test`. It generates `HTML` reporter inside folder `server/mochawesome-report` using `mochawesome` reporter. 
+
+
+## Generate Code Document:
+1. run `npm run gen-doc` (generates `docs` folder in root directory)
 
 
 ## `npm link` vs `npm install` for local modules:
