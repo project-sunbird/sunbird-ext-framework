@@ -15,22 +15,18 @@ This is because you're making your application open for extensibility but closin
 
 ## Sections:
 
-1. Setup
-2. Design overview
-3. Getting started with Angular 6
-3. Tutorials
-    3.1 Build your first plugin!
-    3.2 Integrating plugin with app
-    3.3 Sample plugin demo
+1. Design overview
+2. Setup
+3. Getting started with Angular
+4. Tutorials
+    4.1 Build your first plugin!
+    4.2 Integrating plugin with app
+    4.3 Sample plugin demo
+5. Development server
+6. Build
+7. Running Unit testcase
 
-## 1. Setup:
-
-1. `cd web-extensions/sunbird-web-extensions-app`
-2. `npm install`
-3. `ng build sunbird-web-extension`  // to build library dist
-4. `ng serve`
-
-## 2. Design Overview:
+## 1. Design Overview:
 
 The system that we're going to build in this chapter borrows a lot of mechanisms that are already present in the Angular framework. In order to implement extensibility using plugins, we rely on the following core concepts:
 
@@ -44,6 +40,12 @@ Let's look at the following illustration to picture the architecture of our plug
 
 ![](https://i.imgur.com/i2Ykbz0.jpg)
 
+## 2. Setup:
+
+1. `cd web-extensions/sunbird-web-extensions-app`
+2. `npm install`
+3. `ng build sunbird-web-extension`  // to build library dist
+4. `ng serve`
 
 ## 3. Getting started with Angular:
 
@@ -116,9 +118,9 @@ This opens great possibilities for large project, and for developers to open sou
 Obviously, these developers will not be familiar with all of the intricacies of the code for the application they are plugging into. Once the plugins are developed, other even less technical users may simply install the application and any selected plugins.
 
 
-## 3. Tutorials:
+## 4. Tutorials:
 
-### 3.1 Build your first plugin:
+### 4.1 Build your first plugin:
 
 Before we get into the plugin details, we should first agree on where to make our application extensible. Our plugin system is based on the ExtensionPoint directives, which should be placed somewhere in our component tree so that plugins can expose components to these extension points.
 
@@ -215,7 +217,7 @@ This would already be enough for the plugin to work.
 
 The only thing that is left is to add the plugin to the list of plugins that should be loaded initially by the `PluginService` directive.
 
-### 3.2 Integrating plugin with app:
+### 4.2 Integrating plugin with app:
 
 1. To integrate the plugin that we just built into the Sunbird Platform we'll create a framework.config.ts file on the root of our application and add the following content:
 
@@ -257,9 +259,9 @@ your-angular-app-folder/
 
 **Summarizing on our first plugin:**
 
-Well done! You successfully implemented your first plugin! In this section, we used the API of our plugin architecture to create a plugin to manage Table Generation. We used the PluginPlacement class to map our plugin components to different slots in the UI of our application. We also made use of the PluginData object that is provided to each instantiated component in the plugin slot in order to access the plugin instance. The advantage of implementing functionality like this inside a plugin should be obvious. We added an additional feature to our application without building up additional dependencies. Our Table Generator feature is completely portable. Third-party developers can write independent plugins, and they can be loaded by our system. This is a big advantage, and it helps us keep our core slim while providing great extensibility.
+Well done! You have successfully implemented your first plugin! In this section, we used the API of our plugin architecture to create a plugin to manage Table Generation. We used the `PluginPlacement` class to map our plugin components to different slots in the UI of our application. We also made use of the `PluginData` object that is provided to each instantiated component in the plugin slot in order to access the plugin instance. The advantage of implementing functionality like this inside a plugin should be obvious. We added an additional feature to our application without building up additional dependencies. Our Table Generator feature is completely portable. Third-party developers can write independent plugins, and they can be loaded by our system. This is a big advantage, and it helps us keep our core slim while providing great extensibility.
 
-### 3.3 Sample plugin demo:
+### 4.3 Sample plugin demo:
 
 <iframe src="https://stackblitz.com/edit/angular-5wiszx?embed=1&file=src/app/sample-plugin/sample-plugin.component.ts&hideExplorer=1&hideNavigation=1&view=preview" width="745px" height="400px" frameborder="0"></iframe>
 
@@ -268,14 +270,14 @@ Well done! You successfully implemented your first plugin! In this section, we u
 > Here in the demo, Plugin is loaded dynamically for demo purpose only.
 
 
-## Development server
+## 5. Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Create Dist:
+## 6. Build:
 
 Run `npm run build` to create production ready build.
 
-## Running unit tests
+## 7. Running unit tests
 
 Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
