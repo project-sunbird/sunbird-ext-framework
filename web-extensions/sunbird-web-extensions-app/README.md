@@ -20,7 +20,7 @@ This is because you're making your application open for extensibility but closin
     * 4.1 [Build your first plugin!](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#41-build-your-first-plugin)
     * 4.2 [Integrating plugin with app](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#42-integrating-plugin-with-app)
     * 4.3 [Sample plugin demo](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#43-sample-plugin-demo)
-5. [API documentation]()
+5. [API document](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-api-document)
 6. [Development server](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-development-server)
 7. [Build](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#6-build)
 8. [Running Unit testcase](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#7-running-unit-tests)
