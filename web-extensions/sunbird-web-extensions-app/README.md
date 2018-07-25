@@ -35,9 +35,6 @@ The system that we're going to build in this chapter borrows a lot of mechanisms
 
 <li>We use the dependency injection of Angular to provide the instantiated plugin information into the plugin components. As the plugin components will be placed in a spot where there's already an injector present, they will be able to inject surrounding components and dependencies in order to connect to the application.</li>
 
-Let's look at the following illustration to picture the architecture of our plugin system before we start implementing it:
-
-![](https://i.imgur.com/i2Ykbz0.jpg)
 
 ## 2. Setup:
 
