@@ -307,7 +307,7 @@ export class MyPlugin {
 |----|----|
 | 1. `name`: <i>String</i>| name of the host `extension-point` |
 | 2. `priority`: <i>number</i> (non-negative)| can be any valid poisitve Integer, priority 1 is considered as highest priority |
-| 3. `component`: <i>AngularComponent\<T></i> | Token/class of angular component |
+| 3. `component`: <i>Component\<T></i> | Token/class of angular component |
 
 `priority`: if a `extension-point` is extended by more than one extension, then framework resolves which extension to allowed based on this feild. 
 
