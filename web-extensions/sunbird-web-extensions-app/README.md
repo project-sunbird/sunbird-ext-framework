@@ -38,6 +38,8 @@ The system that we're going to build in this chapter borrows a lot of mechanisms
 
 ## 2. Setup:
 
+Clone the repo and run the following commands:
+
 1. `cd web-extensions/sunbird-web-extensions-app`
 2. `npm install`
 3. `ng build sunbird-web-extension`  // to build library dist
