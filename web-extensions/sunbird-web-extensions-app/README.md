@@ -1,7 +1,5 @@
 
-# Sunbird Web extensions:
-
-<hr>
+# Sunbird Web extensions
 
 Sunbird web extension would allow you to write application as composition of pluggable modules and provide additional functionality through it. It helps you manage the scope of your application/project.
 
@@ -15,16 +13,16 @@ This is because you're making your application open for extensibility but closin
 
 ## Sections:
 
-1. Design overview
-2. Setup
-3. Getting started with Angular
-4. Tutorials
-    4.1 Build your first plugin!
-    4.2 Integrating plugin with app
-    4.3 Sample plugin demo
-5. Development server
-6. Build
-7. Running Unit testcase
+1. [Design overview](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#1-design-overview)
+2. [Setup](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#2-setup)
+3. [Getting started with Angular](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#3-getting-started-with-angular)
+4. [Tutorials](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#4-tutorials)
+    * 4.1 [Build your first plugin!](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#41-build-your-first-plugin)
+    * 4.2 [Integrating plugin with app](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#42-integrating-plugin-with-app)
+    * 4.3 [Sample plugin demo](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#43-sample-plugin-demo)
+5. [Development server](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-development-server)
+6. [Build](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#6-build)
+7. [Running Unit testcase](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#7-running-unit-tests)
 
 ## 1. Design Overview:
 
@@ -71,7 +69,7 @@ Our first goal was to create an Angular workspace named `my-app`
 When we point our browser at: `http://localhost:4200/` we see the starter Angular application
 
 > NOTE: If you don't have Angular-CLI, follow the below steps:
-
+>
 > 1. Install the Angular CLI, if you haven't already done so.
 > 2. To quickly set up Node.js on your machine, [Set up Node.js](https://nodejs.org/en/).
 > 3. To learn more about Angular 6 and it's features, head to [Angular 6 docs](https://angular.io/docs)
@@ -263,10 +261,11 @@ Well done! You have successfully implemented your first plugin! In this section,
 
 ### 4.3 Sample plugin demo:
 
-<iframe src="https://stackblitz.com/edit/angular-5wiszx?embed=1&file=src/app/sample-plugin/sample-plugin.component.ts&hideExplorer=1&hideNavigation=1&view=preview" width="745px" height="400px" frameborder="0"></iframe>
+[Click here](https://stackblitz.com/edit/angular-5wiszx?embed=1&file=src/app/sample-plugin/sample-plugin.component.ts&hideExplorer=1&hideNavigation=1&view=preview)
+
 
 > NOTE: Dynamic loading of plugin during runtime is not supported!
-
+>
 > Here in the demo, Plugin is loaded dynamically for demo purpose only.
 
 
