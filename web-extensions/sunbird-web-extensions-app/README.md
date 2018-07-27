@@ -1,7 +1,5 @@
 
-# Sunbird Web extensions:
-
-<hr>
+# Sunbird Web extensions
 
 Sunbird web extension would allow you to write application as composition of pluggable modules and provide additional functionality through it. It helps you manage the scope of your application/project.
 
@@ -15,16 +13,17 @@ This is because you're making your application open for extensibility but closin
 
 ## Sections:
 
-1. Design overview
-2. Setup
-3. Getting started with Angular
-4. Tutorials
-    4.1 Build your first plugin!
-    4.2 Integrating plugin with app
-    4.3 Sample plugin demo
-5. Development server
-6. Build
-7. Running Unit testcase
+1. [Design overview](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#1-design-overview)
+2. [Setup](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#2-setup)
+3. [Getting started with Angular](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#3-getting-started-with-angular)
+4. [Tutorials](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#4-tutorials)
+    * 4.1 [Build your first plugin!](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#41-build-your-first-plugin)
+    * 4.2 [Integrating plugin with app](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#42-integrating-plugin-with-app)
+    * 4.3 [Sample plugin demo](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#43-sample-plugin-demo)
+5. [API document](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-api-document)
+6. [Development server](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-development-server)
+7. [Build](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#6-build)
+8. [Running Unit testcase](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#7-running-unit-tests)
 
 ## 1. Design Overview:
 
@@ -36,11 +35,10 @@ The system that we're going to build in this chapter borrows a lot of mechanisms
 
 <li>We use the dependency injection of Angular to provide the instantiated plugin information into the plugin components. As the plugin components will be placed in a spot where there's already an injector present, they will be able to inject surrounding components and dependencies in order to connect to the application.</li>
 
-Let's look at the following illustration to picture the architecture of our plugin system before we start implementing it:
-
-![](https://i.imgur.com/i2Ykbz0.jpg)
 
 ## 2. Setup:
+
+Clone the repo and run the following commands:
 
 1. `cd web-extensions/sunbird-web-extensions-app`
 2. `npm install`
@@ -71,7 +69,7 @@ Our first goal was to create an Angular workspace named `my-app`
 When we point our browser at: `http://localhost:4200/` we see the starter Angular application
 
 > NOTE: If you don't have Angular-CLI, follow the below steps:
-
+>
 > 1. Install the Angular CLI, if you haven't already done so.
 > 2. To quickly set up Node.js on your machine, [Set up Node.js](https://nodejs.org/en/).
 > 3. To learn more about Angular 6 and it's features, head to [Angular 6 docs](https://angular.io/docs)
@@ -263,21 +261,78 @@ Well done! You have successfully implemented your first plugin! In this section,
 
 ### 4.3 Sample plugin demo:
 
-<iframe src="https://stackblitz.com/edit/angular-5wiszx?embed=1&file=src/app/sample-plugin/sample-plugin.component.ts&hideExplorer=1&hideNavigation=1&view=preview" width="745px" height="400px" frameborder="0"></iframe>
+[Click here](https://stackblitz.com/edit/angular-5wiszx?embed=1&file=src/app/sample-plugin/sample-plugin.component.ts&hideExplorer=1&hideNavigation=1&view=preview)
+
 
 > NOTE: Dynamic loading of plugin during runtime is not supported!
-
+>
 > Here in the demo, Plugin is loaded dynamically for demo purpose only.
 
+## 5. API document:
 
-## 5. Development server
+### 1. `extension-point` Angular directive:
+
+This directive will allow other extensions to extend the app functionality. Plugin can also use this directive inside there components to allow other plugin to extend and so on. 
+
+Options:
+
+|Attribute|Description|
+|---|----|
+|1. `name`: <i>String</i>| name of the extension point, to be namespaced, to avoid global namespace collision.  e.g: `com.sunbird.myplugin` for sunbird extensions |
+|2. `override`: <i>Boolean</i>| if `true`, it will allow multiple extensions on the same extension point, if `false`, it will allow only one extension (based on hihest priority set in `PluginPlacement`) |
+|3. input: <i>any</i> | to bind data to extension during initialisation |
+|4. output: <i>EventEmitter</i> | to bind output events from extensions |
+
+
+### 2. `PluginConfig ` Annotation:
+
+```javascript
+@PluginConfig({
+    name: String,
+    description: String,
+    placements: Array<PluginPlacement>
+})
+export class MyPlugin {
+}
+```
+`PluginConfig` annotation decorates `MyPlugin`(in example) class with details such as name, description, placements of the extension which is required for the framework to place the extension based on the placements info provided.
+
+
+### 3. `PluginPlacement` Class:
+
+`PluginPlacement` has detail about the angular component which has to be rendered at defined host `extension-point`.
+
+|Member| Description |  
+|----|----|
+| 1. `name`: <i>String</i>| name of the host `extension-point` |
+| 2. `priority`: <i>number</i> (non-negative)| can be any valid poisitve Integer, priority 1 is considered as highest priority |
+| 3. `component`: <i>Component\<T></i> | Token/class of angular component |
+
+`priority`: if a `extension-point` is extended by more than one extension, then framework resolves which extension to allowed based on this feild. 
+
+Example:
+Say, we have `extension-point` as below:
+
+```javascript
+<extension-point name="com.subird.profile.widget" override=true>
+```
+this extension would allow only extension to extended, since `override` flag is set to `true`.
+
+for instance, there are 2 plugins (A, B) would like to extend the same extension-point, in this case it check for priority. Say A has priority 1 and B has priority 4, in this case framework picks the A plugin to extend the host extension-point.
+
+If A and B has same priority, say 1 (which is not desirable), in this case framework picks up the plugin randomly.
+
+
+
+
+## 6. Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## 6. Build:
+## 7. Build:
 
 Run `npm run build` to create production ready build.
 
-## 7. Running unit tests
+## 8. Running unit tests
 
 Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
