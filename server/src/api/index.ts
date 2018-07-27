@@ -7,7 +7,8 @@ import { RouterRegistry } from "../managers/RouterRegistry";
 import { Framework } from "../index";
 import { Inject, Singleton } from "typescript-ioc";
 import { Express } from 'express';
-
+import { TelemetryService } from '../services'
+export * from '../services/telemetry/interfaces/TelemetryService';
 export * from '../interfaces';
 
 @Singleton
@@ -23,6 +24,9 @@ export class FrameworkAPI {
   @Inject
   private elasticSearchDB: ElasticSearchDB;
 
+  @Inject
+  private _telemetryService: TelemetryService;
+
   public async bootstrap(config: FrameworkConfig, app: Express) {
     this.config = { ...config }
     this.elasticSearchDB.initialize(this.config.db.elasticsearch);
@@ -36,6 +40,10 @@ export class FrameworkAPI {
 
   public getElasticsearchInstance(pluginId: string): IElasticSearchConnector {
     return this.elasticSearchDB.getConnection(pluginId);
+  }
+
+  public telemetryService(): TelemetryService {
+    return this._telemetryService
   }
 
   public threadLocal() {

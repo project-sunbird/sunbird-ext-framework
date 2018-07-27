@@ -10,11 +10,14 @@ import {
 } from './interfaces/TelemetryService';
 import * as _ from 'lodash';
 import { HTTPService } from '../http-service';
+import { Singleton } from 'typescript-ioc';
 /**
  * Telemetry Service to log telemetry v3 events
  * 
  * @class TelemetryService
  */
+
+@Singleton
 export class TelemetryService {
 
   private provider: any;
@@ -28,7 +31,7 @@ export class TelemetryService {
    * @param {*} provider 
    * @memberof TelemetryService
    */
-  constructor(config: ITelemetry, provider: any) {
+  public initialize(config: ITelemetry, provider: any) {
       this.provider = provider
       this.config = _.cloneDeep(config);
       config.dispatcher = config.dispatcher ? this.getDispatcher(config.dispatcher) : this.getDispatcher('console')
@@ -103,35 +106,37 @@ export class TelemetryService {
     return rollUp;
   }
 
-  private getEventData(event: IEventData): ITelemetryEvent {
+  private getEventData(event: IEventData): any {
     return {
       edata: event.edata,
       options: {
         context: this.getEventContext(event),
         object: this.getEventObject(event),
-        // TODO: get tags data from event
-        tags: []
+        actor: event.actor,
+        tags: event.tags || []
       }
     };
   }
 
   private getEventObject(event: IEventData): TelemetryObject {
-    return {
-      id: event.object.id || '',
-      type: event.object.type || '',
-      ver: event.object.ver || '',
-      rollup: event.object.rollup || {}
-    };
+    if (_.get(event, 'object.id')) {
+      return {
+        id: _.get(event, 'object.id') || '',
+        type: _.get(event, 'object.type') || '',
+        ver: _.get(event, 'object.ver') || '',
+        rollup: _.get(event, 'object.rollup') || {}
+      };
+    } 
   }
 
   private getEventContext(event: IEventData): ITelemetryContextData {
     return {
       channel: _.get(event, 'edata.channel') || this.config.channel,
-      pdata: _.get(event, 'edata.pdata') || this.config.pdata,
+      pdata: _.get(event, 'context.pdata') || this.config.pdata,
       env: _.get(event, 'env') || this.config.env,
       sid: _.get(event, 'sid') || this.config.sid,
       uid: this.config.uid,
-      cdata: _.get(event, 'cdata') || [],
+      cdata: _.get(event, 'context.cdata') || [],
       // TODO: get rollup data from event
       rollup: this.getRollUpData() 
     };
@@ -148,7 +153,7 @@ export class TelemetryService {
       'http': {
         dispatch: event => {
           // TODO: config object for http service
-          HTTPService.post(this.config.endpoint, JSON.stringify(event)).subscribe((result) => {
+          HTTPService.post( this.config.host + this.config.endpoint, JSON.stringify(event)).subscribe((result) => {
             // console.log(result)
           });
         }

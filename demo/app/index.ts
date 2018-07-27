@@ -20,8 +20,20 @@ const config: FrameworkConfig = {
       disabledApis: ["cat", "cluster", "ingest", "nodes", "remote", "snapshot", "tasks"]
     }
   },
+  telemetry: {
+    dispatcher: 'console', // defualt
+    pdata: { id: 'demo-app', ver: '1.0', pid: 'demo-app' },
+    env: 'demo',
+    apislug: 'test',
+    channel: 'test',
+    uid: 'test',
+    endpoint: 'v1/telemetry',
+    batchsize: 200,
+    host: 'http://telemetry-service:9001/',
+    runningEnv: 'server'
+  },
   plugins: [
-    { id: 'hello-world', ver: '1.0' },
+    // { id: 'hello-world', ver: '1.0' },
     // { id: 'profile-server', ver: '1.0' }, 
     { id: 'form-service', ver: '1.0' }
   ],
