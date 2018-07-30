@@ -2,7 +2,7 @@ import { Manifest, BaseServer } from 'ext-framework-server/models';
 import { Request, Response } from 'express';
 import { FormResponse } from './models';
 import * as _ from 'lodash';
-
+import { telemetryHelper } from './telemetryHelper';
 export class Server extends BaseServer {
 
   constructor(manifest: Manifest) {
@@ -23,20 +23,22 @@ export class Server extends BaseServer {
     })
     await model.saveAsync().then(data => {
       res.status(200)
-      .send(new FormResponse(undefined, {
-        id: 'api.form.create',
-        data: {
-          created: 'OK'
-        }
-      }))
+        .send(new FormResponse(undefined, {
+          id: 'api.form.create',
+          data: {
+            created: 'OK'
+          }
+        }))
+        telemetryHelper.log(req);
     })
       .catch(error => {
         res.status(500)
-        .send(new FormResponse({
-          id: "api.form.create",
-          err: "ERR_CREATE_FORM_DATA",
-          errmsg: error
-        }));
+          .send(new FormResponse({
+            id: "api.form.create",
+            err: "ERR_CREATE_FORM_DATA",
+            errmsg: error
+          }));
+        telemetryHelper.error(req, res, error);
       })
   }
 
@@ -55,35 +57,38 @@ export class Server extends BaseServer {
       data: JSON.stringify(data.data),
       last_modified: new Date()
     };
-
+    
     await this.cassandra.instance.form_data.updateAsync(query, updateValue, { if_exists: true })
       .then(data => {
         if (!_.get(data, "rows[0].['[applied]']")) throw { msg: `invalid request, no records found for the match to update!`, client_error: true };
         res.status(200)
-        .send(new FormResponse(undefined, {
-          id: 'api.form.update',
-          data: { "response": [{ "rootOrgId": query.root_org, "key": `${query.type}.${query.subtype}.${query.action}.${query.component}`, "status": "SUCCESS" }] }
-        }))
+          .send(new FormResponse(undefined, {
+            id: 'api.form.update',
+            data: { "response": [{ "rootOrgId": query.root_org, "key": `${query.type}.${query.subtype}.${query.action}.${query.component}`, "status": "SUCCESS" }] }
+          }))
+        telemetryHelper.log(req);
       }).catch(error => {
-        if(error.client_error) {
+        if (error.client_error) {
           res.status(400)
-          .send(new FormResponse({
-            id: "api.form.update",
-            err: "ERR_UPDATE_FORM_DATA",
-            responseCode: "CLIENT_ERROR",
-            errmsg: error.msg
-          }));
+            .send(new FormResponse({
+              id: "api.form.update",
+              err: "ERR_UPDATE_FORM_DATA",
+              responseCode: "CLIENT_ERROR",
+              errmsg: error.msg
+            }));
+            telemetryHelper.error(req, res, error);
         } else {
-          return error;
+          throw error;
         }
       })
       .catch(error => {
         res.status(500)
-        .send(new FormResponse({
-          id: "api.form.update",
-          err: "ERR_UPDATE_FORM_DATA",
-          errmsg: error
-        }));
+          .send(new FormResponse({
+            id: "api.form.update",
+            err: "ERR_UPDATE_FORM_DATA",
+            errmsg: error
+          }));
+        telemetryHelper.error(req, res, error);
       })
   }
 
@@ -102,7 +107,7 @@ export class Server extends BaseServer {
 
     if (!query.root_org && !query.framework) {
       onRecordFound = this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*" }));
-    } else if(query.root_org && !query.framework) {
+    } else if (query.root_org && !query.framework) {
       onRecordFound = this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { framework: "*" }));
     } else {
       onRecordFound = this.cassandra.instance.form_data.findOneAsync(query);
@@ -127,20 +132,22 @@ export class Server extends BaseServer {
         if (!data) data = {}
         if (data && typeof data.data === "string") data.data = JSON.parse(data.data);
         res.status(200)
-        .send(new FormResponse(undefined, {
-          id: 'api.form.read',
-          data: {
-            form: data
-          }
-        }))
+          .send(new FormResponse(undefined, {
+            id: 'api.form.read',
+            data: {
+              form: data
+            }
+          }))
+          telemetryHelper.log(req);
       })
       .catch(error => {
         res.status(500)
-        .send(new FormResponse({
-          id: "api.form.read",
-          err: "ERR_READ_FORM_DATA",
-          errmsg: error
-        }));
+          .send(new FormResponse({
+            id: "api.form.read",
+            err: "ERR_READ_FORM_DATA",
+            errmsg: error
+          }));
+        telemetryHelper.error(req, res, error);
       })
   }
 }

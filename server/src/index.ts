@@ -15,6 +15,8 @@ import { Inject, Singleton } from 'typescript-ioc';
 import { ESSchemaLoader } from './db/elasticsearch/ESSchemaLoader';
 import { CassandraSchemaLoader } from './db/cassandra/CassandraSchemaLoader';
 import { CassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
+import { TelemetryService } from './services/telemetry';
+import * as TelemetryLib from './libs/telemetry-1.0.min';
 
 @Singleton
 export class Framework {
@@ -24,6 +26,9 @@ export class Framework {
 
   @Inject
   public pluginManager: PluginManager;
+
+  @Inject
+  public telemetryService: TelemetryService;
 
   @Inject
   public schemaLoader: SchemaLoader;
@@ -48,6 +53,7 @@ export class Framework {
         this.schemaLoader.registerLoader(new CassandraSchemaLoader(config.db.cassandra))
         this.pluginManager.initialize(config);
         this.routerRegistry.initialize(app);
+        this.telemetryService.initialize(config.telemetry, TelemetryLib);
         await this.loadPluginRegistrySchema();
         this.initialized = true;
         logger.info('Framework is initialized!');

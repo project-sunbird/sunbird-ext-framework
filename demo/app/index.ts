@@ -20,8 +20,24 @@ const config: FrameworkConfig = {
       disabledApis: ["cat", "cluster", "ingest", "nodes", "remote", "snapshot", "tasks"]
     }
   },
+  telemetry: {
+    dispatcher: 'console', // defualt
+    pdata: {
+        'id': process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.form.service',
+        'ver': '1.0',
+        'pid': process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.form.service'
+      },
+    env: process.env.sunbird_environment,
+    apislug: 'test',
+    channel: 'test',
+    uid: 'test',
+    endpoint: 'v1/telemetry',
+    batchsize: 200,
+    host: 'http://telemetry-service:9001/',
+    runningEnv: 'server'
+  },
   plugins: [
-    { id: 'hello-world', ver: '1.0' },
+    // { id: 'hello-world', ver: '1.0' },
     // { id: 'profile-server', ver: '1.0' }, 
     { id: 'form-service', ver: '1.0' }
   ],

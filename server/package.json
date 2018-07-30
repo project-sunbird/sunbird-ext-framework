@@ -7,7 +7,7 @@
   "scripts": {
     "start": "tsc -w",
     "test": "nyc mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist && cp -R ./src/libs/ ./dist/libs",
     "lint": "tslint --config ./tslint.json **/*.ts --force",
     "gen-doc": "typedoc --out ./docs ./src --name Extensible-framework --mode file --module commonjs --target ES6"
   },
