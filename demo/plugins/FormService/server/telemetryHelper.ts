@@ -29,13 +29,7 @@ class TelemetryHelper {
     var context = {
       channel: req.get('X-Channel-Id') || '',
       env: 'form.service',
-      did: req.get('X-Device-ID') || '',
-      pdata: {
-        'id': process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.form.service',
-        'ver': '1.0',
-        'pid': process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.form.service'
-      },
-
+      did: req.get('X-Device-ID') || ''
     }
     return context
   }

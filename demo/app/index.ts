@@ -22,8 +22,12 @@ const config: FrameworkConfig = {
   },
   telemetry: {
     dispatcher: 'console', // defualt
-    pdata: { id: 'demo-app', ver: '1.0', pid: 'demo-app' },
-    env: 'demo',
+    pdata: {
+        'id': process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.form.service',
+        'ver': '1.0',
+        'pid': process.env.sunbird_environment + '.' + process.env.sunbird_instance + '.form.service'
+      },
+    env: process.env.sunbird_environment,
     apislug: 'test',
     channel: 'test',
     uid: 'test',
