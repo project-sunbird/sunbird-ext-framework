@@ -100,6 +100,10 @@ export interface TelemetryObject {
 export interface TelemetryEventOptions {
   'context'?: ITelemetryContextData;
   'object'?: TelemetryObject;
+  'actor'?: {
+    'id': string;
+    'type': string;
+  };
   'tags'?: Array<string>;
 }
 
@@ -124,11 +128,16 @@ export interface IEventData {
     'env': string;
     'cdata'?: Array<{}>;
   };
+  'actor'?: {
+    'id': string;
+    'type': string;
+  };
   'object'?: {
     'id': string;
     'type': string;
     'ver'?: string;
     'rollup'?: {};
   };
+  'tags'?: Array<string>;
   'edata': IEndEventData | IErrorEventData | ILogEventData | IShareEventData | IStartEventData | IAuditEventData | ISearchEventData;
 }

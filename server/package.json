@@ -5,7 +5,7 @@
   "scripts": {
     "start": "tsc -w",
     "test": "nyc mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy README.md ./dist",
+    "build": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy ./src/libs/* ./dist/libs && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy README.md ./dist",
     "lint": "tslint --config ./tslint.json **/*.ts --force",
     "gen-doc": "typedoc --out ./docs ./src --name Extensible-framework --mode file --module commonjs --target ES6"
   },

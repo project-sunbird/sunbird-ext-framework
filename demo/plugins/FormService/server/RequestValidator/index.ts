@@ -1,5 +1,6 @@
 import * as Joi from 'joi';
 import { FormResponse } from '../models';
+import { telemetryHelper } from '../telemetryHelper';
 
 export class RequestValidator {
 
@@ -24,6 +25,7 @@ export class RequestValidator {
         errmsg: error.details.map(d => d.message),
         responseCode: "CLIENT_ERROR"
       }));
+      telemetryHelper.error(req, res, error);
     } else if(!req.body.request.framework && !req.body.request.rootOrgId) {
       // when "framework" & "rootOrgId" is not defined it should create default data
       next()
@@ -36,6 +38,7 @@ export class RequestValidator {
         errmsg: `specifiy "rootOrgId" along with "framework"`,
         responseCode: "CLIENT_ERROR"
       }));
+      telemetryHelper.error(req, res, error);
     } else {
       next()
     }
@@ -62,6 +65,7 @@ export class RequestValidator {
         errmsg: error.details.map(d => d.message),
         responseCode: "CLIENT_ERROR"
       }));
+      telemetryHelper.error(req, res, error);
     } else if(!req.body.request.framework && !req.body.request.rootOrgId) {
       // when "framework" & "rootOrgId" is not defined it should update default data
       next()
@@ -74,6 +78,7 @@ export class RequestValidator {
         errmsg: `specifiy "rootOrgId" along with "framework"`,
         responseCode: "CLIENT_ERROR"
       }));
+      telemetryHelper.error(req, res, error);
     } else {
       next()
     }
@@ -99,6 +104,7 @@ export class RequestValidator {
         errmsg: error.details.map(d => d.message),
         responseCode: "CLIENT_ERROR"
       }));
+      telemetryHelper.error(req, res, error);
     } else if(!req.body.request.framework && !req.body.request.rootOrgId) {
       // when "framework" & "rootOrgId" is not defined it should send default data
       next()
@@ -111,6 +117,7 @@ export class RequestValidator {
         errmsg: `specifiy "rootOrgId" along with "framework"`,
         responseCode: "CLIENT_ERROR"
       }));
+      telemetryHelper.error(req, res, error);
     } else {
       next()
     }

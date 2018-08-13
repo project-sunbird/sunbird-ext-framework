@@ -20,7 +20,7 @@ This is because you're making your application open for extensibility but closin
     * 4.1 [Build your first plugin!](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#41-build-your-first-plugin)
     * 4.2 [Integrating plugin with app](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#42-integrating-plugin-with-app)
     * 4.3 [Sample plugin demo](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#43-sample-plugin-demo)
-5. [API documentation]()
+5. [API document](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-api-document)
 6. [Development server](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#5-development-server)
 7. [Build](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#6-build)
 8. [Running Unit testcase](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app#7-running-unit-tests)
@@ -35,11 +35,10 @@ The system that we're going to build in this chapter borrows a lot of mechanisms
 
 <li>We use the dependency injection of Angular to provide the instantiated plugin information into the plugin components. As the plugin components will be placed in a spot where there's already an injector present, they will be able to inject surrounding components and dependencies in order to connect to the application.</li>
 
-Let's look at the following illustration to picture the architecture of our plugin system before we start implementing it:
-
-![](https://i.imgur.com/i2Ykbz0.jpg)
 
 ## 2. Setup:
+
+Clone the repo and run the following commands:
 
 1. `cd web-extensions/sunbird-web-extensions-app`
 2. `npm install`
@@ -307,7 +306,7 @@ export class MyPlugin {
 |----|----|
 | 1. `name`: <i>String</i>| name of the host `extension-point` |
 | 2. `priority`: <i>number</i> (non-negative)| can be any valid poisitve Integer, priority 1 is considered as highest priority |
-| 3. `component`: <i>AngularComponent\<T></i> | Token/class of angular component |
+| 3. `component`: <i>Component\<T></i> | Token/class of angular component |
 
 `priority`: if a `extension-point` is extended by more than one extension, then framework resolves which extension to allowed based on this feild. 
 

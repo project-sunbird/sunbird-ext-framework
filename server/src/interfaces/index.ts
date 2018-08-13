@@ -2,7 +2,7 @@ import { Router, NextFunction } from 'express';
 import { Manifest, IPluginManifest } from '../models/Manifest';
 import { ConfigOptions, Client as ESClient } from 'elasticsearch';
 import { loggerLevels } from '../logger';
-
+import { ITelemetry } from '../services/telemetry/interfaces/TelemetryService';
 export interface IRouter {
     init(app: Router, auth: any, manifest: Manifest): void;
 }
@@ -60,6 +60,7 @@ export interface FrameworkConfig {
     pluginBasePath: string;
     secureContextParams?: Array<string>;
     port?: number;
+    telemetry?: ITelemetry;
     logLevel?: loggerLevels
 }
 
