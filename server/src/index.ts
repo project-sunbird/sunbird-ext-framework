@@ -57,8 +57,8 @@ export class Framework {
       }
     } catch (error) {
       logger.fatal('framework initialization FAILED due to following errors!', new FrameworkError({ code: FrameworkErrors.UNKNOWN_ERROR, message: 'error while initializing the framework', rootError: error }));
-      logger.fatal('EXITING OUT OF PROCESS DUE TO ERROR!');
-      process.exit(1);
+      // logger.fatal('EXITING OUT OF PROCESS DUE TO ERROR!');
+      // process.exit(1);
     }
   }
 

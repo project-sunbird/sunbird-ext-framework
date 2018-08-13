@@ -1,8 +1,16 @@
 {
-  "name": "sunbird-web-extension",
-  "version": "0.0.1",
+  "name": "@project-sunbird/web-extensions",
+  "version": "0.0.2",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
-    "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
-  }
+    "@angular/core": "^6.0.0-rc.0 || ^6.0.0",
+    "prepublish": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/project-sunbird/sunbird-ext-framework/tree/master/web-extensions/sunbird-web-extensions-app"
+  },
+  "keywords": ["sunbird", "Extensible framework", "plugins"],
+  "author": "Sunil A S<sunils@ilimi.in>",
+  "license": "MIT"
 }

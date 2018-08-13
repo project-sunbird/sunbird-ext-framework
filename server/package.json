@@ -1,15 +1,20 @@
 {
-  "name": "ext-framework-server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "name": "@project-sunbird/ext-framework-server",
+  "version": "0.1.5",
+  "description": "Extensible framework for sunbird extensions on server side",
   "scripts": {
     "start": "tsc -w",
     "test": "nyc mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "build": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy README.md ./dist",
     "lint": "tslint --config ./tslint.json **/*.ts --force",
     "gen-doc": "typedoc --out ./docs ./src --name Extensible-framework --mode file --module commonjs --target ES6"
+  },
+  "engines": {
+    "node": ">=7.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server"
   },
   "nyc": {
     "extension": [
@@ -29,9 +34,13 @@
     ],
     "all": true
   },
-  "keywords": [],
-  "author": "Santhosh Vasabhaktula <santhosh@ilimi.in>",
-  "license": "ISC",
+  "keywords": [
+    "sunbird",
+    "Extensible framework",
+    "plugins"
+  ],
+  "author": "Sunil A S<sunils@ilimi.in>",
+  "license": "MIT",
   "devDependencies": {
     "@types/chai": "^4.1.2",
     "@types/continuation-local-storage": "^3.2.1",
@@ -42,17 +51,19 @@
     "@types/mocha": "^2.2.48",
     "@types/sinon": "^4.1.3",
     "chai": "^4.1.2",
+    "cpy-cli": "^2.0.0",
     "mocha": "^5.0.1",
     "mochawesome": "^3.0.2",
     "node-mocks-http": "^1.7.0",
     "nyc": "^11.8.0",
+    "rimraf": "^2.6.2",
     "sinon": "^4.3.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.10.0",
     "tslint-config-prettier": "^1.13.0",
     "tslint-config-standard": "^7.0.0",
-    "typescript": "^2.8.4",
-    "typedoc": "^0.11.1"
+    "typedoc": "^0.11.1",
+    "typescript": "^2.8.4"
   },
   "dependencies": {
     "axios": "^0.18.0",
