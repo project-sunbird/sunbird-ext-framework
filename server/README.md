@@ -6,10 +6,12 @@
 1. [Setup](https://github.com/ekstep/ext-framework/tree/master/server#setup)
 2. [Getting started](https://github.com/ekstep/ext-framework/tree/master/server#getting-started)
     * [writing your first plugin](https://github.com/ekstep/ext-framework/tree/master/server#writing-your-first-plugin)
-3. [Debugging](https://github.com/ekstep/ext-framework/tree/master/server#debugging)
-4. [Testing](https://github.com/ekstep/ext-framework/tree/master/server#testing)
-5. npm link vs npm install for local modules
-6. Contributors
+3. [Plugin lifecycle](https://github.com/ekstep/ext-framework/tree/master/server#plugin-lifecycle)    
+4. [Debugging](https://github.com/ekstep/ext-framework/tree/master/server#debugging)
+5. [Testing](https://github.com/ekstep/ext-framework/tree/master/server#testing)
+6. [Publishing plugins](https://github.com/ekstep/ext-framework/tree/master/server#publishing-plugins)
+7. npm link vs npm install for local modules
+8. Contributors
 
 
 
@@ -33,7 +35,7 @@ To run the demo app with default plugins. Follow the instructions.
 // Plugins
 
 1. go to plugins folder `demo/plugins/hello-world/server` and run `npm install`
-2. link `ext-framework` library to the plugin, run `npm link <path-from-root>/ext-framework/server/dist`
+2. run `npm i @project-sunbird/ext-framework-server`.
 3. create build of the plugin by running `npm run build`
 
 // link each plugin to demo app
@@ -199,13 +201,70 @@ it should show the logs like this:
 
 * go to browser `http://localhost:4000/hello/get` and hit enter. You should see the response from our plugin as "hello world"
 
+## Plugin Lifecycle:
+
+It is important to understand the lifecycle of a plugin to understand deeper workings of framework internals. There are 4 stages:
+
+1. Loading
+2. Activation
+3. Running
+4. Closing
+
+### 1. Loading:
+
+During this phase, the framework tries to read the `manifest.ts` file under plugin's home directory. If the `manifest.ts` file is not found, the framework fails to load the plugin. When it finds the `manifest.ts` file, it will register the plugin in "plugin registry" and update the status of the plugin as `REGISTERED`. 
+
+When the plugin has dependencies on other plugins, the framework would load all the dependencies mentioned in the `manifest.ts` file (in `dependencies` section) before loading the actual plugin. when any one of its dependencies are not met or causes an error during loading, it would not load the actual plugin and it wouldn't add an entry into "plugin registry".
+
+Once a plugin is in `REGISTERED` state, the framework tries to locate if any schema files are defined in the `manifest.ts` file. If the plugin has not defined any schema file, the framework would skip this step. If there are schema files, then it would try to create a schema(tables/index) on the corresponding database provided based on the schema definition. If the schema is already defined in the database, it would not try to re-create the same, keeping it as is.  
+Once the schema is set in the database it cannot be changed simply by changing the schema definition json and reloading the plugin again. In order to change the already existing schema, the user needs to migrate the old schema to new schema (currenlty, we have to do this manually) and change the schema definition json in the plugin and reload the plugin.
+
+`server.ts` is the entry file of a plugin. This file should export class named `Server`. Framework loads this class and creates a new instance of it. It passes plugin manifest (from `manifest.ts`) object to the plugin through its constructor. The framework holds this runtime instance through out the lifecycle. And it is available to the plugin to access it.
+
+The framework tries to find `routes.ts` file under the plugin home directory. If the file is not found, the plugin fails to load. The file should export class named `Router`. The framework registers the routes(end point) defined for the plugin with the "prefix" defined in the `manifest.ts` file.
+
+**To sum it up:**
+
+These are the list of task framwork does when loading the plugin:
+
+1. Register plugin
+2. Resolve dependencies
+3. Create database schema (if any)
+4. Create runtime plugin instance
+5. Register plugin routes  
+
+### 2. Activation: 
+
+The Framework activates the plugin when it finish loading the list of plugin defined in the configuration file. Before that framework creates an instance (runtime Js Object) of the plugin when it successfully loads. The plugin instances is handled by the framework inorder to communicate with the plugin about its lifecycle events. The plugin should have lifecycle hook methods inorder to take actions when it is called from the framework. E.g when the framework is shuting down, it should inform all the plugins through the lifecycle method to indicate the action so that plugin can perform some task before it gets killed.
+
+Currently there are only 2 lifecycle methods which plugin has to implement:
+
+1. `onStart()`: To indicate plugin is active and available to serve the request.
+2. `onStop()`: Plugin is being stopped due to maintanence or some other reason and it is no longer available to serve the request.
+
+
+### 3. Running:
+
+During this stage, plugin is available to serve the request. Framework doesn't have any control over the functional working of the plugin. Web request specific to the plugin is directed to plugin middleware to handle the request. 
+
+### 4. Closing:
+
+Currently we don't have a way to bring down the individual plugins for maintainence when it is loaded along with other plugins. when we try to terminate the framework, it informs about the event to all the registered plugins through lifecycle hook methods. 
 
 ## Debugging:
 Demo app runs in `debug` mode enabled. Latest `node.js` supports `--inspect` flag to run the app in debug mode. To debug the app, start the demo app and open the `chrome` developer console and search for `node.js` icon next to `Elements` tab and click on it. It opens devTool for node.js in a new window.
 
-
 ## Testing:
 cd `server` and run `npm run test`. It generates `HTML` reporter inside folder `server/mochawesome-report` using `mochawesome` reporter. 
+
+## Publishing plugins:
+Plugins can be plublished as npm modules.
+
+1. Create plugin build (`/dist` folder) using `npm run build` command.
+2. Add version, description, name of plugin, license in `package.json`.
+3. Copy `package.json`, `readme.md` file to the `dist` folder.
+4. Login to npm using CLI.
+5. Publish the package to NPM.
 
 
 ## Generate Code Document:
