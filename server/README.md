@@ -3,13 +3,13 @@
 **simple**, **fast**, **effective** way to build pluggable modules using [node.js](https://nodejs.org/en/). It can be integrated to the main application as simple as npm modules. You can develop/test/publish modules independently irrespective of the main application. 
 
 ## Sections:
-1. [Setup](https://github.com/ekstep/ext-framework/tree/master/server#setup)
-2. [Getting started](https://github.com/ekstep/ext-framework/tree/master/server#getting-started)
-    * [writing your first plugin](https://github.com/ekstep/ext-framework/tree/master/server#writing-your-first-plugin)
-3. [Plugin lifecycle](https://github.com/ekstep/ext-framework/tree/master/server#plugin-lifecycle)    
-4. [Debugging](https://github.com/ekstep/ext-framework/tree/master/server#debugging)
-5. [Testing](https://github.com/ekstep/ext-framework/tree/master/server#testing)
-6. [Publishing plugins](https://github.com/ekstep/ext-framework/tree/master/server#publishing-plugins)
+1. [Setup](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#setup)
+2. [Getting started](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#getting-started)
+    * [writing your first plugin](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#writing-your-first-plugin)
+3. [Plugin lifecycle](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#plugin-lifecycle)    
+4. [Debugging](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#debugging)
+5. [Testing](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#testing)
+6. [Publishing plugins](https://github.com/project-sunbird/sunbird-ext-framework/tree/master/server#publishing-plugins)
 7. npm link vs npm install for local modules
 8. Contributors
 
