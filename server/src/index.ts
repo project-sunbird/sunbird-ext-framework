@@ -16,7 +16,7 @@ import { ESSchemaLoader } from './db/elasticsearch/ESSchemaLoader';
 import { CassandraSchemaLoader } from './db/cassandra/CassandraSchemaLoader';
 import { CassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
 import { TelemetryService } from './services/telemetry';
-import * as TelemetryLib from './libs/telemetry-1.0.min';
+import * as TelemetryLib from '@project-sunbird/telemetry-sdk';
 
 @Singleton
 export class Framework {
