@@ -1,11 +1,11 @@
 {
   "name": "@project-sunbird/ext-framework-server",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Extensible framework for sunbird extensions on server side",
   "scripts": {
     "start": "tsc -w",
     "test": "nyc mocha -r ts-node/register ./**/*.spec.ts --reporter mochawesome",
-    "build": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy ./src/libs/* ./dist/libs && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy README.md ./dist",
+    "build": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy README.md ./dist",
     "lint": "tslint --config ./tslint.json **/*.ts --force",
     "gen-doc": "typedoc --out ./docs ./src --name Extensible-framework --mode file --module commonjs --target ES6"
   },
@@ -66,6 +66,7 @@
     "typescript": "^2.8.4"
   },
   "dependencies": {
+    "@project-sunbird/telemetry-sdk": "0.0.2",
     "axios": "^0.18.0",
     "continuation-local-storage": "^3.2.1",
     "elasticsearch": "^14.1.0",
