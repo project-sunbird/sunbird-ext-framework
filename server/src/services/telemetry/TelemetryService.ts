@@ -131,7 +131,7 @@ export class TelemetryService {
 
   private getEventContext(event: IEventData): ITelemetryContextData {
     return {
-      channel: _.get(event, 'edata.channel') || this.config.channel,
+      channel: _.get(event, 'context.channel') || this.config.channel,
       pdata: _.get(event, 'context.pdata') || this.config.pdata,
       env: _.get(event, 'env') || this.config.env,
       sid: _.get(event, 'sid') || this.config.sid,
