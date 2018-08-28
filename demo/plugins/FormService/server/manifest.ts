@@ -1,5 +1,5 @@
 export const manifest = {
-    "id": "form-service",
+    "id": "@project-sunbird/form-service",
     "name": "Form service",
     "author": "sunil<sunils@ilimi.in>",
     "version": "1.0",
