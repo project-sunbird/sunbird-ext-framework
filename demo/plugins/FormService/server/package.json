@@ -1,6 +1,6 @@
 {
   "name": "@project-sunbird/form-service",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Form service API for project sunbird. It helps to manage form configuration based on channel, type, subtype, component.",
   "scripts": {
     "build": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy db/* ./dist/db",

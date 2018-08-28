@@ -131,6 +131,12 @@ export class Server extends BaseServer {
       .then(data => {
         if (!data) data = {}
         if (data && typeof data.data === "string") data.data = JSON.parse(data.data);
+
+        data = data.toJSON(); // it removes all the schema validator of cassandra and gives plain object;
+        if (_.get(data, 'root_org')) {
+          data.rootOrgId = data.root_org;
+          data = _.omit(data, ['root_org']);
+        }
         res.status(200)
           .send(new FormResponse(undefined, {
             id: 'api.form.read',
