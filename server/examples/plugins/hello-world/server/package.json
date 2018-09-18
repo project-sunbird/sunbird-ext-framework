@@ -1,0 +1,18 @@
+{
+  "name": "hello-world",
+  "version": "1.0.1",
+  "description": "",
+  "scripts": {
+    "build": "rm -rf ./dist && tsc --noImplicitUseStrict && cp package.json ./dist",
+    "test": "echo 'go to '../test' folder to execute test cases!'"
+  },
+  "dependencies": {
+    "@project-sunbird/ext-framework-server": "^0.1.9"
+  },
+  "devDependencies": {
+    "typescript": "^2.7.1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

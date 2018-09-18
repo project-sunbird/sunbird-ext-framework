@@ -1,0 +1,10 @@
+{
+  "packages": [
+    "plugins/**/dist",
+    "advanced-app",
+    "simple-app",
+    "./../dist"
+  ],
+  "version": "independent"
+}
+
