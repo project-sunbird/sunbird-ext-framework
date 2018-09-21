@@ -95,7 +95,6 @@ export class Server extends BaseServer {
   public async read(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
     let onRecordFound: Promise<any>;
-    console.log('reading data');
     const query = {
       root_org: data.rootOrgId,
       framework: data.framework,
@@ -113,7 +112,6 @@ export class Server extends BaseServer {
       onRecordFound = this.cassandra.instance.form_data.findOneAsync(query);
     }
     await onRecordFound.then(async data => {
-      console.log('first query -----------',query, '------------', data.toJSON());
       if (!data) {
         // find record by specified rootOrgId with framework = '*'
         await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { framework: "*" }))
@@ -122,7 +120,6 @@ export class Server extends BaseServer {
       }
     })
       .then(async data => {
-        console.log('second query -----------',query, '------------', data.toJSON());
         if (!data) {
           // get the default data
           return await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*" }))
@@ -131,7 +128,6 @@ export class Server extends BaseServer {
         }
       })
       .then(data => {
-        console.log('theird query -----------',query, '------------', data.toJSON());
         if (!data) data = {}
         if (data && typeof data.data === "string") data.data = JSON.parse(data.data);
 
