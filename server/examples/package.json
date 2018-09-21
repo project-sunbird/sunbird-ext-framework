@@ -1,9 +1,0 @@
-{
-  "name": "root",
-  "devDependencies": {
-    "lerna": "^3.3.2",
-    "ts-node": "^7.0.1"
-  },
-  "dependencies": {},
-  "scripts": {}
-}
