@@ -18,8 +18,16 @@ let dest_obj = {
   created_on: new Date()
 }
 
-const query = "SELECT * FROM sunbird.tenant_preference";
-client.execute(query)
+const schemaCheckQuery = "Select last_modified_on,created_on From qmzbm_form_service.form_data;";
+client.execute(schemaCheckQuery)
+.then((result) => {
+  console.log('nothing to migrate');
+  process.exit(1);
+})
+.catch((error) => {
+  console.log('migrating form data');
+  const sourceQuery = "SELECT * FROM sunbird.tenant_preference";
+  client.execute(sourceQuery)
   .then(result => {
     console.log("no. of records to migrate:", result.rows.length);
     result.rows.forEach((row) => {
@@ -91,7 +99,8 @@ client.execute(query)
   .catch(error => {
     console.log(error);
     process.exit(1);
-  })
+  });
+});
 
 process.on("unhandledRejection", (reason, p) => {
   console.log("Unhandled Rejection at: Promise", p, "reason:", reason);
