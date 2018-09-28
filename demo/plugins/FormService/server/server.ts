@@ -19,7 +19,7 @@ export class Server extends BaseServer {
       component: data.component,
       framework: data.framework,
       data: JSON.stringify(data.data),
-      created: new Date()
+      created_on: new Date()
     })
     await model.saveAsync().then(data => {
       res.status(200)
@@ -55,7 +55,7 @@ export class Server extends BaseServer {
 
     const updateValue = {
       data: JSON.stringify(data.data),
-      last_modified: new Date()
+      last_modified_on: new Date()
     };
     
     await this.cassandra.instance.form_data.updateAsync(query, updateValue, { if_exists: true })
@@ -95,7 +95,6 @@ export class Server extends BaseServer {
   public async read(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
     let onRecordFound: Promise<any>;
-
     const query = {
       root_org: data.rootOrgId,
       framework: data.framework,

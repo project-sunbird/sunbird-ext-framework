@@ -36,11 +36,11 @@
         "data": {
           "type": "varchar"
         },
-        "created": {
+        "created_on": {
           "type": "timestamp",
           "default": {"$db_function": "toTimestamp(now())"}
         },
-        "last_modified": {
+        "last_modified_on": {
           "type": "timestamp"
         }
       },
