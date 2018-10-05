@@ -16,7 +16,7 @@
     "body-parser": "^1.18.2",
     "dotenv": "^5.0.1",
     "express": "^4.16.2",
-    "ext-framework-server": "file:../../server/dist",
+    "@project-sunbird/ext-framework-server": "^0.1.6",
     "rm-local-modules": "0.0.2"
   },
   "keywords": [],
