@@ -1,0 +1,47 @@
+{
+  "name": "@project-sunbird/form-service",
+  "version": "0.0.5",
+  "description": "Form service API for project sunbird. It helps to manage form configuration based on channel, type, subtype, component.",
+  "scripts": {
+    "clean-dist-dev": "node_modules/.bin/rimraf ./../dist/@project-sunbird/form-service",
+    "compile-dev":"tsc --p tsconfig-dev.json --noImplicitUseStrict",
+    "copy-package-dev": "node_modules/.bin/cpy package.json ./../dist/@project-sunbird/form-service",
+    "copy-db-dev": "node_modules/.bin/cpy db/* ./../dist/@project-sunbird/form-service/db",
+    "resolve-dev-dependencies": "cd ./../dist/@project-sunbird/form-service/db && npm i --prod",
+    "build-dev": "npm run clean-dist-dev &&  npm run compile-dev && npm run copy-package-dev && npm run copy-db-dev && npm run resolve-dev-dependencies",
+    "build-prod": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy db/* ./dist/db",
+    "test": "echo 'go to '../test' folder to execute test cases!'"
+  },
+  "engines": {
+    "node": ">=7.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/project-sunbird/sunbird-ext-framework/tree/master/demo/plugins/FormService"
+  },
+  "keywords": [
+    "sunbird",
+    "Extensible framework",
+    "plugins"
+  ],
+  "author": "Sunil A S<sunils@ilimi.in>",
+  "license": "MIT",
+  "dependencies": {
+    "joi": "^13.4.0",
+    "lodash": "^4.17.10"
+  },
+  "peerDependencies": {
+    "@project-sunbird/ext-framework-server": "^0.1.6"
+  },
+  "devDependencies": {
+    "cpy-cli": "^2.0.0",
+    "rimraf": "^2.6.2",
+    "@types/body-parser": "^1.16.8",
+    "@types/express": "^4.11.1",
+    "standard": "^10.0.3",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.7.1",
+    "typescript-eslint-parser": "^13.0.0",
+    "@project-sunbird/ext-framework-server": "^0.1.6"
+  }
+}
