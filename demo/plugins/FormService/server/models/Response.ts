@@ -1,4 +1,4 @@
-import { Util } from '@project-sunbird/ext-framework-server/Util';
+import { Util } from '@project-sunbird/ext-framework-server/util';
 import * as _ from 'lodash';
 
 export class FormResponse {
