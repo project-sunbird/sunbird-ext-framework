@@ -37,11 +37,9 @@ const config: FrameworkConfig = {
     runningEnv: 'server'
   },
   plugins: [
-    // { id: 'hello-world', ver: '1.0' },
-    // { id: 'profile-server', ver: '1.0' }, 
-    { id: 'form-service', ver: '1.0' }
+    { id: '@project-sunbird/form-service', ver: '1.0' }
   ],
-  pluginBasePath: __dirname + '/node_modules/',
+  pluginBasePath: __dirname + '/plugin-repo/',
   port: 4000,
   logLevel: 'debug'
 };
