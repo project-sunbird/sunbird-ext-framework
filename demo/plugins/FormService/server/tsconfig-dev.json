@@ -2,7 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "declaration": true,
-        "outDir": "./../dist/@project-sunbird/form-service",
+        "outDir": "./../../../app/plugin-repo/@project-sunbird/form-service",
         "target": "es6"
     },
     "exclude": [
