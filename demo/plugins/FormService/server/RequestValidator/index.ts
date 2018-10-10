@@ -1,6 +1,7 @@
 import * as Joi from 'joi';
 import { FormResponse } from '../models';
 import { telemetryHelper } from '../telemetryHelper';
+import * as _ from 'lodash';
 
 export class RequestValidator {
 
@@ -16,7 +17,8 @@ export class RequestValidator {
         data: Joi.object().required()
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const body = {request: _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component'])};
+    const { error, value } = Joi.validate(body, schema, {abortEarly: false});
     if (error) {
       res.status(400)
       .send(new FormResponse({
@@ -56,7 +58,8 @@ export class RequestValidator {
         data: Joi.object().required()
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const body = {request: _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component'])};
+    const { error, value } = Joi.validate(body, schema, {abortEarly: false});
     if (error) {
       res.status(400)
       .send(new FormResponse({
@@ -95,7 +98,8 @@ export class RequestValidator {
         framework: Joi.string() // optional
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const body = {request: _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component'])};
+    const { error, value } = Joi.validate(body, schema, {abortEarly: false});
     if (error) {
       res.status(400)
       .send(new FormResponse({
