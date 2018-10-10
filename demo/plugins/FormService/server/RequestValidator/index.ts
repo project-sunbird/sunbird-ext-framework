@@ -97,7 +97,7 @@ export class RequestValidator {
         rootOrgId: Joi.string(), // optional
         framework: Joi.string() // optional
       }).required()
-    }).unknown(true);
+    });
     const body = {request: _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component'])};
     const { error, value } = Joi.validate(body, schema, {abortEarly: false});
     if (error) {
