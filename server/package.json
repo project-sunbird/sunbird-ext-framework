@@ -76,7 +76,7 @@
     "hashids": "^1.1.4",
     "keycloak-connect": "^4.0.0-beta.2",
     "lodash": "^4.17.5",
-    "log4js": "^2.10.0",
+    "log4js": "^3.0.6",
     "rxjs": "^6.2.1",
     "typescript-ioc": "^1.2.4",
     "uuid": "^3.2.1"
