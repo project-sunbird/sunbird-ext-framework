@@ -7,17 +7,6 @@ export const manifest = {
         "routes": {
             "prefix": "/profile"
         },
-        "databases": [{
-                "type": "cassandra",
-                "path": "db/cassandra",
-                "compatibility": "~1.0"
-            },
-            {
-                "type": "es",
-                "path": "db/es",
-                "compatibility": "~1.0"
-            }
-        ],
         "dependencies": []
     }
 }
