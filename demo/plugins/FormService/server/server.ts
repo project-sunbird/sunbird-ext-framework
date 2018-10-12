@@ -8,9 +8,14 @@ export class Server extends BaseServer {
   constructor(manifest: Manifest) {
     super(manifest);
   }
-
+  private convertToLowerCase(obj: Object, keys: Array<string>){
+      keys.forEach(element => {
+        obj[element] = obj[element].toLowerCase();
+      });
+  }
   public async create(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
+    this.convertToLowerCase(data, ['type', 'subType', 'action']);
     const model = new this.cassandra.instance.form_data({
       root_org: data.rootOrgId,
       type: data.type,
@@ -44,6 +49,7 @@ export class Server extends BaseServer {
 
   public async update(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
+    this.convertToLowerCase(data, ['type', 'subType', 'action']);
     let query = {
       root_org: data.rootOrgId || '*',
       framework: data.framework || '*',
@@ -94,6 +100,7 @@ export class Server extends BaseServer {
 
   public async read(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
+    this.convertToLowerCase(data, ['type', 'subType', 'action']);
     let onRecordFound: Promise<any>;
     const query = {
       root_org: data.rootOrgId,
