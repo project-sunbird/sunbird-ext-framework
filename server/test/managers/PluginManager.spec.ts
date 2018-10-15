@@ -1,7 +1,7 @@
 import * as chai from 'chai';
 import * as Sinon from 'sinon';
 import 'mocha';
-import { PluginManager } from '../../src/managers/PluginManager';
+import { PluginManager } from '../../src/managers/pluginManager';
 import { FrameworkConfig } from '../../src/interfaces';
 import { PluginLoader } from '../../src/managers/PluginLoader';
 import { FrameworkError, FrameworkErrors } from '../../src/util';
