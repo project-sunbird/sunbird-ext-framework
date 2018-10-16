@@ -1,13 +1,13 @@
 {
   "name": "@project-sunbird/form-service",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Form service API for project sunbird. It helps to manage form configuration based on channel, type, subtype, component.",
   "scripts": {
     "clean-dist-dev": "node_modules/.bin/rimraf ./../../../app/plugin-repo/@project-sunbird/form-service",
     "compile-dev": "tsc --p tsconfig-dev.json --noImplicitUseStrict",
     "copy-package-dev": "node_modules/.bin/cpy package.json ./../../../app/plugin-repo/@project-sunbird/form-service",
     "copy-db-dev": "node_modules/.bin/cpy db/* ./../../../app/plugin-repo/@project-sunbird/form-service/db",
-    "resolve-dev-dependencies": "cd ./../../../app/plugin-repo/@project-sunbird/form-service/db && npm i --prod",
+    "resolve-dev-dependencies": "cd ./../../../app/plugin-repo/@project-sunbird/form-service && npm i --prod",
     "build-dev": "npm run clean-dist-dev &&  npm run compile-dev && npm run copy-package-dev && npm run copy-db-dev && npm run resolve-dev-dependencies",
     "build-prod": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy db/* ./dist/db",
     "test": "echo 'go to '../test' folder to execute test cases!'"
