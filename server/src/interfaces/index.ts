@@ -34,13 +34,17 @@ export interface ICassandraConfig {
         replication: {
             class: string,
             replication_factor: string
-        }
+        },
+        udts?: Object
     },
     contactPoints: Array<string>,
     keyspace?: string,
-    port?: number
+    port?: number,
+    queryOptions?: QueryOptions
 }
-
+export interface QueryOptions {
+    consistency: number;
+}
 export interface ICassandraConnector {
 
 }

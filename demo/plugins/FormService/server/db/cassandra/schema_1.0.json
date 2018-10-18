@@ -1,10 +1,6 @@
 {
   "type": "cassandra",
   "config": {
-    "replication": {
-      "class": "SimpleStrategy",
-      "replication_factor": 1
-    }
   },
   "keyspace_name": "form_service",
   "column_families": [

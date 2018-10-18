@@ -8,6 +8,7 @@ import { Util } from '../../util';
 import { ICassandraConfig } from "../../interfaces";
 import { SchemaService } from './schemaService';
 import { Inject } from 'typescript-ioc';
+import * as _ from 'lodash';
 export class CassandraDB {
 
   private _config: ICassandraConfig;
@@ -40,20 +41,22 @@ export class CassandraDB {
   }
 
   public getConnection(keyspace: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]): any {
-    const config = {
+    const config: any  = {
       clientOptions: {
         contactPoints: this._config.contactPoints,
         protocolOptions: { port: this._config.port || 9042 },
-        keyspace: keyspace || this._config.keyspace,
+        keyspace: keyspace || this._config.keyspace
       }, ormOptions: {
-        defaultReplicationStrategy: defaultSettings && defaultSettings.replication || {
+        defaultReplicationStrategy: defaultSettings && defaultSettings.replication || 
+        _.get(this._config, 'defaultKeyspaceSettings.replication') && this._config.defaultKeyspaceSettings.replication ||  {
           class: 'SimpleStrategy',
           replication_factor: 1
         }
       }
     }
+    if(this._config.queryOptions) config.clientOptions.queryOptions = this._config.queryOptions;
+    if(_.get(defaultSettings, 'udts')) config.ormOptions.udts = defaultSettings.udts;
     return ExpressCassandra.createClient(config);
   }
-
 
 }

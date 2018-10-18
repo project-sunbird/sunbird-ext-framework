@@ -1,6 +1,6 @@
 {
   "name": "@project-sunbird/ext-framework-server",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Extensible framework for sunbird extensions on server side",
   "scripts": {
     "start": "tsc -w",
@@ -45,6 +45,7 @@
     "@types/chai": "^4.1.2",
     "@types/continuation-local-storage": "^3.2.1",
     "@types/elasticsearch": "^5.0.19",
+    "@types/node": "10.11.7",
     "@types/express": "^4.11.1",
     "@types/glob": "^5.0.35",
     "@types/lodash": "^4.14.104",
@@ -66,7 +67,7 @@
     "typescript": "^2.8.4"
   },
   "dependencies": {
-    "@project-sunbird/telemetry-sdk": "0.0.2",
+    "@project-sunbird/telemetry-sdk": "^0.0.7",
     "axios": "^0.18.0",
     "continuation-local-storage": "^3.2.1",
     "elasticsearch": "^14.1.0",
@@ -76,7 +77,7 @@
     "hashids": "^1.1.4",
     "keycloak-connect": "^4.0.0-beta.2",
     "lodash": "^4.17.5",
-    "log4js": "^2.10.0",
+    "log4js": "^3.0.6",
     "rxjs": "^6.2.1",
     "typescript-ioc": "^1.2.4",
     "uuid": "^3.2.1"

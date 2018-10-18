@@ -5,7 +5,7 @@ import { ISchemaLoader, SchemaLoader } from './db';
 import { Express } from 'express';
 import { RouterRegistry } from './managers/RouterRegistry';
 import { defaultConfig } from './config';
-import { PluginManager } from './managers/PluginManager';
+import { PluginManager } from './managers/pluginManager';
 import { FrameworkConfig } from './interfaces';
 import { PluginLoader } from './managers/PluginLoader';
 import { RegistrySchema } from './meta/RegistrySchema';

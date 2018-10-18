@@ -1,5 +1,5 @@
 import Axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { Observable } from 'rxjs/internal/observable';
+import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal/observable/fromPromise';
 
 export interface IHttpRequestConfig extends AxiosRequestConfig {

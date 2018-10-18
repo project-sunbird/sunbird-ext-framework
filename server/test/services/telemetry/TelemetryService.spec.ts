@@ -1,7 +1,7 @@
 import * as chai from 'chai'
 import * as Sinon from 'sinon'
 import 'mocha'
-import * as telemetry from '../../../libs/telemetry-1.0.min.js';
+import * as telemetry from '@project-sunbird/telemetry-sdk';
 import { TelemetryService, ITelemetry, IEventData, IStartEventData } from '../../../src/services/telemetry';
 chai.should();
 
@@ -23,7 +23,8 @@ describe('Telemetry Service', () => {
       'cdata': [{}],
       'dispatcher': 'console'
     };
-    telemetryService = new TelemetryService(config, telemetry);
+    telemetryService = new TelemetryService();
+    telemetryService.initialize(config, telemetry);
   })
 
   it('should be initialized', () => {

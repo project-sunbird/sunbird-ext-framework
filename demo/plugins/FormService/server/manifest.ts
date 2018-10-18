@@ -7,13 +7,6 @@ export const manifest = {
         "routes": {
             "prefix": "/v1/form"
         },
-        // check whether this is required or not
-        "databases": [{
-                "type": "cassandra",
-                "path": "db/cassandra",
-                "compatibility": "~1.0"
-            }
-        ],
         "dependencies": []
     }
 }
