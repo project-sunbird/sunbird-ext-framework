@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "declaration": true,
+        "outDir": "./../../../app/plugin-repo/@project-sunbird/discussion-service",
+        "target": "es6"
+    },
+    "exclude": [
+        "node_modules",
+        "./**/*.spec.ts"
+    ]
+}

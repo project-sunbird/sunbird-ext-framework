@@ -1,0 +1,39 @@
+{
+  "type": "cassandra",
+  "config": {
+  },
+  "keyspace_name": "discussion_service",
+  "column_families": [
+    {
+      "table_name": "post",
+      "fields": {
+        "post_id": {
+          "type": "uuid",
+          "default": {"$db_function": "uuid()"}
+        },
+        "thread_id": {
+          "type": "text"
+        },
+        "body": {
+          "type": "text"
+        },
+        "created_on": {
+          "type": "timestamp",
+          "default": {"$db_function": "toTimestamp(now())"}
+        },
+        "user_id": {
+          "type": "text"
+        },
+        "tag": {
+          "type": "text"
+        },
+        "user_info": {
+          "type": "map",
+          "typeDef": "<text, text>"
+        }
+      },
+      "key": [ ["post_id"]],
+      "indexes": ["thread_id", "user_id", "tag"]
+    }
+  ]
+}
