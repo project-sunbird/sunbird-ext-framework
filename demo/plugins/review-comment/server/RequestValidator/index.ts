@@ -7,15 +7,15 @@ export class RequestValidator {
   public validateCreateCommentAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
-        context_details: Joi.object({
-          content_ver: Joi.string().required(),
-          content_id: Joi.string().required(),
-          content_type: Joi.string().required(),
-          stage_id: Joi.string().required()
+        contextDetails: Joi.object({
+          contentVer: Joi.string().required(),
+          contentId: Joi.string().required(),
+          contentType: Joi.string().required(),
+          stageId: Joi.string().required()
         }).required(),
         body: Joi.string().required(),
-        user_id: Joi.string().required(),
-        user_info: Joi.object().keys({
+        userId: Joi.string().required(),
+        userInfo: Joi.object().keys({
           name: Joi.string().required(),
           logo: Joi.string().required()
         }).required()
@@ -39,11 +39,11 @@ export class RequestValidator {
   validateReadCommentAPI(req, res, next){
     const schema = Joi.object().keys({
       request: Joi.object().keys({
-        context_details: Joi.object({
-          content_ver: Joi.string().required(),
-          content_id: Joi.string().required(),
-          content_type: Joi.string().required(),
-          stage_id: Joi.string()
+        contextDetails: Joi.object({
+          contentVer: Joi.string().required(),
+          contentId: Joi.string().required(),
+          contentType: Joi.string().required(),
+          stageId: Joi.string()
         }).required()
       }).required()
     });
@@ -65,11 +65,11 @@ export class RequestValidator {
   validateDeleteCommentAPI(req, res, next){
     const schema = Joi.object().keys({
       request: Joi.object().keys({
-        context_details: Joi.object({
-          content_ver: Joi.string().required(),
-          content_id: Joi.string().required(),
-          content_type: Joi.string().required(),
-          stage_id: Joi.string()
+        contextDetails: Joi.object({
+          contentVer: Joi.string().required(),
+          contentId: Joi.string().required(),
+          contentType: Joi.string().required(),
+          stageId: Joi.string()
         }).required()
       }).required()
     });

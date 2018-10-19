@@ -4,7 +4,7 @@ import { ReviewResponse } from "./models";
 import * as _ from "lodash";
 import { telemetryHelper } from "./telemetryHelper";
 import { HTTPService as http } from "@project-sunbird/ext-framework-server/services";
-const pluginBaseUrl = 'http://localhost:4000/'; // should be taken form env variable
+const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'http://localhost:4000/'; // should be taken form env variable
 const discussionCreateUrl = "discussion/v1/create/post";
 const discussionReadUrl = "discussion/v1/read/post";
 const discussionDeleteUrl = "discussion/v1/delete/post";
@@ -14,8 +14,9 @@ export class Server extends BaseServer {
     super(manifest);
   }
   public async createComment(req: Request, res: Response) {
-
-    const requestBody = _.pick(req.body.request, [ "context_details", "body", "created_on", "user_id", "user_info"]);
+    const toSnakeCase = this.toSnakeCase(req.body.request);
+    toSnakeCase.context_details = this.toSnakeCase(toSnakeCase.context_details);
+    const requestBody = _.pick(toSnakeCase, [ "context_details", "body", "created_on", "user_id", "user_info"]);
     const contextDetails = await this.getContextFromDb(requestBody.context_details).catch(error => Promise.resolve({}));
     const threadId = _.get(contextDetails, "thread_id");
     if (threadId) {
@@ -62,7 +63,9 @@ export class Server extends BaseServer {
       return model.saveAsync();
   }
   public async getCommentList(req: Request, res: Response) {
-    const requestBody = _.pick(req.body.request, ["context_details"]);
+    const toSnakeCase = this.toSnakeCase(req.body.request);
+    toSnakeCase.context_details = this.toSnakeCase(toSnakeCase.context_details);
+    const requestBody = _.pick(toSnakeCase, ["context_details"]);
     const searchOptions = {
       method: requestBody.context_details.stage_id ? 'findOne' : 'findAll'
     }
@@ -97,19 +100,19 @@ export class Server extends BaseServer {
       return http.post(pluginBaseUrl + discussionReadUrl,requestBody).toPromise();
   }
   private sortComments(contextDetails, commentList){
-    const threadObj = contextDetails.reduce((acc, cur) =>{
-        acc[cur.thread_id] = cur; 
-        return acc
+    const threadObj = contextDetails.reduce((accumulator, current) =>{
+        accumulator[current.thread_id] = current; 
+        return accumulator
       }, {});
-    commentList.forEach(element => {
-      if(threadObj[element.thread_id]){
-        element.stage_id = threadObj[element.thread_id].stage_id;
-      }
+    return commentList.map(element => {
+      if(threadObj[element.thread_id]) element.stageId = threadObj[element.thread_id].stage_id;
+      return this.toCamelCase(element)
     });
-    return commentList;
   }
   public async deleteComments(req: Request, res: Response) {
-    const requestBody = _.pick(req.body.request, ["context_details"]);
+    const toSnakeCase = this.toSnakeCase(req.body.request);
+    toSnakeCase.context_details = this.toSnakeCase(toSnakeCase.context_details);
+    const requestBody = _.pick(toSnakeCase, ["context_details"]);
     const searchOptions = {
       method: requestBody.context_details.stage_id ? 'findOne' : 'findAll'
     }
@@ -157,5 +160,11 @@ export class Server extends BaseServer {
   }
   private getTag(context_details){
     return `${context_details.content_id}_${context_details.content_ver}_${context_details.content_type}`
+  }
+  private toCamelCase(object){
+    return _.mapKeys(object, _.rearg(_.camelCase, 1));
+  }
+  private toSnakeCase(object){
+    return _.mapKeys(object, _.rearg(_.snakeCase, 1))
   }
 }
