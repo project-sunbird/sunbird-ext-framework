@@ -19,12 +19,13 @@
         "thread_id": {
           "type": "text"
         },
-        "stage_id": {
-          "type": "text"
+        "meta_data": {
+          "type": "map",
+          "typeDef": "<varchar, text>"
         }
       },
-      "key": [ ["content_id", "content_ver", "content_type"], "stage_id" ],
-      "indexes": ["thread_id"]
+      "key": [ ["content_id", "content_ver", "content_type"], "thread_id"],
+      "indexes": ["thread_id", "entries(meta_data)"]
     }
   ]
 }
