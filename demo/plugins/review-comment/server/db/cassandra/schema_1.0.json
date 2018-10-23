@@ -22,6 +22,10 @@
         "meta_data": {
           "type": "map",
           "typeDef": "<varchar, text>"
+        },
+        "is_deleted": {
+          "type": "boolean",
+          "default": false
         }
       },
       "key": [ ["content_id", "content_ver", "content_type"], "thread_id"],

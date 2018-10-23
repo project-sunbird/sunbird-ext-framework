@@ -9,9 +9,7 @@ export class Server extends BaseServer {
     super(manifest);
   }
   private convertToLowerCase(obj: Object, keys: Array<string>){
-      keys.forEach(element => {
-        obj[element] = obj[element].toLowerCase();
-      });
+      keys.forEach(element => obj[element] = obj[element] && obj[element].toLowerCase());
   }
   public async create(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);

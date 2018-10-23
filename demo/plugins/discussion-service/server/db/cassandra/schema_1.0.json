@@ -30,6 +30,10 @@
         "user_info": {
           "type": "map",
           "typeDef": "<text, text>"
+        },
+        "is_deleted": {
+          "type": "boolean",
+          "default": false
         }
       },
       "key": [ ["post_id"]],

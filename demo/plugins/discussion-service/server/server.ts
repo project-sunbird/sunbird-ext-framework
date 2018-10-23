@@ -2,7 +2,6 @@ import { Manifest,BaseServer } from "@project-sunbird/ext-framework-server/model
 import { Request, Response } from "express";
 import { DiscussionResponse } from "./models";
 import * as _ from "lodash";
-import { telemetryHelper } from "./telemetryHelper";
 const uuid = require("uuid/v1");
 
 export class Server extends BaseServer {
@@ -29,28 +28,34 @@ export class Server extends BaseServer {
 
   public async getPost(req: Request, res: Response) {
     const searchQuery = _.pick(req.body.request, ["thread_id", "tag"]);
-    await this.cassandra.instance.post.findAsync(searchQuery)
+    await this.fetchPostFromDB(searchQuery)
     .then(data => this.sendSuccess(req,res,data))
     .catch(error => this.sendError(req,res, {code:"ERR_READ_POST", msg: error}));
   }
 
+  private fetchPostFromDB(searchQuery, isDeleted = false){
+    searchQuery.is_deleted = isDeleted;
+    return this.cassandra.instance.post.findAsync(searchQuery, {raw:true, allow_filtering: true})
+  }
+
   public async deletePost(req: Request, res: Response) {
     const searchQuery = _.pick(req.body.request, ["thread_id", "tag"]);
-    const searchResults = await this.cassandra.instance.post.findAsync(searchQuery).catch(error => Promise.resolve([]));
+    const searchResults = await this.fetchPostFromDB(searchQuery).catch(error => Promise.resolve([]));
     const postIds = searchResults.map(element => element.post_id);
+    const updateObject = { is_deleted: true };
+    const queryObject = { post_id: { $in: postIds } };
     if(postIds.length){
-      this.cassandra.instance.post.deleteAsync({ post_id: { $in: postIds } })
+      this.cassandra.instance.post.updateAsync(queryObject, updateObject)
       .then(data => this.sendSuccess(req,res,{deleted: "OK"}))
       .catch(error => this.sendError(req,res, {code:"ERR_DELETE_POST", msg: error}));
     } else {
-        this.sendSuccess(req,res,{deleted: "OK"})
+      this.sendSuccess(req,res,{deleted: "OK"})
     }
   }
 
   private sendSuccess(req, res, data){
     res.status(200)
     .send(new DiscussionResponse(undefined, { id: 'api.discussion.service', data: data ? data : {}}))
-    telemetryHelper.log(req);
   }
 
   private sendError(req,res,error){
@@ -60,6 +65,5 @@ export class Server extends BaseServer {
       err: error.code || "ERR_DISCUSSION_SERVICE",
       errmsg: error.msg || "error"
     }));
-    telemetryHelper.error(req, res, error);
   }
 }

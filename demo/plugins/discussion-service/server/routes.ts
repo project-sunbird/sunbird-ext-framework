@@ -11,6 +11,6 @@ export class Router implements IRouter {
     const validator: RequestValidator = new RequestValidator();
     app.post('/create/post', validator.validateCreatePostAPI, (req, res) => server.createPost(req, res));
     app.post('/read/post', validator.validateReadPostAPI, (req, res) => server.getPost(req, res));
-    app.post('/delete/post', validator.validateDeletePostAPI, (req, res) => server.deletePost(req, res));
+    app.delete('/delete/post', validator.validateDeletePostAPI, (req, res) => server.deletePost(req, res));
 	}
 }

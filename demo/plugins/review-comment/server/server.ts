@@ -41,15 +41,16 @@ export class Server extends BaseServer {
     const query: any = {
       content_id: context_details.content_id,
   		content_type: context_details.content_type,
-  		content_ver: context_details.content_ver
+  		content_ver: context_details.content_ver,
+      is_deleted: false
     }
 
     if(context_details.stage_id) query.meta_data = { $contains: {'stage_id': context_details.stage_id}}
 
     if(options.method === 'findOne'){
-      return this.cassandra.instance.context_details.findOneAsync(query);
+      return this.cassandra.instance.context_details.findOneAsync(query, {raw:true, allow_filtering: true});
     } else {
-      return this.cassandra.instance.context_details.findAsync(query);
+      return this.cassandra.instance.context_details.findAsync(query, {raw:true, allow_filtering: true});
     }
   }
 
@@ -124,17 +125,17 @@ export class Server extends BaseServer {
     const toSnakeCase = this.toSnakeCase(req.body.request);
     toSnakeCase.context_details = this.toSnakeCase(toSnakeCase.context_details);
     const requestBody = _.pick(toSnakeCase, ["context_details"]);
-    const contextDetails = await this.getContextFromDb(requestBody.context_details).catch(err => Promise.resolve({}));
+    const searchResults = await this.getContextFromDb(requestBody.context_details).catch(err => Promise.resolve({}));
 
-    if(contextDetails.length){ // fetch comments at stage level
+    if(searchResults.length){ // fetch comments at stage level
       let request;
 
-      if(contextDetails.length === 1) request = {thread_id: _.get(contextDetails[0], "thread_id")};
+      if(searchResults.length === 1) request = {thread_id: _.get(searchResults[0], "thread_id")};
       else request = { tag : this.getTag(requestBody.context_details)};
 
       this.callDeleteCommentApi(request)
       .then(response => {
-        this.deleteContextDetails(requestBody.context_details, _.get(contextDetails[0], "thread_id"))
+        this.deleteContextDetails(requestBody.context_details, searchResults)
         .then(data => this.sendSuccess(req,res,{deleted: "OK"}))
         .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error}));
       })
@@ -149,18 +150,18 @@ export class Server extends BaseServer {
     const requestBody = {
       request: request
     };
-    return http.post(pluginBaseUrl + discussionDeleteUrl,requestBody).toPromise();
+    return http.delete(pluginBaseUrl + discussionDeleteUrl, { data: requestBody }).toPromise();
   }
 
-  private async deleteContextDetails(context_details, thread_id) {
+  private async deleteContextDetails(context_details, searchResults: Array<any>) {
     const query: any = {
       content_id: context_details.content_id,
   		content_type: context_details.content_type,
-  		content_ver: context_details.content_ver
+  		content_ver: context_details.content_ver,
     }
-
-    if(context_details.stage_id) query.thread_id = thread_id;
-    return this.cassandra.instance.context_details.deleteAsync(query)
+    const updateObject = { is_deleted: true };
+    query.thread_id = { $in: searchResults.map(element => element.thread_id) };
+    return this.cassandra.instance.context_details.updateAsync(query, updateObject)
   }
 
   private sendSuccess(req, res, data){
