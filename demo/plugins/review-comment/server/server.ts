@@ -4,7 +4,7 @@ import { ReviewResponse } from "./models";
 import * as _ from "lodash";
 import { telemetryHelper } from "./telemetryHelper";
 import { HTTPService as http } from "@project-sunbird/ext-framework-server/services";
-const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'http://localhost:4000/'; // should be taken form env variable
+const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'https://staging.open-sunbird.org/plugin/'; // should be taken form env variable
 const discussionCreateUrl = "discussion/v1/create/post";
 const discussionReadUrl = "discussion/v1/read/post";
 const discussionDeleteUrl = "discussion/v1/delete/post";
@@ -29,7 +29,7 @@ export class Server extends BaseServer {
     } else {
       this.callCreatePostApi(requestBody)
       .then(response => {
-          this.saveContextDetails(requestBody, response.data.result.thread_id)
+          this.saveContextDetails(requestBody, _.get(response, 'data.result.thread_id'))
           .then(data => this.sendSuccess(req,res,{created: "OK"}))
           .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
         })
@@ -110,7 +110,7 @@ export class Server extends BaseServer {
   }
 
   private sortComments(contextDetails, commentList){
-    const threadObj = contextDetails.reduce((accumulator, current) =>{
+    const threadObj = contextDetails.reduce((accumulator, current) => {
         accumulator[current.thread_id] = current; 
         return accumulator
       }, {});

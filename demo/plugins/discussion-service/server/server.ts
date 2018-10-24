@@ -14,6 +14,7 @@ export class Server extends BaseServer {
     const request = _.pick(req.body.request, ["thread_id","body","created_on","user_id","user_info","tag"]);
     const insertObj = {
       thread_id: request.thread_id ? request.thread_id : uuid(), // thread id dosnt exist, creat new and insert.
+      post_id: uuid(),
       body: request.body,
       created_on: request.created_on,
       user_id: request.user_id,
@@ -22,7 +23,7 @@ export class Server extends BaseServer {
     };
     const model = new this.cassandra.instance.post(insertObj);
     await model.saveAsync()
-    .then(data => this.sendSuccess(req,res,{created: "OK", thread_id: insertObj.thread_id}))
+    .then(data => this.sendSuccess(req,res,{created: "OK", thread_id: insertObj.thread_id, post_id: insertObj.post_id}))
     .catch(error => this.sendError(req,res, {code:"ERR_CREATE_POST", msg: error}));
   }
 

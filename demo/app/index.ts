@@ -37,6 +37,8 @@ const config: FrameworkConfig = {
     runningEnv: 'server'
   },
   plugins: [
+    { id: '@project-sunbird/review-comment', ver: '1.0' },
+    { id: '@project-sunbird/discussion-service', ver: '1.0' },
     { id: '@project-sunbird/form-service', ver: '1.0' }
   ],
   pluginBasePath: __dirname + '/plugin-repo/',
