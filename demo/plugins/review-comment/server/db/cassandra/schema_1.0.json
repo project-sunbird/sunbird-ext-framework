@@ -1,0 +1,35 @@
+{
+  "type": "cassandra",
+  "config": {
+  },
+  "keyspace_name": "review_comment",
+  "column_families": [
+    {
+      "table_name": "context_details",
+      "fields": {
+        "content_id": {
+          "type": "text"
+        },
+        "content_ver": {
+          "type": "text"
+        },
+        "content_type": {
+          "type": "text"
+        },
+        "thread_id": {
+          "type": "text"
+        },
+        "meta_data": {
+          "type": "map",
+          "typeDef": "<varchar, text>"
+        },
+        "is_deleted": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "key": [ ["content_id", "content_ver", "content_type"], "thread_id"],
+      "indexes": ["thread_id", "entries(meta_data)"]
+    }
+  ]
+}
