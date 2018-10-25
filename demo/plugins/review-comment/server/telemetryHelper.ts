@@ -52,10 +52,16 @@ class TelemetryHelper {
     }
   }
   getErrorEdata(req, res, err) {
+    let error;
+    try {
+      error = JSON.stringify(err);
+    } catch {
+      error = "unhandled error";
+    }
     return {
       err: res.statusCode,
       errtype: res.statusMessage,
-      stacktrace: JSON.stringify(err),
+      stacktrace: error,
     }
   }
 }

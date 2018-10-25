@@ -4,7 +4,11 @@ import { ReviewResponse } from "./models";
 import * as _ from "lodash";
 import { telemetryHelper } from "./telemetryHelper";
 import { HTTPService as http } from "@project-sunbird/ext-framework-server/services";
-const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'https://staging.open-sunbird.org/plugin/'; // should be taken form env variable
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { logger } from '@project-sunbird/ext-framework-server/logger';
+// const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'https://staging.open-sunbird.org/plugin/'; // should be taken form env variable
+const pluginBaseUrl = 'http://localhost:4000/'; // should be taken form env variable
 const discussionCreateUrl = "discussion/v1/create/post";
 const discussionReadUrl = "discussion/v1/read/post";
 const discussionDeleteUrl = "discussion/v1/delete/post";
@@ -25,15 +29,24 @@ export class Server extends BaseServer {
     if (threadId) {
       this.callCreatePostApi(requestBody, threadId)
       .then(response => this.sendSuccess(req,res,{created: "OK"}))
-      .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
+      .catch(error => {
+        logger.error('callCreatePostApi failed when thread was found in db',requestBody, error);
+        this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
+      });
     } else {
       this.callCreatePostApi(requestBody)
       .then(response => {
           this.saveContextDetails(requestBody, _.get(response, 'data.result.thread_id'))
           .then(data => this.sendSuccess(req,res,{created: "OK"}))
-          .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
+          .catch(error => { 
+            logger.error('saveContextDetails to db failed after callCreatePostApi returned success when thread was found in db', requestBody, _.get(response, 'data.result.thread_id'), error);
+            this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
+          });
         })
-        .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
+        .catch(error => {
+          logger.error('callCreatePostApi failed when thread not found in db',requestBody, error);
+          this.sendError(req, res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
+        })
     }
   }
 
@@ -64,7 +77,8 @@ export class Server extends BaseServer {
         }
       };
       if(threadId) disData.request.thread_id = threadId;
-      return http.post(pluginBaseUrl + discussionCreateUrl,disData).toPromise();
+      return http.post(pluginBaseUrl + discussionCreateUrl,disData)
+      .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise()
   }
 
   private async saveContextDetails(requestBody, thread_id){
@@ -94,8 +108,11 @@ export class Server extends BaseServer {
       else request = { tag : this.getTag(requestBody.context_details)};
 
       this.callReadCommentApi(request)
-      .then(response => this.sendSuccess(req,res,{comments: this.sortComments(contextDetails, response.data.result)}))
-      .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_READ", msg: error}));
+      .then(response => this.sendSuccess(req,res,{comments: this.sortComments(contextDetails, _.get(response, 'data.result'))}))
+      .catch(error => { 
+        logger.error('callReadCommentApi failed when thread not found in db',requestBody, error);
+        this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_READ", msg: error})
+      });
 
     } else { // no results 
       this.sendSuccess(req,res,{comments: []})
@@ -106,7 +123,8 @@ export class Server extends BaseServer {
       const requestBody = {
         request: request
       };
-      return http.post(pluginBaseUrl + discussionReadUrl,requestBody).toPromise();
+      return http.post(pluginBaseUrl + discussionReadUrl,requestBody)
+      .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise()
   }
 
   private sortComments(contextDetails, commentList){
@@ -114,6 +132,7 @@ export class Server extends BaseServer {
         accumulator[current.thread_id] = current; 
         return accumulator
       }, {});
+    if(!commentList) return []; 
     return commentList.map(element => {
       if(threadObj[element.thread_id]) element.stageId = threadObj[element.thread_id].meta_data.stage_id;
       return this.toCamelCase(element)
@@ -137,9 +156,15 @@ export class Server extends BaseServer {
       .then(response => {
         this.deleteContextDetails(requestBody.context_details, searchResults)
         .then(data => this.sendSuccess(req,res,{deleted: "OK"}))
-        .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error}));
+        .catch(error => { 
+          logger.error(' deleteContextDetails failed after callDeleteCommentApi returned success',requestBody, error);
+          this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error});
+        });
       })
-      .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error}));
+      .catch(error => {
+        logger.error(' deleteContextDetails failed',requestBody, error);
+        this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error});
+      });
 
     }  else { // no results 
       this.sendSuccess(req,res,{deleted: "OK"})
@@ -150,7 +175,8 @@ export class Server extends BaseServer {
     const requestBody = {
       request: request
     };
-    return http.delete(pluginBaseUrl + discussionDeleteUrl, { data: requestBody }).toPromise();
+    return http.delete(pluginBaseUrl + discussionDeleteUrl, { data: requestBody })
+    .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise();
   }
 
   private async deleteContextDetails(context_details, searchResults: Array<any>) {
