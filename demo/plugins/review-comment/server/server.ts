@@ -28,6 +28,7 @@ export class Server extends BaseServer {
     if (threadId) {
       this.callCreatePostApi(requestBody, threadId)
       .then(response => this.sendSuccess(req,res,{created: "OK"}))
+<<<<<<< HEAD
       .catch(error => {
         logger.error('callCreatePostApi failed when thread was found in db',requestBody, error);
         this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
@@ -46,6 +47,17 @@ export class Server extends BaseServer {
           logger.error('callCreatePostApi failed when thread not found in db',requestBody, error);
           this.sendError(req, res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
         })
+=======
+      .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
+    } else {
+      this.callCreatePostApi(requestBody)
+      .then(response => {
+          this.saveContextDetails(requestBody, response.data.result.thread_id)
+          .then(data => this.sendSuccess(req,res,{created: "OK"}))
+          .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
+        })
+        .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error}));
+>>>>>>> d46733ea4b908cbcc496ce38c2f630deb651dc6b
     }
   }
 
@@ -76,8 +88,12 @@ export class Server extends BaseServer {
         }
       };
       if(threadId) disData.request.thread_id = threadId;
+<<<<<<< HEAD
       return http.post(pluginBaseUrl + discussionCreateUrl,disData)
       .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise()
+=======
+      return http.post(pluginBaseUrl + discussionCreateUrl,disData).toPromise();
+>>>>>>> d46733ea4b908cbcc496ce38c2f630deb651dc6b
   }
 
   private async saveContextDetails(requestBody, thread_id){
@@ -107,11 +123,16 @@ export class Server extends BaseServer {
       else request = { tag : this.getTag(requestBody.context_details)};
 
       this.callReadCommentApi(request)
+<<<<<<< HEAD
       .then(response => this.sendSuccess(req,res,{comments: this.sortComments(contextDetails, _.get(response, 'data.result'))}))
       .catch(error => { 
         logger.error('callReadCommentApi failed when thread not found in db',requestBody, error);
         this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_READ", msg: error})
       });
+=======
+      .then(response => this.sendSuccess(req,res,{comments: this.sortComments(contextDetails, response.data.result)}))
+      .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_READ", msg: error}));
+>>>>>>> d46733ea4b908cbcc496ce38c2f630deb651dc6b
 
     } else { // no results 
       this.sendSuccess(req,res,{comments: []})
@@ -122,6 +143,7 @@ export class Server extends BaseServer {
       const requestBody = {
         request: request
       };
+<<<<<<< HEAD
       return http.post(pluginBaseUrl + discussionReadUrl,requestBody)
       .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise()
   }
@@ -132,6 +154,16 @@ export class Server extends BaseServer {
         return accumulator
       }, {});
     if(!commentList) return []; 
+=======
+      return http.post(pluginBaseUrl + discussionReadUrl,requestBody).toPromise();
+  }
+
+  private sortComments(contextDetails, commentList){
+    const threadObj = contextDetails.reduce((accumulator, current) =>{
+        accumulator[current.thread_id] = current; 
+        return accumulator
+      }, {});
+>>>>>>> d46733ea4b908cbcc496ce38c2f630deb651dc6b
     return commentList.map(element => {
       if(threadObj[element.thread_id]) element.stageId = threadObj[element.thread_id].meta_data.stage_id;
       return this.toCamelCase(element)
@@ -155,6 +187,7 @@ export class Server extends BaseServer {
       .then(response => {
         this.deleteContextDetails(requestBody.context_details, searchResults)
         .then(data => this.sendSuccess(req,res,{deleted: "OK"}))
+<<<<<<< HEAD
         .catch(error => { 
           logger.error(' deleteContextDetails failed after callDeleteCommentApi returned success',requestBody, error);
           this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error});
@@ -164,6 +197,11 @@ export class Server extends BaseServer {
         logger.error(' deleteContextDetails failed',requestBody, error);
         this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error});
       });
+=======
+        .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error}));
+      })
+      .catch(error => this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_DELETE", msg: error}));
+>>>>>>> d46733ea4b908cbcc496ce38c2f630deb651dc6b
 
     }  else { // no results 
       this.sendSuccess(req,res,{deleted: "OK"})
@@ -174,8 +212,12 @@ export class Server extends BaseServer {
     const requestBody = {
       request: request
     };
+<<<<<<< HEAD
     return http.delete(pluginBaseUrl + discussionDeleteUrl, { data: requestBody })
     .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise();
+=======
+    return http.delete(pluginBaseUrl + discussionDeleteUrl, { data: requestBody }).toPromise();
+>>>>>>> d46733ea4b908cbcc496ce38c2f630deb651dc6b
   }
 
   private async deleteContextDetails(context_details, searchResults: Array<any>) {
