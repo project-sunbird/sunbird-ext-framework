@@ -132,6 +132,14 @@ export class Server extends BaseServer {
           return data;
         }
       })
+      .then(async data => {
+        if (!data) {
+          // get the default data
+          return await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*", component: "*" }))
+        } else {
+          return data;
+        }
+      })
       .then(data => {
         if (!data) data = {}
         if (data && typeof data.data === "string") data.data = JSON.parse(data.data);
