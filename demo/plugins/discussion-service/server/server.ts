@@ -72,7 +72,7 @@ export class Server extends BaseServer {
   }
 
   private sendError(req,res,error){
-    res.status(500)
+    res.status(404)
     .send(new DiscussionResponse({
       id: "api.discussion.service",
       err: error.code || "ERR_DISCUSSION_SERVICE",
