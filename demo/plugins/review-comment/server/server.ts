@@ -29,7 +29,7 @@ export class Server extends BaseServer {
       this.callCreatePostApi(requestBody, threadId)
       .then(response => this.sendSuccess(req,res,{created: "OK"}))
       .catch(error => {
-        logger.error('callCreatePostApi failed when thread was found in db',requestBody, error);
+        logger.error('callCreatePostApi failed when thread was found in db with requestBody',requestBody, error);
         this.sendError(req,res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
       });
     } else {
@@ -43,7 +43,7 @@ export class Server extends BaseServer {
           });
         })
         .catch(error => {
-          logger.error('callCreatePostApi failed when thread not found in db',requestBody, error);
+          logger.error('callCreatePostApi failed when thread was not found in db with requestBody',requestBody, error);
           this.sendError(req, res, {code:"ERR_REVIEW_COMMENT_CREATE", msg: error})
         })
     }
@@ -119,9 +119,7 @@ export class Server extends BaseServer {
   }
 
   private callReadCommentApi(request){
-      const requestBody = {
-        request: request
-      };
+      const requestBody = {request};
       return http.post(pluginBaseUrl + discussionReadUrl,requestBody)
       .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise()
   }
@@ -171,9 +169,7 @@ export class Server extends BaseServer {
   }
 
   private callDeleteCommentApi(request){
-    const requestBody = {
-      request: request
-    };
+    const requestBody = { request };
     return http.delete(pluginBaseUrl + discussionDeleteUrl, { data: requestBody })
     .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise();
   }
@@ -185,7 +181,7 @@ export class Server extends BaseServer {
   		content_ver: context_details.content_ver,
     }
     const updateObject = { is_deleted: true };
-    query.thread_id = { $in: searchResults.map(element => element.thread_id) };
+    query.thread_id = { $in: _.compact(searchResults.map(element => element.thread_id)) };
     return this.cassandra.instance.context_details.updateAsync(query, updateObject)
   }
 
@@ -208,8 +204,8 @@ export class Server extends BaseServer {
     telemetryHelper.error(req, res, error);
   }
 
-  private getTag(context_details){
-    return `${context_details.content_id}_${context_details.content_ver}_${context_details.content_type}`
+  private getTag({content_id, content_ver, content_type}){
+    return `${content_id}_${content_ver}_${content_type}`
   }
 
   private toCamelCase(object){
