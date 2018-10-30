@@ -2,6 +2,7 @@ import { Manifest,BaseServer } from "@project-sunbird/ext-framework-server/model
 import { Request, Response } from "express";
 import { DiscussionResponse } from "./models";
 import * as _ from "lodash";
+import { logger } from '@project-sunbird/ext-framework-server/logger';
 const uuid = require("uuid/v1");
 
 export class Server extends BaseServer {
@@ -14,6 +15,7 @@ export class Server extends BaseServer {
     const request = _.pick(req.body.request, ["thread_id","body","created_on","user_id","user_info","tag"]);
     const insertObj = {
       thread_id: request.thread_id ? request.thread_id : uuid(), // thread id dosnt exist, creat new and insert.
+      post_id: uuid(),
       body: request.body,
       created_on: request.created_on,
       user_id: request.user_id,
@@ -22,15 +24,23 @@ export class Server extends BaseServer {
     };
     const model = new this.cassandra.instance.post(insertObj);
     await model.saveAsync()
-    .then(data => this.sendSuccess(req,res,{created: "OK", thread_id: insertObj.thread_id}))
-    .catch(error => this.sendError(req,res, {code:"ERR_CREATE_POST", msg: error}));
+    .then(data => { 
+      this.sendSuccess(req,res,{created: "OK", thread_id: insertObj.thread_id, post_id: insertObj.post_id})
+    })
+    .catch(error => {
+      logger.error('createPost failed to save data to db',request, error);
+      this.sendError(req,res, {code:"ERR_CREATE_POST", msg: error})
+    });
   }
 
   public async getPost(req: Request, res: Response) {
     const searchQuery = _.pick(req.body.request, ["thread_id", "tag"]);
     await this.fetchPostFromDB(searchQuery)
     .then(data => this.sendSuccess(req,res,data))
-    .catch(error => this.sendError(req,res, {code:"ERR_READ_POST", msg: error}));
+    .catch(error => { 
+      logger.error('getPost failed query data from db', searchQuery, error);
+      this.sendError(req,res, {code:"ERR_READ_POST", msg: error});
+    });
   }
 
   private fetchPostFromDB(searchQuery, isDeleted = false){
@@ -47,7 +57,10 @@ export class Server extends BaseServer {
     if(postIds.length){
       this.cassandra.instance.post.updateAsync(queryObject, updateObject)
       .then(data => this.sendSuccess(req,res,{deleted: "OK"}))
-      .catch(error => this.sendError(req,res, {code:"ERR_DELETE_POST", msg: error}));
+      .catch(error => { 
+        logger.error('deletePost failed to update is_deleted column',searchQuery, error);
+        this.sendError(req,res, {code:"ERR_DELETE_POST", msg: error});
+      });
     } else {
       this.sendSuccess(req,res,{deleted: "OK"})
     }
@@ -59,7 +72,7 @@ export class Server extends BaseServer {
   }
 
   private sendError(req,res,error){
-    res.status(500)
+    res.status(404)
     .send(new DiscussionResponse({
       id: "api.discussion.service",
       err: error.code || "ERR_DISCUSSION_SERVICE",

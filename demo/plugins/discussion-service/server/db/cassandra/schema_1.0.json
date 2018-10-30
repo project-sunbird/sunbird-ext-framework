@@ -8,8 +8,7 @@
       "table_name": "post",
       "fields": {
         "post_id": {
-          "type": "uuid",
-          "default": {"$db_function": "uuid()"}
+          "type": "text"
         },
         "thread_id": {
           "type": "text"

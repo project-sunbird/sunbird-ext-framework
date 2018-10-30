@@ -17,7 +17,7 @@ export class RequestValidator {
         userId: Joi.string().required(),
         userInfo: Joi.object().keys({
           name: Joi.string().required(),
-          logo: Joi.string().required()
+          logo: Joi.string()
         }).required()
       }).required()
     });

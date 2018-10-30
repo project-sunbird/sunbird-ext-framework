@@ -1,9 +1,9 @@
-import { TestFramework } from 'ext-framework-server/test-framework';
-import { FrameworkConfig } from 'ext-framework-server/interfaces';
+import { TestFramework } from '@project-sunbird/ext-framework-server/test-framework';
+import { FrameworkConfig } from '@project-sunbird/ext-framework-server/interfaces';
 import 'mocha';
 import * as path from 'path';
 import * as sinon from 'sinon';
-import { manifest } from 'form-service/manifest';
+import { manifest } from './../../server/manifest';
 import * as request from 'supertest';
 const plugin = { id: manifest.id, ver: manifest.version };
 const baseURL = "http://127.0.0.1:9000"; //default port 9000
@@ -12,7 +12,8 @@ const api = request(baseURL);
 describe('Form API Integration test cases', () => {
 
   before((done) => {
-    let config: FrameworkConfig = { plugins: [plugin], pluginBasePath: path.join(__dirname, 'node_modules/') }
+    let config: FrameworkConfig = { plugins: [plugin], pluginBasePath: path.join(__dirname, 'node_modules/'), telemetry: {
+    dispatcher: 'console'} }
     TestFramework.initialize(config).then(() => {
       done();
     })

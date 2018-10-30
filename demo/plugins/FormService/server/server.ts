@@ -73,7 +73,7 @@ export class Server extends BaseServer {
         telemetryHelper.log(req);
       }).catch(error => {
         if (error.client_error) {
-          res.status(400)
+          res.status(500)
             .send(new FormResponse({
               id: "api.form.update",
               err: "ERR_UPDATE_FORM_DATA",
@@ -86,7 +86,7 @@ export class Server extends BaseServer {
         }
       })
       .catch(error => {
-        res.status(500)
+        res.status(404)
           .send(new FormResponse({
             id: "api.form.update",
             err: "ERR_UPDATE_FORM_DATA",
@@ -132,6 +132,14 @@ export class Server extends BaseServer {
           return data;
         }
       })
+      .then(async data => {
+        if (!data) {
+          // get the default data
+          return await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*", component: "*" }))
+        } else {
+          return data;
+        }
+      })
       .then(data => {
         if (!data) data = {}
         if (data && typeof data.data === "string") data.data = JSON.parse(data.data);
@@ -151,7 +159,7 @@ export class Server extends BaseServer {
           telemetryHelper.log(req);
       })
       .catch(error => {
-        res.status(500)
+        res.status(404)
           .send(new FormResponse({
             id: "api.form.read",
             err: "ERR_READ_FORM_DATA",

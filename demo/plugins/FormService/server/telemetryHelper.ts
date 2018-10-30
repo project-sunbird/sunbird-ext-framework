@@ -1,5 +1,6 @@
 import { frameworkAPI, IEventData, ILogEventData, IErrorEventData } from '@project-sunbird/ext-framework-server/api';
 const ACTOR_ID = '382440a9-608f-4a89-a171-d0d46f48cbd0';
+import * as _  from 'lodash';
 
 class TelemetryHelper {
   log(req) {
@@ -47,10 +48,16 @@ class TelemetryHelper {
     }
   }
   getErrorEdata(req, res, err) {
+    let error;
+    try {
+      error = { err: JSON.stringify(err), req: JSON.stringify(req.body)};
+    } catch {
+      error = "unhandled error, json stringify errored out";
+    }
     return {
-      err: res.statusCode,
+      err: _.toString(_.get(res, 'statusCode')) || "",
       errtype: res.statusMessage,
-      stacktrace: JSON.stringify(err),
+      stacktrace: error,
     }
   }
 }

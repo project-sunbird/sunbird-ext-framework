@@ -1,7 +1,7 @@
 {
   "name": "@project-sunbird/review-comment",
-  "version": "0.0.1",
-  "description": "Form service API for project sunbird. It helps to manage form configuration based on channel, type, subtype, component.",
+  "version": "0.0.7",
+  "description": "Review comment plugin provides ability to comment at page level for sunbird content workflow",
   "scripts": {
     "clean-dist-dev": "node_modules/.bin/rimraf ./../../../app/plugin-repo/@project-sunbird/review-comment",
     "compile-dev": "tsc --p tsconfig-dev.json --noImplicitUseStrict",
@@ -9,7 +9,8 @@
     "copy-db-dev": "node_modules/.bin/cpy db/* ./../../../app/plugin-repo/@project-sunbird/review-comment/db",
     "resolve-dev-dependencies": "cd ./../../../app/plugin-repo/@project-sunbird/review-comment && npm i --prod",
     "build-dev": "npm run clean-dist-dev &&  npm run compile-dev && npm run copy-package-dev && npm run copy-db-dev && npm run resolve-dev-dependencies",
-    "build-prod": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && node_modules/.bin/cpy package.json ./dist && node_modules/.bin/cpy db/* ./dist/db",
+    "copy-package-prod": "node ./utils/copy_package_json.js",
+    "build-prod": "node_modules/.bin/rimraf ./dist && tsc --noImplicitUseStrict && npm run copy-package-prod && node_modules/.bin/cpy db/* ./dist/db",
     "test": "echo 'go to '../test' folder to execute test cases!'"
   },
   "engines": {
@@ -17,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/project-sunbird/sunbird-ext-framework/tree/master/demo/plugins/FormService"
+    "url": "https://github.com/project-sunbird/sunbird-ext-framework/tree/master/demo/plugins/review-comment"
   },
   "keywords": [
     "sunbird",
@@ -28,7 +29,8 @@
   "license": "MIT",
   "dependencies": {
     "joi": "^13.4.0",
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "rxjs": "^6.2.1"
   },
   "peerDependencies": {
     "@project-sunbird/ext-framework-server": "^0.1.6"
