@@ -35,7 +35,7 @@ export class Server extends BaseServer {
         telemetryHelper.log(req);
     })
       .catch(error => {
-        res.status(404)
+        res.status(500)
           .send(new FormResponse({
             id: "api.form.create",
             err: "ERR_CREATE_FORM_DATA",
@@ -73,7 +73,7 @@ export class Server extends BaseServer {
         telemetryHelper.log(req);
       }).catch(error => {
         if (error.client_error) {
-          res.status(400)
+          res.status(500)
             .send(new FormResponse({
               id: "api.form.update",
               err: "ERR_UPDATE_FORM_DATA",
