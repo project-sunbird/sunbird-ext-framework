@@ -7,7 +7,7 @@ import { HTTPService as http } from "@project-sunbird/ext-framework-server/servi
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { logger } from '@project-sunbird/ext-framework-server/logger';
-const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'https://staging.open-sunbird.org/plugin/'; // should be taken form env variable
+const pluginBaseUrl = process.env.sunbird_ext_plugin_url || 'http://player_player:3000/plugin/'; // should be taken form env variable
 const discussionCreateUrl = "discussion/v1/create/post";
 const discussionReadUrl = "discussion/v1/read/post";
 const discussionDeleteUrl = "discussion/v1/delete/post";
