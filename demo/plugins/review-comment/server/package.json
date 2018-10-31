@@ -1,6 +1,6 @@
 {
   "name": "@project-sunbird/review-comment",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Review comment plugin provides ability to comment at page level for sunbird content workflow",
   "scripts": {
     "clean-dist-dev": "node_modules/.bin/rimraf ./../../../app/plugin-repo/@project-sunbird/review-comment",
