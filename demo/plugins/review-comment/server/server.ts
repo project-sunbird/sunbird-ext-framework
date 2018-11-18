@@ -57,7 +57,7 @@ export class Server extends BaseServer {
       is_deleted: false
     }
 
-    if(context_details.stage_id) query.meta_data = { $contains: {'stage_id': context_details.stage_id}}
+    context_details.stage_id && (query.meta_data = { $contains: {'stage_id': context_details.stage_id}});
 
     if(options.method === 'findOne'){
       return this.cassandra.instance.context_details.findOneAsync(query, {raw:true, allow_filtering: true});
@@ -75,7 +75,7 @@ export class Server extends BaseServer {
           tag: this.getTag(requestBody.context_details)
         }
       };
-      if(threadId) disData.request.thread_id = threadId;
+      threadId && (disData.request.thread_id = threadId);
       return http.post(pluginBaseUrl + discussionCreateUrl,disData)
       .pipe(catchError(error => throwError(_.get(error, 'response.data.params.errmsg')))).toPromise()
   }
@@ -87,9 +87,7 @@ export class Server extends BaseServer {
           content_ver: requestBody.context_details.content_ver,
           content_type: requestBody.context_details.content_type
         };
-      if(requestBody.context_details.stage_id){
-          insertObj.meta_data = { stage_id: requestBody.context_details.stage_id };
-      }
+      requestBody.context_details.stage_id && (insertObj.meta_data = { stage_id: requestBody.context_details.stage_id });
       const model = new this.cassandra.instance.context_details(insertObj);
       return model.saveAsync();
   }
@@ -131,7 +129,7 @@ export class Server extends BaseServer {
       }, {});
     if(!commentList) return []; 
     return commentList.map(element => {
-      if(threadObj[element.thread_id]) element.stageId = threadObj[element.thread_id].meta_data.stage_id;
+      threadObj[element.thread_id] && (element.stageId = threadObj[element.thread_id].meta_data.stage_id);
       return this.toCamelCase(element)
     });
   }

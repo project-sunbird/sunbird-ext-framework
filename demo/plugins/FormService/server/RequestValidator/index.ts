@@ -9,7 +9,7 @@ export class RequestValidator {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         type: Joi.string().required(),
-        subType: Joi.string(), // optional
+        subType: Joi.string().required(),
         action: Joi.string().required(),
         component: Joi.string(), // optional
         rootOrgId: Joi.string(), // optional
@@ -50,7 +50,7 @@ export class RequestValidator {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         type: Joi.string().required(),
-        subType: Joi.string(), // optional
+        subType: Joi.string().required(),
         action: Joi.string().required(),
         component: Joi.string(), // optional
         rootOrgId: Joi.string(), //optional
@@ -91,7 +91,7 @@ export class RequestValidator {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         type: Joi.string().required(),
-        subType: Joi.string(), // optional
+        subType: Joi.string().required(),
         action: Joi.string().required(),
         component: Joi.string(), // optional
         rootOrgId: Joi.string(), // optional
