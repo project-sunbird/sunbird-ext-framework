@@ -99,24 +99,15 @@ export class Server extends BaseServer {
   public async read(req: Request, res: Response) {
     const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
     this.convertToLowerCase(data, ['type', 'subType', 'action']);
-    let onRecordFound: Promise<any>;
     const query = {
-      root_org: data.rootOrgId,
-      framework: data.framework,
+      root_org: data.rootOrgId || '*',
+      framework: data.framework || '*',
       type: data.type,
       action: data.action,
       subtype: data.subType || '*',
       component: data.component || '*'
     }
-
-    if (!query.root_org && !query.framework) {
-      onRecordFound = this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*" }));
-    } else if (query.root_org && !query.framework) {
-      onRecordFound = this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { framework: "*" }));
-    } else {
-      onRecordFound = this.cassandra.instance.form_data.findOneAsync(query);
-    }
-    await onRecordFound.then(async data => {
+    await this.cassandra.instance.form_data.findOneAsync(query).then(async data => {
       if (!data) {
         // find record by specified rootOrgId with framework = '*'
         await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { framework: "*" }))
