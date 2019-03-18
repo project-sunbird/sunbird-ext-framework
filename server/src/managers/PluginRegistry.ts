@@ -9,6 +9,7 @@ import * as UUID from 'uuid/v1';
 import { logger } from '../logger';
 import { Singleton, AutoWired, Inject } from "typescript-ioc";
 import { CassandraMetaDataProvider } from "../meta/CassandraMetaDataProvider";
+import { InMemoryMetaDataProvider } from "../meta/InMemoryMetaDataProvider";
 /**
  * 
  * 
@@ -19,7 +20,7 @@ import { CassandraMetaDataProvider } from "../meta/CassandraMetaDataProvider";
 export class PluginRegistry {
 
   @Inject
-  public metaDataProvider: CassandraMetaDataProvider;
+  public metaDataProvider: InMemoryMetaDataProvider;
 
   private config: any;
 

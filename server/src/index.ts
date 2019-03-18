@@ -47,14 +47,14 @@ export class Framework {
         this._config = config;
 
         // configure logger
-        if(config.logLevel) enableLogger(config.logLevel);
+        if (config.logLevel) enableLogger(config.logLevel);
 
         this.schemaLoader.registerLoader(new ESSchemaLoader(config.db.elasticsearch))
         this.schemaLoader.registerLoader(new CassandraSchemaLoader(config.db.cassandra))
         this.pluginManager.initialize(config);
         this.routerRegistry.initialize(app);
         this.telemetryService.initialize(config.telemetry, TelemetryLib);
-        await this.loadPluginRegistrySchema();
+        // await this.loadPluginRegistrySchema();
         this.initialized = true;
         logger.info('Framework is initialized!');
 
