@@ -56,6 +56,7 @@ export interface IElasticSearchConnector extends ESClient {
 export interface IDatabaseConfig {
     cassandra: ICassandraConfig;
     elasticsearch: IElasticSearchConfig;
+    couchdb: ICouchDBConfig;
 }
 
 export interface FrameworkConfig {
@@ -89,6 +90,7 @@ export interface PluginMeta {
     registered_on?: Date;
     cassandra_keyspace?: string;
     elasticsearch_index?: any;
+    database_name?: string;
     status?: PluginStatusEnum;
     manifest?: string;
 }
@@ -160,4 +162,9 @@ export interface IMessageProvider {
      * @memberof IMessageProvider
      */
     createTopic(names: Array<string>);
+}
+
+
+export interface ICouchDBConfig {
+    url: string
 }

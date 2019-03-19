@@ -17,6 +17,7 @@ import { CassandraSchemaLoader } from './db/cassandra/CassandraSchemaLoader';
 import { CassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
 import { TelemetryService } from './services/telemetry';
 import * as TelemetryLib from '@project-sunbird/telemetry-sdk';
+import { CouchDBSchemaLoader } from './db/couchdb/CouchDBSchemaLoader';
 
 @Singleton
 export class Framework {
@@ -51,9 +52,12 @@ export class Framework {
 
         this.schemaLoader.registerLoader(new ESSchemaLoader(config.db.elasticsearch))
         this.schemaLoader.registerLoader(new CassandraSchemaLoader(config.db.cassandra))
+        this.schemaLoader.registerLoader(new CouchDBSchemaLoader(config.db.couchdb))
         this.pluginManager.initialize(config);
         this.routerRegistry.initialize(app);
         this.telemetryService.initialize(config.telemetry, TelemetryLib);
+
+        // commented since we are using in memory  as schema store
         // await this.loadPluginRegistrySchema();
         this.initialized = true;
         logger.info('Framework is initialized!');

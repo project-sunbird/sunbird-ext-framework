@@ -12,7 +12,6 @@ export class InMemoryMetaDataProvider implements IMetaDataProvider {
   }
 
   public async getMeta(id: string): Promise<any> {
-    console.log('store in getMeta', this.store)
     await new Promise((resolve, reject) => {
       this.store[id] ? resolve({ rows: [this.store[id]] }) : reject(`Error while getting meta data for ${id}`)
     }).catch(error => {
@@ -21,11 +20,10 @@ export class InMemoryMetaDataProvider implements IMetaDataProvider {
   }
 
   public async updateMeta(id: string, meta: PluginMeta): Promise<any> {
-    console.log('store in updateMeta', this.store)
     await new Promise((resolve, reject) => {
       let oldData = this.store[id];
       if (oldData) {
-        this.store[id] = { oldData, ...meta }
+        this.store[id] = { ...oldData, ...meta }
         resolve(this.store[id])
       } else {
         reject(`Error while updating meta data for ${id}, it is not created`)
@@ -36,13 +34,11 @@ export class InMemoryMetaDataProvider implements IMetaDataProvider {
   }
 
   public async createMeta(meta: PluginMeta): Promise<any> {
-    console.log('store in createMeta', this.store)
     await new Promise((resolve, reject) => {
       if (this.store[meta.id]) {
         reject('Error meta data already exists')
       } else {
         this.store[meta.id] = meta;
-        console.log(this.store)
         resolve(meta.id)
       }
     }).catch(error => {
@@ -51,7 +47,6 @@ export class InMemoryMetaDataProvider implements IMetaDataProvider {
   }
 
   public async deleteMeta(id: string): Promise<any> {
-    console.log('store in deleteMeta', this.store)
     await new Promise((resolve, reject) => {
       if (!this.store[id]) {
         reject('Error meta data not exists')

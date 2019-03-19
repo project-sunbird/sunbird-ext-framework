@@ -5,10 +5,10 @@ import { IElasticSearchConfig, IElasticSearchConnector } from '../../interfaces'
 import { ElasticSearchDB } from './index';
 import { Util, FrameworkError, FrameworkErrors } from '../../util';
 import * as _ from 'lodash';
-import {logger } from '../../logger';
+import { logger } from '../../logger';
 import { Inject, Singleton } from 'typescript-ioc';
-import { CassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
 import { ISchemaLoader } from '..';
+import { InMemoryMetaDataProvider } from '../../meta/InMemoryMetaDataProvider';
 
 @Singleton
 export class ESSchemaLoader implements ISchemaLoader {
@@ -17,7 +17,7 @@ export class ESSchemaLoader implements ISchemaLoader {
   private dbConnection: IElasticSearchConnector;
 
   @Inject
-  private metaDataProvider: CassandraMetaDataProvider;
+  private metaDataProvider: InMemoryMetaDataProvider;
 
   @Inject
   private elasticSearchDB: ElasticSearchDB;
@@ -91,7 +91,7 @@ export class ESSchemaLoader implements ISchemaLoader {
         logger.info(`Index "${indexName}" has been created in Elasticsearch for ${pluginId}`);
         const alias = this.generateESIndexAlias(pluginId + indexName);
         await this.createIndexAlias(indexMapping.name, alias);
-        await this.metaDataProvider.updateMeta(pluginId, { elasticsearch_index: { '$add': {[indexName]: alias} }});
+        await this.metaDataProvider.updateMeta(pluginId, { elasticsearch_index: { '$add': { [indexName]: alias } } });
         logger.info(`creating mappings for index "${indexName}"`);
       } else {
         logger.info(`index "${indexName}" already defined! for "${pluginId}"`);
