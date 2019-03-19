@@ -11,9 +11,9 @@ import * as _ from 'lodash';
 import * as ExpressCassandra from 'express-cassandra';
 import { SchemaService } from './schemaService';
 import * as util from 'util';
-import { CassandraMetaDataProvider } from '../../meta/CassandraMetaDataProvider';
 import { logger } from '../../logger';
 import { Inject, Singleton } from 'typescript-ioc';
+import { InMemoryMetaDataProvider } from '../../meta/InMemoryMetaDataProvider';
 @Singleton
 export class CassandraSchemaLoader implements ISchemaLoader {
 
@@ -21,7 +21,7 @@ export class CassandraSchemaLoader implements ISchemaLoader {
   private dbConnection: any;
 
   @Inject
-  private metaDataProvider: CassandraMetaDataProvider;
+  private metaDataProvider: InMemoryMetaDataProvider;
 
   @Inject
   private schemaService: SchemaService;

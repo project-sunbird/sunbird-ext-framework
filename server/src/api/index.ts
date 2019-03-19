@@ -2,7 +2,7 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 import { FrameworkConfig, IElasticSearchConnector } from "../interfaces";
-import { CassandraDB, ElasticSearchDB } from "../db";
+import { CassandraDB, ElasticSearchDB, CouchDB } from "../db";
 import { RouterRegistry } from "../managers/RouterRegistry";
 import { Framework } from "../index";
 import { Inject, Singleton } from "typescript-ioc";
@@ -26,6 +26,9 @@ export class FrameworkAPI {
 
   @Inject
   private _telemetryService: TelemetryService;
+
+  @Inject
+  private couchDB: CouchDB;
 
   public async bootstrap(config: FrameworkConfig, app: Express) {
     this.config = { ...config }
@@ -52,6 +55,10 @@ export class FrameworkAPI {
 
   public getPluginInstance(id: string) {
     return this.framework.pluginManager.getPluginInstance(id);
+  }
+
+  public getCouchDBInstance() {
+    return this.couchDB.getConnection();
   }
 }
 
