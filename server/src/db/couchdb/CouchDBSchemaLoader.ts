@@ -48,7 +48,7 @@ export class CouchDBSchemaLoader implements ISchemaLoader {
 
 
 
-        this.dbConnection = this.couchDB.getConnection();
+        this.dbConnection = this.couchDB.getConnection(pluginId);
 
         // setSchema
         this.schemaService.setSchema(pluginId, Object.assign({}, schema));
@@ -57,7 +57,7 @@ export class CouchDBSchemaLoader implements ISchemaLoader {
             const databaseName = Util.generateId(pluginId, db.name);
             db.database_name = databaseName;
         })
-        //create databases 
+        // create databases 
         _.forEach(schema.databases, async (db) => {
 
             await this.dbConnection.db.list()

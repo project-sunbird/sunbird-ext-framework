@@ -30,10 +30,16 @@ export class FrameworkAPI {
   @Inject
   private couchDB: CouchDB;
 
+  @Inject
+  private routerRegistry: RouterRegistry;
+
+
+
   public async bootstrap(config: FrameworkConfig, app: Express) {
     this.config = { ...config }
     this.elasticSearchDB.initialize(this.config.db.elasticsearch);
     this.cassandraDB.initialize(this.config.db.cassandra);
+    this.couchDB.initialize(this.config.db.couchdb);
     await this.framework.initialize(config, app);
   }
 
@@ -57,8 +63,16 @@ export class FrameworkAPI {
     return this.framework.pluginManager.getPluginInstance(id);
   }
 
-  public getCouchDBInstance() {
-    return this.couchDB.getConnection();
+  public getCouchDBInstance(pluginId) {
+    return this.couchDB.getConnection(pluginId);
+  }
+
+  public registerStaticRoute(path: string, prefix?: string) {
+    this.routerRegistry.registerStaticRoute(path, prefix);
+  }
+
+  public setStaticViewEngine(name: string) {
+    this.routerRegistry.setStaticViewEngine(name);
   }
 }
 
