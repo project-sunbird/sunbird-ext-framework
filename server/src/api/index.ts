@@ -67,8 +67,8 @@ export class FrameworkAPI {
     return this.couchDB.getConnection(pluginId);
   }
 
-  public registerStaticRoute(pluginId: string, path: string, prefix?: string) {
-    this.routerRegistry.registerStaticRoute(pluginId, path, prefix);
+  public registerStaticRoute(path: string, prefix?: string) {
+    this.routerRegistry.registerStaticRoute(path, prefix);
   }
 
   public setStaticViewEngine(name: string) {
