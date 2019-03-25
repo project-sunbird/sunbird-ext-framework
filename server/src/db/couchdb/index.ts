@@ -20,7 +20,8 @@ export class CouchDB {
   public getConnection(pluginId: string): any {
     const url = this._config.url;
     const connection = nano(url);
-    return this.proxyMethod(connection, pluginId);
+    connection.db = this.proxyMethod(connection.db, pluginId);
+    return connection
   }
 
   private proxyMethod(obj: any, pluginId: string) {

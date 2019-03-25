@@ -3,6 +3,7 @@
  */
 
 import * as express from 'express';
+import * as path from 'path';
 import { IRouteSchema, Manifest } from '../models/Manifest';
 import * as _ from 'lodash';
 import { FrameworkConfig } from '../interfaces';
@@ -52,11 +53,11 @@ export class RouterRegistry {
             });
         };
     }
-    public registerStaticRoute(path: string, prefix?: string) {
+    public registerStaticRoute(pluginId: string, filePath: string, prefix?: string) {
         if (prefix) {
-            this.rootApp.use(prefix, express.static(path));
+            this.rootApp.use(prefix, express.static(path.join(pluginId, filePath)));
         }
-        this.rootApp.use(express.static(path));
+        this.rootApp.use(express.static(path.join(pluginId, filePath)));
     }
 
     public setStaticViewEngine(name: string) {
