@@ -63,12 +63,12 @@ export class FrameworkAPI {
     return this.framework.pluginManager.getPluginInstance(id);
   }
 
-  public getCouchDBInstance(pluginId) {
+  public getCouchDBInstance(pluginId: string) {
     return this.couchDB.getConnection(pluginId);
   }
 
-  public registerStaticRoute(path: string, prefix?: string) {
-    this.routerRegistry.registerStaticRoute(path, prefix);
+  public registerStaticRoute(pluginId: string, path: string, prefix?: string) {
+    this.routerRegistry.registerStaticRoute(pluginId, path, prefix);
   }
 
   public setStaticViewEngine(name: string) {
