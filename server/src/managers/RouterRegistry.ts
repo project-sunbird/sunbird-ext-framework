@@ -53,11 +53,11 @@ export class RouterRegistry {
             });
         };
     }
-    public registerStaticRoute(pluginId: string, filePath: string, prefix?: string) {
+    public registerStaticRoute(filePath: string, prefix?: string) {
         if (prefix) {
-            this.rootApp.use(prefix, express.static(path.join(pluginId, filePath)));
+            this.rootApp.use(prefix, express.static(path.join(filePath)));
         }
-        this.rootApp.use(express.static(path.join(pluginId, filePath)));
+        this.rootApp.use(express.static(path.join(filePath)));
     }
 
     public setStaticViewEngine(name: string) {
