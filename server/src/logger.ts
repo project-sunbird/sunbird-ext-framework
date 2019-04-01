@@ -9,17 +9,24 @@ configure({
       "type": "dateFile",
       "filename": "log/access.log",
       "pattern": "-yyyy-MM-dd",
-      "category": "http"
+      "category": "http",
+      "maxLogSize": 10485760, // 10MB
+      "backups": 3,
+      "compress": true
     },
     "app": {
       "type": "file",
       "filename": "log/app.log",
       "maxLogSize": 10485760, // 10MB
-      "numBackups": 3
+      "backups": 3,
+      "compress": true
     },
     "errorFile": {
       "type": "file",
-      "filename": "log/errors.log"
+      "filename": "log/errors.log",
+      "maxLogSize": 10485760, // 10MB
+      "backups": 3,
+      "compress": true
     },
     "errors": {
       "type": "logLevelFilter",
@@ -38,8 +45,8 @@ configure({
     "http": { "appenders": ["access"], "level": "DEBUG" }
   }
 });
-  
-type loggerLevels = 'all' | 'trace' | 'fatal' | 'error' | 'off' | 'info' | 'warn' |'debug'
+
+type loggerLevels = 'all' | 'trace' | 'fatal' | 'error' | 'off' | 'info' | 'warn' | 'debug'
 
 function enableLogger(level?: loggerLevels) {
   try {
