@@ -57,38 +57,43 @@ export class CouchDBSchemaLoader implements ISchemaLoader {
             const databaseName = Util.generateId(pluginId, db.name);
             db.database_name = databaseName;
         })
+        let dbsList = await this.dbConnection.db.list();
         // create databases 
-        _.forEach(schema.databases, async (db) => {
 
-            await this.dbConnection.db.list()
-                .then((dbsList) => {
-                    if (!_.includes(dbsList, db.database_name)) {
-                        return this.dbConnection.db.create(db.database_name);
-                    } else {
-                        return Promise.reject({ message: 'database already exists', databaseName: db.name })
-                    }
-                }).then(() => {
-                    let viewPromises = [];
-                    let dbInstance = this.dbConnection.db.use(db.database_name)
-                    _.forEach(db.views, (view) => {
-                        viewPromises.push(dbInstance.insert(view))
-                    })
-                    return Promise.all(viewPromises);
-                }).then(() => {
-                    let indexPromises = [];
-                    let dbInstance = this.dbConnection.db.use(db.database_name)
-                    _.forEach(db.indexes, (index) => {
-                        indexPromises.push(dbInstance.createIndex(index))
-                    })
-                    return Promise.all(indexPromises);
-                }).catch((err) => {
-                    if (err.message === 'database already exists') {
-                        logger.warn(`${err['databaseName']} database in couchdb is already exists so ignoring`)
-                    } else if (err) {
-                        throw new FrameworkError({ message: `"${pluginId}" : unable to create database`, code: FrameworkErrors.DB_ERROR });
-                    }
-                })
-        })
+        for (const db of schema.databases) {
+            if (!_.includes(dbsList, db.database_name)) {
+                await this.dbConnection.db.create(db.database_name).catch((err) => {
+                    if (err) throw new FrameworkError({ message: `"${pluginId}" : unable to create database ${db.name} `, code: FrameworkErrors.DB_ERROR });
+                });
+            } else {
+                logger.warn(`${db.name} database in couchdb is already exists so ignoring`)
+            }
+        }
+
+        // create views for each database
+        for (const db of schema.databases) {
+            let dbInstance = this.dbConnection.db.use(db.name)
+            if (!_.isEmpty(db['views'])) {
+                for (let view of db.views) {
+                    await dbInstance.insert(view).catch((err) => {
+                        if (err) throw new FrameworkError({ message: `"${pluginId}" : unable to create view ${JSON.stringify(view)} for ${db.name} `, code: FrameworkErrors.DB_ERROR });
+                    });
+                }
+            }
+        }
+
+        // create indexes for each database
+        for (const db of schema.databases) {
+            let dbInstance = this.dbConnection.db.use(db.name)
+            if (!_.isEmpty(db['indexes'])) {
+                for (let index of db.indexes) {
+                    await dbInstance.createIndex(index).catch((err) => {
+                        if (err) throw new FrameworkError({ message: `"${pluginId}" : unable to create index ${JSON.stringify(index)} for ${db.name} `, code: FrameworkErrors.DB_ERROR });
+                    });
+                }
+            }
+
+        }
 
     }
 }
