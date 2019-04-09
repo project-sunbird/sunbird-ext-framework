@@ -65,7 +65,7 @@ export class CouchDBSchemaLoader implements ISchemaLoader {
                     if (!_.includes(dbsList, db.database_name)) {
                         return this.dbConnection.db.create(db.database_name);
                     } else {
-                        return Promise.reject('database already exists')
+                        return Promise.reject({ message: 'database already exists', databaseName: db.name })
                     }
                 }).then(() => {
                     let viewPromises = [];
@@ -82,7 +82,11 @@ export class CouchDBSchemaLoader implements ISchemaLoader {
                     })
                     return Promise.all(indexPromises);
                 }).catch((err) => {
-                    if (err) throw new FrameworkError({ message: `"${pluginId}" : unable to create database`, code: FrameworkErrors.DB_ERROR });
+                    if (err.message === 'database already exists') {
+                        logger.warn(`${err['databaseName']} database in couchdb is already exists so ignoring`)
+                    } else if (err) {
+                        throw new FrameworkError({ message: `"${pluginId}" : unable to create database`, code: FrameworkErrors.DB_ERROR });
+                    }
                 })
         })
 
