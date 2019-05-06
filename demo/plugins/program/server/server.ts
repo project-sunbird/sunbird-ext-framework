@@ -31,16 +31,19 @@ export class Server extends BaseServer {
     });
   }
   public async readProgram(req: Request, res: Response) {
-    await this.cassandra.instance.program.findOneAsync(req.params, { raw:true })
-    .then(data => {
-      try {
-        data.config = JSON.parse(data.config);
-      } catch(error) {}
-      this.sendSuccess(req, res, 'api.program.read', data)
-    }).catch(error => {
+    let programDetails;
+    try{
+      programDetails = await this.cassandra.instance.program.findOneAsync(req.params, { raw:true });
+      if(req.query.userId){
+        const reqQuery = { programId: req.params.programId, userId: req.query.userId }
+        programDetails.userDetails = await this.cassandra.instance.participants.findOneAsync(reqQuery, { raw:true })
+      }
+      programDetails.config = JSON.parse(programDetails.config);
+      this.sendSuccess(req, res, 'api.program.read', programDetails)
+    } catch (error) {
       logger.error('read Program failed to query data', req.params, error);
       this.sendError(req, res, 'api.program.read', { code:"ERR_READ_PROGRAM", msg: error });
-    });
+    }
   }
   public async updateProgram(req: Request, res: Response) {
     const updateQuery = { programId: req.body.request.programId };
@@ -108,7 +111,7 @@ export class Server extends BaseServer {
     })
   }
 
-  
+
   private sendSuccess(req, res, id,  data){
     res.status(200)
     .send(new ReviewResponse(undefined, {
