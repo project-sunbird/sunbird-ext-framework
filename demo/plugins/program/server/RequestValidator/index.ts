@@ -13,6 +13,7 @@ export class RequestValidator {
         config: Joi.object().min(1).required(),
         startDate: Joi.string().required(),
         endDate: Joi.string(),
+        slug: Joi.string().required(),
         defaultRoles: Joi.array().items(Joi.string()).required()
       }).required()
     });
@@ -57,6 +58,7 @@ export class RequestValidator {
         type: Joi.string(),
         startDate: Joi.string(),
         endDate: Joi.string(),
+        slug: Joi.string(),
         config: Joi.object().min(1),
         defaultRoles: Joi.array().items(Joi.string())
       }).min(2).required()

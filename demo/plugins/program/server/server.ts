@@ -32,8 +32,11 @@ export class Server extends BaseServer {
   }
   public async readProgram(req: Request, res: Response) {
     let programDetails;
-    try{
+    try {
       programDetails = await this.cassandra.instance.program.findOneAsync(req.params, { raw:true });
+      if(!programDetails){
+        throw new Error('PROGRAM_NOT_EXIST');
+      }
       if(req.query.userId){
         const reqQuery = { programId: req.params.programId, userId: req.query.userId }
         programDetails.userDetails = await this.cassandra.instance.participants.findOneAsync(reqQuery, { raw:true })
@@ -41,8 +44,12 @@ export class Server extends BaseServer {
       programDetails.config = JSON.parse(programDetails.config);
       this.sendSuccess(req, res, 'api.program.read', programDetails)
     } catch (error) {
+      let errorCode = "ERR_READ_PROGRAM";
+      if(error.message === 'PROGRAM_NOT_EXIST'){
+        errorCode = 'PROGRAM_NOT_EXIST';
+      }
       logger.error('read Program failed to query data', req.params, error);
-      this.sendError(req, res, 'api.program.read', { code:"ERR_READ_PROGRAM", msg: error });
+      this.sendError(req, res, 'api.program.read', { code: errorCode, msg: error });
     }
   }
   public async updateProgram(req: Request, res: Response) {

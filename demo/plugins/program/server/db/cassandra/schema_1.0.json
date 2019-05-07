@@ -32,6 +32,9 @@
         "config": {
           "type": "text"
         },
+        "slug": {
+          "type": "text"
+        },
         "defaultRoles": {
           "type": "list",
           "typeDef": "<text>"

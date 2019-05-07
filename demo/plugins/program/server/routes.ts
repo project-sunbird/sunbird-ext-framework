@@ -12,7 +12,7 @@ export class Router implements IRouter {
     app.post('/create', validator.validateCreateProgramAPI, (req, res) => server.createProgram(req, res));
     app.get('/read/:programId', validator.validateReadProgramAPI, (req, res) => server.readProgram(req, res));
     app.patch('/update', validator.validateUpdateProgramAPI, (req, res) => server.updateProgram(req, res));
-    app.delete('/delete', validator.validateDeleteProgramAPI, (req, res) => server.deleteProgram(req, res));
+    // app.delete('/delete', validator.validateDeleteProgramAPI, (req, res) => server.deleteProgram(req, res));
     app.post('/add/participant', validator.validateAddParticipantAPI, (req, res) => server.addParticipant(req, res));
     app.patch('/update/participant', validator.validateUpdateParticipantAPI, (req, res) => server.updateParticipant(req, res));
 	}
