@@ -91,6 +91,7 @@ export class Server extends BaseServer {
     if(!_.isEmpty(programDetails)){
       const insertObj: any = req.body.request;
       insertObj.roles = req.body.request.roles || programDetails.defaultRoles;
+      insertObj.onBoardingData = insertObj.onBoardingData ? JSON.stringify(insertObj.onBoardingData) : "";
       const model = new this.cassandra.instance.participants(insertObj);
       await model.saveAsync({if_not_exist: true}).then(data => {
         this.sendSuccess(req,res, 'api.add.participants', { created: "OK", programId: insertObj.programId })
