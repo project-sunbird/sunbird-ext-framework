@@ -49,14 +49,6 @@ configure({
 type loggerLevels = 'all' | 'trace' | 'fatal' | 'error' | 'off' | 'info' | 'warn' | 'debug'
 
 function enableLogger(level?: loggerLevels) {
-  try {
-    require('fs').mkdirSync(path.join(__dirname, 'log'));
-  } catch (e) {
-    if (e.code !== 'EEXIST') {
-      console.error("Could not set up log directory, error was: ", e);
-      process.exit(1);
-    }
-  }
   logger.level = level || 'debug';
 }
 export { logger, enableLogger, loggerLevels };
