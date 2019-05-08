@@ -39,7 +39,12 @@ export class Server extends BaseServer {
       }
       if(req.query.userId){
         const reqQuery = { programId: req.params.programId, userId: req.query.userId }
-        programDetails.userDetails = await this.cassandra.instance.participants.findOneAsync(reqQuery, { raw:true })
+        const userDetails = await this.cassandra.instance.participants.findOneAsync(reqQuery, { raw:true })
+        if (userDetails){
+          programDetails.userDetails = userDetails;
+          programDetails.userDetails.onBoardingData = programDetails.userDetails.onBoardingData ? 
+            JSON.parse(programDetails.userDetails.onBoardingData) : {};
+        }
       }
       programDetails.config = JSON.parse(programDetails.config);
       this.sendSuccess(req, res, 'api.program.read', programDetails)
