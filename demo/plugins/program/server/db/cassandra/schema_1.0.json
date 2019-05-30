@@ -1,0 +1,74 @@
+{
+  "type": "cassandra",
+  "config": {
+  },
+  "keyspace_name": "program",
+  "column_families": [
+    {
+      "table_name": "program",
+      "fields": {
+        "programId": {
+          "type": "text"
+        },
+        "name": {
+          "type": "text"
+        },
+        "description": {
+          "type": "text"
+        },
+        "startDate": {
+          "type": "timestamp",
+          "default": {"$db_function": "toTimestamp(now())"}
+        },
+        "endDate": {
+          "type": "timestamp"
+        },
+        "status": {
+          "type": "text"
+        },        
+        "type": {
+          "type": "text"
+        },
+        "config": {
+          "type": "text"
+        },
+        "slug": {
+          "type": "text"
+        },
+        "defaultRoles": {
+          "type": "list",
+          "typeDef": "<text>"
+        }
+      },
+      "key": [ ["programId"] ],
+      "indexes": ["status"]
+    },
+    {
+      "table_name": "participants",
+      "fields": {
+        "programId": {
+          "type": "text"
+        },
+        "userId": {
+          "type": "text"
+        },
+        "enrolledOn": {
+          "type": "timestamp",
+          "default": {"$db_function": "toTimestamp(now())"}
+        },
+        "roles": {
+          "type": "list",
+          "typeDef": "<text>"
+        },
+        "onBoardingData":{
+          "type": "text"
+        },
+        "onBoarded": {
+          "type": "boolean"
+        }
+      },
+      "key": [ ["programId", "userId"] ],
+      "indexes": ["userId"]
+    }
+  ]
+}
