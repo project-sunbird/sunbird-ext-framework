@@ -7,7 +7,9 @@ import { ICouchDBConfig } from "../../interfaces";
 import * as _ from 'lodash';
 import { defaultConfig } from "../../config";
 import { Util } from '../../util';
+import { Inject, Singleton } from 'typescript-ioc';
 
+@Singleton
 export class CouchDB {
 
   private _config: ICouchDBConfig;
