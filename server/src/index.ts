@@ -55,7 +55,9 @@ export class Framework {
         this.schemaLoader.registerLoader(new CouchDBSchemaLoader(config.db.couchdb))
         this.pluginManager.initialize(config);
         this.routerRegistry.initialize(app);
-        this.telemetryService.initialize(config.telemetry, TelemetryLib);
+
+        // initialize telemetry service if config is provided
+        if (config['telemetry']) this.telemetryService.initialize(config.telemetry, TelemetryLib);
 
         // commented since we are using in memory  as schema store
         // await this.loadPluginRegistrySchema();
