@@ -18,6 +18,8 @@ import { CassandraMetaDataProvider } from './meta/CassandraMetaDataProvider';
 import { TelemetryService } from './services/telemetry';
 import * as TelemetryLib from '@project-sunbird/telemetry-sdk';
 import { CouchDBSchemaLoader } from './db/couchdb/CouchDBSchemaLoader';
+import { PouchDBSchemaLoader } from './db/pouchdb/PouchDBSchemaLoader';
+import * as _ from 'lodash';
 
 @Singleton
 export class Framework {
@@ -53,6 +55,7 @@ export class Framework {
         this.schemaLoader.registerLoader(new ESSchemaLoader(config.db.elasticsearch))
         this.schemaLoader.registerLoader(new CassandraSchemaLoader(config.db.cassandra))
         this.schemaLoader.registerLoader(new CouchDBSchemaLoader(config.db.couchdb))
+        this.schemaLoader.registerLoader(new PouchDBSchemaLoader(config.db.pouchdb))
         this.pluginManager.initialize(config);
         this.routerRegistry.initialize(app);
 

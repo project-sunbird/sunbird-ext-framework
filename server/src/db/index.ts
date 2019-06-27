@@ -6,3 +6,4 @@ export * from './elasticsearch';
 export * from './SchemaLoader';
 export * from './ISchemaLoader';
 export * from './couchdb';
+export * from './pouchdb';

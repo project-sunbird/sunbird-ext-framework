@@ -2,7 +2,7 @@
  * @author Santhosh Vasabhaktula <santhosh@ilimi.in>
  */
 import { FrameworkConfig, IElasticSearchConnector } from "../interfaces";
-import { CassandraDB, ElasticSearchDB, CouchDB } from "../db";
+import { CassandraDB, ElasticSearchDB, CouchDB, PouchDB } from "../db";
 import { RouterRegistry } from "../managers/RouterRegistry";
 import { Framework } from "../index";
 import { Inject, Singleton } from "typescript-ioc";
@@ -29,6 +29,9 @@ export class FrameworkAPI {
 
   @Inject
   private couchDB: CouchDB;
+
+  @Inject
+  private pouchDB: PouchDB;
 
   @Inject
   private routerRegistry: RouterRegistry;
@@ -73,6 +76,11 @@ export class FrameworkAPI {
 
   public setStaticViewEngine(name: string) {
     this.routerRegistry.setStaticViewEngine(name);
+  }
+
+
+  public getPouchDBInstance(pluginId: string, dbName: string) {
+    return this.pouchDB.getConnection(pluginId, dbName);
   }
 }
 
