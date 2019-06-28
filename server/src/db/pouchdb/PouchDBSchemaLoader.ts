@@ -59,7 +59,6 @@ export class PouchDBSchemaLoader implements ISchemaLoader {
 
     for (const db of schema.databases) {
       this.dbConnection = this.pouchDB.getConnection(pluginId, db.name);
-      this.dbConnection.close()
     }
 
     // create indexes for each database
@@ -72,7 +71,6 @@ export class PouchDBSchemaLoader implements ISchemaLoader {
           });
         }
       }
-      dbInstance.close()
     }
 
   }
