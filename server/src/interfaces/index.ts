@@ -67,7 +67,8 @@ export interface FrameworkConfig {
   secureContextParams?: Array<string>;
   port?: number;
   telemetry?: ITelemetry;
-  logLevel?: loggerLevels
+  logLevel?: loggerLevels;
+  logBasePath?: string
 }
 
 export enum PluginStatusEnum {

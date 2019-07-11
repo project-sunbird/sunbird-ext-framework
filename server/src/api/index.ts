@@ -43,6 +43,7 @@ export class FrameworkAPI {
     this.elasticSearchDB.initialize(this.config.db.elasticsearch);
     this.cassandraDB.initialize(this.config.db.cassandra);
     this.couchDB.initialize(this.config.db.couchdb);
+    this.pouchDB.initialize(this.config.db.pouchdb)
     await this.framework.initialize(config, app);
   }
 

@@ -50,7 +50,7 @@ export class Framework {
         this._config = config;
 
         // configure logger
-        if (config.logLevel) enableLogger(config.logLevel);
+        if (config) enableLogger(config);
 
         this.schemaLoader.registerLoader(new ESSchemaLoader(config.db.elasticsearch))
         this.schemaLoader.registerLoader(new CassandraSchemaLoader(config.db.cassandra))

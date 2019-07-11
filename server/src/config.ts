@@ -29,5 +29,6 @@ export const defaultConfig: FrameworkConfig = {
   plugins: [],
   pluginBasePath: '',
   logLevel: 'debug',
-  port: 9000 // default
+  port: 9000, // default
+  logBasePath: ''
 }
