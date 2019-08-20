@@ -1,6 +1,6 @@
 {
   "name": "@project-sunbird/program",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Program",
   "scripts": {
     "clean-dist-dev": "node_modules/.bin/rimraf ./../../../app/plugin-repo/@project-sunbird/program",

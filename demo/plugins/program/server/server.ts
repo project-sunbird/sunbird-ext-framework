@@ -112,6 +112,9 @@ export class Server extends BaseServer {
   public async updateParticipant(req: Request, res: Response) {
     const updateQuery = { programId: req.body.request.programId,  userId: req.body.request.userId };
     const updateValue = req.body.request;
+    if (updateValue.onBoardingData) {
+      updateValue.onBoardingData = JSON.stringify(updateValue.onBoardingData);
+    }
     delete updateValue.programId;
     delete updateValue.userId;
     this.cassandra.instance.participants.updateAsync(updateQuery, updateValue, { if_exists: true })
