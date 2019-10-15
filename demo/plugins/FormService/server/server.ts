@@ -95,76 +95,79 @@ export class Server extends BaseServer {
         telemetryHelper.error(req, res, error);
       })
   }
+  private findForm(requestBody,formList){
 
-  public async read(req: Request, res: Response) {
-    const data = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
-    this.convertToLowerCase(data, ['type', 'subType', 'action']);
-    const query = {
-      root_org: data.rootOrgId || '*',
-      framework: data.framework || '*',
-      type: data.type,
-      action: data.action,
-      subtype: data.subType || '*',
-      component: data.component || '*'
+    if (!formList.length) return {};
+
+    const query: any = {
+      type: requestBody.type,
+      action: requestBody.action,
+      subtype: requestBody.subType || '*',
+      root_org: requestBody.rootOrgId || '*',
+      framework: requestBody.framework || '*',
+      component: requestBody.component || '*',
     }
-    await this.cassandra.instance.form_data.findOneAsync(query).then(async data => {
-      if (!data) {
-        // find record by specified rootOrgId with framework = '*'
-        await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { framework: "*" }))
-      } else {
-        return data;
-      }
-    })
-    .then(async data => {
-        if (!data) {
-          // get the default data
-          return await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*" }))
-        } else {
-          return data;
-        }
-      })
-      .then(async data => {
-        if (!data) {
-          // get the default data
-          return await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*" }))
-        } else {
-          return data;
-        }
-      })
-      .then(async data => {
-        if (!data) {
-          // get the default data
-          return await this.cassandra.instance.form_data.findOneAsync(Object.assign({}, query, { root_org: "*", framework: "*", component: "*" }))
-        } else {
-          return data;
-        }
-      })
-      .then(data => {
-        if (!data) data = {}
-        if (data && typeof data.data === "string") data.data = JSON.parse(data.data);
 
-        data = data.toJSON(); // it removes all the schema validator of cassandra and gives plain object;
-        if (_.get(data, 'root_org')) {
-          data.rootOrgId = data.root_org;
-          data = _.omit(data, ['root_org']);
-        }
-        res.status(200)
-          .send(new FormResponse(undefined, {
-            id: 'api.form.read',
-            data: {
-              form: data
-            }
-          }))
-          telemetryHelper.log(req);
-      })
-      .catch(error => {
-        res.status(404)
-          .send(new FormResponse({
-            id: "api.form.read",
-            err: "ERR_READ_FORM_DATA",
-            errmsg: error
-          }));
-        telemetryHelper.error(req, res, error);
-      })
+    let form = _.find(formList, query);
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { root_org: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { framework: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { framework: "*", root_org: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { component: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { root_org: "*", component: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { framework: "*", component: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    form = _.find(formList, Object.assign({}, query, { framework: "*", root_org: "*", component: "*" }));
+    if(!_.isEmpty(form)) return form;
+
+    return form;
+  }
+  public async read(req: Request, res: Response) {
+    const requestBody = _.pick(req.body.request, ['type', 'subType', 'action', 'rootOrgId', 'framework', 'data', 'component']);
+    this.convertToLowerCase(requestBody, ['type', 'subType', 'action']);
+    const query = {
+      type: requestBody.type,
+      action: requestBody.action,
+      subtype: requestBody.subType || '*'
+    }
+    this.cassandra.instance.form_data.findAsync(query, { raw: true, allow_filtering: true })
+    .then(data => {
+      let formData: any = this.findForm(requestBody, data);
+      if (_.isEmpty(formData)) throw "form not found";
+      if (_.get(formData, 'root_org')) {
+        formData.rootOrgId = formData.root_org;
+        formData = _.omit(formData, ['root_org']);
+      }
+      res.status(200)
+        .send(new FormResponse(undefined, {
+          id: 'api.form.read',
+          data: {
+            form: formData
+          }
+        }))
+        telemetryHelper.log(req);
+    })
+    .catch(error => {
+      console.log(error);
+      res.status(404)
+        .send(new FormResponse({
+          id: "api.form.read",
+          err: "ERR_READ_FORM_DATA",
+          errmsg: error
+        }));
+      telemetryHelper.error(req, res, error);
+    })
   }
 }
