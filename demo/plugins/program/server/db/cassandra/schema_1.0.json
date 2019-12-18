@@ -38,6 +38,12 @@
         "defaultRoles": {
           "type": "list",
           "typeDef": "<text>"
+        },
+        "channelId": {
+          "type": "text"
+        },
+        "imagePath": {
+          "type": "text"
         }
       },
       "key": [ ["programId"] ],

@@ -15,5 +15,6 @@ export class Router implements IRouter {
     // app.delete('/delete', validator.validateDeleteProgramAPI, (req, res) => server.deleteProgram(req, res));
     app.post('/add/participant', validator.validateAddParticipantAPI, (req, res) => server.addParticipant(req, res));
     app.patch('/update/participant', validator.validateUpdateParticipantAPI, (req, res) => server.updateParticipant(req, res));
+    app.post('/search', validator.validateSearchProgramAPI, (req, res) => server.searchProgram(req, res));
 	}
 }
