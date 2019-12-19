@@ -39,7 +39,10 @@
           "type": "list",
           "typeDef": "<text>"
         },
-        "channelId": {
+        "rootOrgId": {
+          "type": "text"
+        },
+        "rootOrgName":{
           "type": "text"
         },
         "imagePath": {

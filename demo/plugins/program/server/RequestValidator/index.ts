@@ -15,11 +15,12 @@ export class RequestValidator {
         endDate: Joi.string(),
         slug: Joi.string().required(),
         defaultRoles: Joi.array().items(Joi.string()).required(),
-        channelId: Joi.string().required(),
-        imagePath: Joi.string().optional().allow(null)
+        rootOrgId: Joi.string().required(),
+        imagePath: Joi.string().optional().allow(null),
+        rootOrgName: Joi.string().optional().allow(null)
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
         .send(new ReviewResponse({
@@ -33,11 +34,11 @@ export class RequestValidator {
       next()
     }
   }
-  validateReadProgramAPI(req, res, next){
+  validateReadProgramAPI(req, res, next) {
     const schema = Joi.object().keys({
       programId: Joi.string().required()
     });
-    const { error, value } = Joi.validate(req.params, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.params, schema, { abortEarly: false });
     if (error) {
       res.status(400)
         .send(new ReviewResponse({
@@ -62,10 +63,13 @@ export class RequestValidator {
         endDate: Joi.string(),
         slug: Joi.string(),
         config: Joi.object().min(1),
-        defaultRoles: Joi.array().items(Joi.string())
+        defaultRoles: Joi.array().items(Joi.string()),
+        rootOrgId: Joi.string(),
+        imagePath: Joi.string(),
+        rootOrgName: Joi.string()
       }).min(2).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
         .send(new ReviewResponse({
@@ -79,13 +83,13 @@ export class RequestValidator {
       next()
     }
   }
-  validateDeleteProgramAPI(req, res, next){
+  validateDeleteProgramAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         programId: Joi.string().required()
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
         .send(new ReviewResponse({
@@ -99,7 +103,7 @@ export class RequestValidator {
       next()
     }
   }
-  validateAddParticipantAPI(req, res, next){
+  validateAddParticipantAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         programId: Joi.string().required(),
@@ -109,7 +113,7 @@ export class RequestValidator {
         onBoarded: Joi.boolean()
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
         .send(new ReviewResponse({
@@ -123,7 +127,7 @@ export class RequestValidator {
       next()
     }
   }
-  validateUpdateParticipantAPI(req, res, next){
+  validateUpdateParticipantAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         programId: Joi.string().required(),
@@ -133,7 +137,7 @@ export class RequestValidator {
         onBoarded: Joi.boolean()
       }).min(1).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
         .send(new ReviewResponse({
@@ -150,7 +154,7 @@ export class RequestValidator {
   validateSearchProgramAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
-        channelId: Joi.string().required()
+        rootOrgId: Joi.string().required()
       }).required()
     });
     const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
