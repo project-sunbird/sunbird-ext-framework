@@ -42,7 +42,7 @@ export class Server extends BaseServer {
         const userDetails = await this.cassandra.instance.participants.findOneAsync(reqQuery, { raw:true })
         if (userDetails){
           programDetails.userDetails = userDetails;
-          programDetails.userDetails.onBoardingData = programDetails.userDetails.onBoardingData ? 
+          programDetails.userDetails.onBoardingData = programDetails.userDetails.onBoardingData ?
             JSON.parse(programDetails.userDetails.onBoardingData) : {};
         }
       }
@@ -65,24 +65,24 @@ export class Server extends BaseServer {
     }
     delete updateValue.programId;
     this.cassandra.instance.program.updateAsync(updateQuery, updateValue, { if_exists: true })
-    .then(data => { // TODO: throw error if row dosnt exist
-      this.sendSuccess(req,res, 'api.program.update', { updated: "OK", programId: req.body.request.programId })
-    })
-    .catch(error => {
-      logger.error('update Program failed', req.params, error);
-      this.sendError(req, res, 'api.program.update', { code:"ERR_UPDATE_PROGRAM", msg: error });
-    })
+      .then(data => { // TODO: throw error if row dosnt exist
+        this.sendSuccess(req,res, 'api.program.update', { updated: "OK", programId: req.body.request.programId })
+      })
+      .catch(error => {
+        logger.error('update Program failed', req.params, error);
+        this.sendError(req, res, 'api.program.update', { code:"ERR_UPDATE_PROGRAM", msg: error });
+      })
   }
 
   public async deleteProgram(req: Request, res: Response) {
     const deleteQuery = { programId: req.body.request.programId };
     await this.cassandra.instance.program.deleteAsync(deleteQuery)
-    .then(data => {
-      this.sendSuccess(req,res, 'api.program.delete', { deleted: "OK", programId: req.body.request.programId })
-    }).catch(error => {
-      logger.error('delete Program failed', req.params, error);
-      this.sendError(req, res, 'api.program.delete', { code:"ERR_DELETE_PROGRAM", msg: error });
-    })
+      .then(data => {
+        this.sendSuccess(req,res, 'api.program.delete', { deleted: "OK", programId: req.body.request.programId })
+      }).catch(error => {
+        logger.error('delete Program failed', req.params, error);
+        this.sendError(req, res, 'api.program.delete', { code:"ERR_DELETE_PROGRAM", msg: error });
+      })
   }
   public async addParticipant(req: Request, res: Response) {
     const readQuery = { programId: req.body.request.programId };
@@ -118,32 +118,57 @@ export class Server extends BaseServer {
     delete updateValue.programId;
     delete updateValue.userId;
     this.cassandra.instance.participants.updateAsync(updateQuery, updateValue, { if_exists: true })
-    .then(data => { // TODO: throw error if row dosnt exist
-      this.sendSuccess(req,res, 'api.update.participant', { updated: "OK", programId: req.body.request.programId })
-    })
-    .catch(error => {
-      logger.error('update participants failed', req.params, error);
-      this.sendError(req, res, 'api.update.participant', { code:"ERR_UPDATE_PARTICIPANTS", msg: error });
-    })
+      .then(data => { // TODO: throw error if row dosnt exist
+        this.sendSuccess(req,res, 'api.update.participant', { updated: "OK", programId: req.body.request.programId })
+      })
+      .catch(error => {
+        logger.error('update participants failed', req.params, error);
+        this.sendError(req, res, 'api.update.participant', { code:"ERR_UPDATE_PARTICIPANTS", msg: error });
+      })
+  }
+
+  public async searchProgram(req: Request, res: Response) {
+    const fieldsToSelect = _.compact(_.split(_.get(req, 'query.fields'), ','));
+    const requiredKeys = ['programId', 'type', 'name', 'description', 'imagePath'];
+    const searchCriteria = _.uniq([...requiredKeys, ...fieldsToSelect]);
+    const searchQuery = _.get(req, 'body.request');
+    let programDetails;
+    try {
+      programDetails = await this.cassandra.instance.program.findAsync(searchQuery, { allow_filtering: true, select: searchCriteria, raw: true });
+      if (_.includes(fieldsToSelect, 'config')) {
+        _.forEach(programDetails, program => {
+          program.config = JSON.parse(_.get(program, 'config'));
+        });
+      }
+      const apiResponse = {
+        programs: programDetails,
+        count: _.get(programDetails, 'length')
+      }
+      this.sendSuccess(req, res, 'api.program.read', apiResponse);
+    } catch (error) {
+      let errorCode = "ERR_SEARCH_PROGRAM";
+      logger.error('search Program failed to query data', _.get(req, 'body.request'), error);
+      this.sendError(req, res, 'api.program.search', { code: errorCode, msg: error });
+    }
   }
 
 
   private sendSuccess(req, res, id,  data){
     res.status(200)
-    .send(new ReviewResponse(undefined, {
-      id: id || 'api.program',
-      data: data
-    }))
+      .send(new ReviewResponse(undefined, {
+        id: id || 'api.program',
+        data: data
+      }))
     telemetryHelper.log(req);
   }
 
   private sendError(req, res,id, error){
     res.status(404)
-    .send(new ReviewResponse({
-      id: error.id || "api.program",
-      err: error.code || "PROGRAM_API_ERROR",
-      errmsg: error.msg || "internal error"
-    }));
+      .send(new ReviewResponse({
+        id: error.id || "api.program",
+        err: error.code || "PROGRAM_API_ERROR",
+        errmsg: error.msg || "internal error"
+      }));
     telemetryHelper.error(req, res, error);
   }
 

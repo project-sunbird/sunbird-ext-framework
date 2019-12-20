@@ -14,36 +14,39 @@ export class RequestValidator {
         startDate: Joi.string().required(),
         endDate: Joi.string(),
         slug: Joi.string().required(),
-        defaultRoles: Joi.array().items(Joi.string()).required()
+        defaultRoles: Joi.array().items(Joi.string()).required(),
+        rootOrgId: Joi.string().required(),
+        imagePath: Joi.string().optional().allow(null),
+        rootOrgName: Joi.string().optional().allow(null)
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
-      .send(new ReviewResponse({
-        id: "api.create.program",
-        err: "ERR_CREATE_PROGRAM",
-        errmsg: error.details.map(d => d.message),
-        responseCode: "CLIENT_ERROR"
-      }));
+        .send(new ReviewResponse({
+          id: "api.create.program",
+          err: "ERR_CREATE_PROGRAM",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
       telemetryHelper.error(req, res, error);
     } else {
       next()
     }
   }
-  validateReadProgramAPI(req, res, next){
+  validateReadProgramAPI(req, res, next) {
     const schema = Joi.object().keys({
       programId: Joi.string().required()
     });
-    const { error, value } = Joi.validate(req.params, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.params, schema, { abortEarly: false });
     if (error) {
       res.status(400)
-      .send(new ReviewResponse({
-        id: "api.read.program",
-        err: "ERR_READ_PROGRAM",
-        errmsg: error.details.map(d => d.message),
-        responseCode: "CLIENT_ERROR"
-      }));
+        .send(new ReviewResponse({
+          id: "api.read.program",
+          err: "ERR_READ_PROGRAM",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
       telemetryHelper.error(req, res, error);
     } else {
       next()
@@ -60,44 +63,47 @@ export class RequestValidator {
         endDate: Joi.string(),
         slug: Joi.string(),
         config: Joi.object().min(1),
-        defaultRoles: Joi.array().items(Joi.string())
+        defaultRoles: Joi.array().items(Joi.string()),
+        rootOrgId: Joi.string(),
+        imagePath: Joi.string(),
+        rootOrgName: Joi.string()
       }).min(2).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
-      .send(new ReviewResponse({
-        id: "api.update.program",
-        err: "ERR_UPDATE_PROGRAM",
-        errmsg: error.details.map(d => d.message),
-        responseCode: "CLIENT_ERROR"
-      }));
+        .send(new ReviewResponse({
+          id: "api.update.program",
+          err: "ERR_UPDATE_PROGRAM",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
       telemetryHelper.error(req, res, error);
     } else {
       next()
     }
   }
-  validateDeleteProgramAPI(req, res, next){
+  validateDeleteProgramAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         programId: Joi.string().required()
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
-      .send(new ReviewResponse({
-        id: "api.delete.program",
-        err: "ERR_DELETE_PROGRAM",
-        errmsg: error.details.map(d => d.message),
-        responseCode: "CLIENT_ERROR"
-      }));
+        .send(new ReviewResponse({
+          id: "api.delete.program",
+          err: "ERR_DELETE_PROGRAM",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
       telemetryHelper.error(req, res, error);
     } else {
       next()
     }
   }
-  validateAddParticipantAPI(req, res, next){
+  validateAddParticipantAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         programId: Joi.string().required(),
@@ -107,21 +113,21 @@ export class RequestValidator {
         onBoarded: Joi.boolean()
       }).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
-      .send(new ReviewResponse({
-        id: "api.add.participants",
-        err: "ERR_ADD_PARTICIPANTS",
-        errmsg: error.details.map(d => d.message),
-        responseCode: "CLIENT_ERROR"
-      }));
+        .send(new ReviewResponse({
+          id: "api.add.participants",
+          err: "ERR_ADD_PARTICIPANTS",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
       telemetryHelper.error(req, res, error);
     } else {
       next()
     }
   }
-  validateUpdateParticipantAPI(req, res, next){
+  validateUpdateParticipantAPI(req, res, next) {
     const schema = Joi.object().keys({
       request: Joi.object().keys({
         programId: Joi.string().required(),
@@ -131,15 +137,35 @@ export class RequestValidator {
         onBoarded: Joi.boolean()
       }).min(1).required()
     });
-    const { error, value } = Joi.validate(req.body, schema, {abortEarly: false});
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
     if (error) {
       res.status(400)
-      .send(new ReviewResponse({
-        id: "api.update.participants",
-        err: "ERR_UPDATE_PARTICIPANTS",
-        errmsg: error.details.map(d => d.message),
-        responseCode: "CLIENT_ERROR"
-      }));
+        .send(new ReviewResponse({
+          id: "api.update.participants",
+          err: "ERR_UPDATE_PARTICIPANTS",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
+      telemetryHelper.error(req, res, error);
+    } else {
+      next()
+    }
+  }
+  validateSearchProgramAPI(req, res, next) {
+    const schema = Joi.object().keys({
+      request: Joi.object().keys({
+        rootOrgId: Joi.string().required()
+      }).required()
+    });
+    const { error, value } = Joi.validate(req.body, schema, { abortEarly: false });
+    if (error) {
+      res.status(400)
+        .send(new ReviewResponse({
+          id: "api.search.program",
+          err: "ERR_SEARCH_PROGRAM",
+          errmsg: error.details.map(d => d.message),
+          responseCode: "CLIENT_ERROR"
+        }));
       telemetryHelper.error(req, res, error);
     } else {
       next()

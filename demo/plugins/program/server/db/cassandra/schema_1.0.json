@@ -38,6 +38,15 @@
         "defaultRoles": {
           "type": "list",
           "typeDef": "<text>"
+        },
+        "rootOrgId": {
+          "type": "text"
+        },
+        "rootOrgName":{
+          "type": "text"
+        },
+        "imagePath": {
+          "type": "text"
         }
       },
       "key": [ ["programId"] ],
