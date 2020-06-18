@@ -36,7 +36,7 @@ export class FrameworkAPI {
   @Inject
   private routerRegistry: RouterRegistry;
 
-
+  private cassandraConnection = [];
 
   public async bootstrap(config: FrameworkConfig, app: Express) {
     this.config = { ...config }
@@ -47,8 +47,27 @@ export class FrameworkAPI {
     await this.framework.initialize(config, app);
   }
 
+  public closeCassandraConnections() {
+    let connectionsToBeClosed = this.cassandraConnection.length;
+    return new Promise((resolve, reject) => {
+      if(!this.cassandraConnection.length){
+          return resolve();
+      }
+      this.cassandraConnection.forEach(connection => {
+          connection.close(err => {
+              connectionsToBeClosed--;
+              if(!connectionsToBeClosed){
+                  resolve();
+              }
+          });
+      })
+    })
+  }
+
   public getCassandraInstance(pluginId: string) {
-    return this.cassandraDB.getConnectionByPlugin(pluginId);
+    const connection = this.cassandraDB.getConnectionByPlugin(pluginId);
+    this.cassandraConnection.push(connection);
+    return connection;
   }
 
   public getElasticsearchInstance(pluginId: string): IElasticSearchConnector {
