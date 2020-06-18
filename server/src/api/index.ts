@@ -10,6 +10,7 @@ import { Express } from 'express';
 import { TelemetryService } from '../services'
 export * from '../services/telemetry/interfaces/TelemetryService';
 export * from '../interfaces';
+import { logger } from '../logger';
 
 @Singleton
 export class FrameworkAPI {
@@ -47,26 +48,30 @@ export class FrameworkAPI {
     await this.framework.initialize(config, app);
   }
 
-  public closeCassandraConnections() {
-    let connectionsToBeClosed = this.cassandraConnection.length;
-    return new Promise((resolve, reject) => {
-      if(!this.cassandraConnection.length){
-          return resolve();
+  closeCassandraConnections() {
+    let connectionsToBeClosedCount = this.cassandraConnection.length;
+    let cassandraConnection = this.cassandraConnection;
+    return new Promise(function (resolve, reject) {
+      logger.info('cassandra connectionsToBeClosedCount', connectionsToBeClosedCount);
+      if (!cassandraConnection.length) {
+        return resolve();
       }
-      this.cassandraConnection.forEach(connection => {
-          connection.close(err => {
-              connectionsToBeClosed--;
-              if(!connectionsToBeClosed){
-                  resolve();
-              }
-          });
-      })
-    })
+      cassandraConnection.forEach(connection => {
+        connection.close(err => {
+          connectionsToBeClosedCount--;
+          logger.info('cassandra connectionsToBeClosedCount', connectionsToBeClosedCount);
+          if (!connectionsToBeClosedCount) {
+            resolve();
+          }
+        });
+      });
+    });
   }
 
   public getCassandraInstance(pluginId: string) {
     const connection = this.cassandraDB.getConnectionByPlugin(pluginId);
     this.cassandraConnection.push(connection);
+    logger.info('cassandra instance created for plugin', pluginId, this.cassandraConnection.length);
     return connection;
   }
 
