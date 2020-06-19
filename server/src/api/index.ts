@@ -37,8 +37,6 @@ export class FrameworkAPI {
   @Inject
   private routerRegistry: RouterRegistry;
 
-  private cassandraConnection = [];
-
   public async bootstrap(config: FrameworkConfig, app: Express) {
     this.config = { ...config }
     this.elasticSearchDB.initialize(this.config.db.elasticsearch);
@@ -49,30 +47,11 @@ export class FrameworkAPI {
   }
 
   closeCassandraConnections() {
-    let connectionsToBeClosedCount = this.cassandraConnection.length;
-    let cassandraConnection = this.cassandraConnection;
-    return new Promise(function (resolve, reject) {
-      logger.info('cassandra connectionsToBeClosedCount', connectionsToBeClosedCount);
-      if (!cassandraConnection.length) {
-        return resolve();
-      }
-      cassandraConnection.forEach(connection => {
-        connection.close(err => {
-          connectionsToBeClosedCount--;
-          logger.info('cassandra connectionsToBeClosedCount', connectionsToBeClosedCount);
-          if (!connectionsToBeClosedCount) {
-            resolve();
-          }
-        });
-      });
-    });
+    return this.cassandraDB.closeCassandraConnections();
   }
 
   public getCassandraInstance(pluginId: string) {
-    const connection = this.cassandraDB.getConnectionByPlugin(pluginId);
-    this.cassandraConnection.push(connection);
-    logger.info('cassandra instance created for plugin', pluginId, this.cassandraConnection.length);
-    return connection;
+    return this.cassandraDB.getConnectionByPlugin(pluginId);
   }
 
   public getElasticsearchInstance(pluginId: string): IElasticSearchConnector {
