@@ -10,7 +10,6 @@ import { Express } from 'express';
 import { TelemetryService } from '../services'
 export * from '../services/telemetry/interfaces/TelemetryService';
 export * from '../interfaces';
-import { logger } from '../logger';
 
 @Singleton
 export class FrameworkAPI {
@@ -36,6 +35,8 @@ export class FrameworkAPI {
 
   @Inject
   private routerRegistry: RouterRegistry;
+
+
 
   public async bootstrap(config: FrameworkConfig, app: Express) {
     this.config = { ...config }
