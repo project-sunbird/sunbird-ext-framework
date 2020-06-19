@@ -47,6 +47,10 @@ export class FrameworkAPI {
     await this.framework.initialize(config, app);
   }
 
+  closeCassandraConnections() {
+    return this.cassandraDB.closeCassandraConnections();
+  }
+
   public getCassandraInstance(pluginId: string) {
     return this.cassandraDB.getConnectionByPlugin(pluginId);
   }

@@ -9,6 +9,8 @@ import { ICassandraConfig } from "../../interfaces";
 import { SchemaService } from './schemaService';
 import { Inject } from 'typescript-ioc';
 import * as _ from 'lodash';
+import { logger } from '../../logger';
+
 export class CassandraDB {
 
   private _config: ICassandraConfig;
@@ -16,8 +18,31 @@ export class CassandraDB {
   @Inject
   private schemaService: SchemaService
 
+  private cassandraConnection = [];
+
   public initialize(config: ICassandraConfig) {
     this._config = config;
+  }
+  closeCassandraConnections() {
+    let connectionsToBeClosedCount = this.cassandraConnection.length;
+    let cassandraConnection = this.cassandraConnection;
+    return new Promise(function (resolve, reject) {
+      logger.info('cassandra connectionsToBeClosedCount', connectionsToBeClosedCount);
+      if (!cassandraConnection.length) {
+        return resolve();
+      }
+      cassandraConnection.forEach(connection => {
+        connection.close((err) => {
+          if(err){
+            logger.error('error while closing cassandra connection', err);
+          }
+          connectionsToBeClosedCount--;
+          if (!connectionsToBeClosedCount) {
+            resolve();
+          }
+        });
+      });
+    });
   }
 
   public async getConnectionByKeyspace(keyspace?: string, defaultSettings?: ICassandraConfig["defaultKeyspaceSettings"]) {
@@ -27,6 +52,7 @@ export class CassandraDB {
     if (schema) {
       schema.column_families.forEach(table => connection.loadSchema(table.table_name, table));
     }
+    this.cassandraConnection.push(connection);
     return connection;
   }
 
@@ -37,6 +63,7 @@ export class CassandraDB {
       connection = this.getConnection(schema.keyspace_name, schema.config);
       schema.column_families.forEach(table => connection.loadSchema(table.table_name, table));
     }
+    this.cassandraConnection.push(connection);
     return connection;
   }
 
