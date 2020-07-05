@@ -180,16 +180,16 @@ export class Server extends BaseServer {
         forms: formDetails,
         count: _.get(formDetails, 'length')
       }
-      this.sendSuccess(req, res, 'api.program.read', apiResponse);
+      this.sendSuccess(req, res, 'api.form.list', apiResponse);
     } catch (error) {
-      let errorCode = "ERR_SEARCH_PROGRAM";
-      this.sendError(req, res, 'api.program.search', { code: errorCode, msg: error });
+      let errorCode = "ERR_LIST_ALL_FORM";
+      this.sendError(req, res, 'api.form.list', { code: errorCode, msg: error });
     }
   }
   private sendSuccess(req, res, id,  data){
     res.status(200)
       .send(new FormResponse(undefined, {
-        id: id || 'api.program',
+        id: id || 'api.list',
         data: data
       }))
     telemetryHelper.log(req);
@@ -198,8 +198,8 @@ export class Server extends BaseServer {
   private sendError(req, res,id, error){
     res.status(404)
       .send(new FormResponse({
-        id: error.id || "api.program",
-        err: error.code || "PROGRAM_API_ERROR",
+        id: error.id || "api.list",
+        err: error.code || "FORM_API_ERROR",
         errmsg: error.msg || "internal error"
       }));
     telemetryHelper.error(req, res, error);
