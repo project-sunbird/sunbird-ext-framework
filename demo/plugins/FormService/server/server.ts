@@ -183,7 +183,7 @@ export class Server extends BaseServer {
       this.sendSuccess(req, res, 'api.form.list', apiResponse);
     } catch (error) {
       let errorCode = "ERR_LIST_ALL_FORM";
-      this.sendError(req, res, 'api.form.list', { code: errorCode, msg: error });
+      this.sendError(req, res, 'api.form.list', { code: errorCode, msg: error }, errorCode);
     }
   }
   private sendSuccess(req, res, id,  data){
@@ -195,8 +195,8 @@ export class Server extends BaseServer {
     telemetryHelper.log(req);
   }
 
-  private sendError(req, res,id, error){
-    res.status(404)
+  private sendError(req, res,id, error, errorCode){
+    res.status(errorCode? errorCode : 404)
       .send(new FormResponse({
         id: error.id || "api.list",
         err: error.code || "FORM_API_ERROR",
