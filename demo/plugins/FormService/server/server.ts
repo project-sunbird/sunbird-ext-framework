@@ -196,7 +196,7 @@ export class Server extends BaseServer {
   }
 
   private sendError(req, res,id, error){
-    res.status(404)
+    res.status(500)
       .send(new FormResponse({
         id: error.id || "api.list",
         err: error.code || "FORM_API_ERROR",
