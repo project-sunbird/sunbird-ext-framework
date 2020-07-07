@@ -167,4 +167,41 @@ export class Server extends BaseServer {
         telemetryHelper.error(req, res, error);
       })
   }
+  public async listAll(req: Request, res: Response) {
+    const data = _.pick(req.body.request, ['rootOrgId']);
+      const searchCriteria = ['type', 'subtype', 'action', 'root_org', 'framework', 'data', 'component'];
+      const searchQuery = {
+        root_org: data.rootOrgId || '*'
+      };
+    let formDetails;
+    try {
+      formDetails = await this.cassandra.instance.form_data.findAsync(searchQuery, { allow_filtering: true, select: searchCriteria, raw: true });
+      const apiResponse = {
+        forms: formDetails,
+        count: _.get(formDetails, 'length')
+      }
+      this.sendSuccess(req, res, 'api.form.list', apiResponse);
+    } catch (error) {
+      let errorCode = "ERR_LIST_ALL_FORM";
+      this.sendError(req, res, 'api.form.list', { code: errorCode, msg: error });
+    }
+  }
+  private sendSuccess(req, res, id,  data){
+    res.status(200)
+      .send(new FormResponse(undefined, {
+        id: id || 'api.list',
+        data: data
+      }))
+    telemetryHelper.log(req);
+  }
+
+  private sendError(req, res,id, error){
+    res.status(500)
+      .send(new FormResponse({
+        id: error.id || "api.list",
+        err: error.code || "FORM_API_ERROR",
+        errmsg: error.msg || "internal error"
+      }));
+    telemetryHelper.error(req, res, error);
+  }
 }
