@@ -68,7 +68,7 @@
   },
   "dependencies": {
     "@project-sunbird/telemetry-sdk": "^0.0.7",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "continuation-local-storage": "^3.2.1",
     "elasticsearch": "^14.1.0",
     "express": "^4.16.2",
