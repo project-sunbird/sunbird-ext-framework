@@ -12,12 +12,12 @@ const IOSFormMiddleware = (req, res, next) => {
     const { body } = req;
     if (body && body.request) {
       const { type, subType, component } = body.request;
-      const key = `${type}_${subType}_${component}`;
+      const key = `${type}_${subType}_${component}`.toLowerCase();
       const hasMapping = key in mapping;
       if (hasMapping) {
         req.body.request = {
           ...req.body.request,
-          ...mapping[key.toLowerCase()]
+          ...mapping[key]
         }
       }
     }
