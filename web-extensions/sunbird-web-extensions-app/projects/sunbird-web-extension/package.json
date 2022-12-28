@@ -12,5 +12,8 @@
   },
   "keywords": ["sunbird", "Extensible framework", "plugins"],
   "author": "Sunil A S<sunils@ilimi.in>",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "license": "MIT"
 }
