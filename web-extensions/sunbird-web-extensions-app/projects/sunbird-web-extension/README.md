@@ -345,3 +345,4 @@ Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.gi
 |:-----------------:|:-------------------:|:---------------:|
 | release-5.1.0     |        0.0.2        |      Ng V6      |
 | release-5.1.1     |        5.1.1        |      Ng V11     |
+| release-5.1.2     |        5.1.2        |      Ng V12     |
