@@ -131,7 +131,7 @@
       "prefix": "lib",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/sunbird-web-extension/tsconfig.lib.json",
             "project": "projects/sunbird-web-extension/ng-package.json"
