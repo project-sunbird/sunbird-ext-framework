@@ -22,9 +22,8 @@ const DummyPluginConfig = {
 
 // Test Module
 @NgModule({
-  imports: [],
-  declarations: [TestWrapperComponent],
-  entryComponents: [TestWrapperComponent]
+    imports: [],
+    declarations: [TestWrapperComponent]
 })
 class TestAppModule { }
 
