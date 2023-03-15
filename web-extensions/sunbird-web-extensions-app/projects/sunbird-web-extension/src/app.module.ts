@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
   ]
 })
 export class WebExtensionModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<WebExtensionModule> {
     return {
       ngModule: WebExtensionModule,
       providers: [PluginService, BootstrapFramework]
