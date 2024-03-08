@@ -336,3 +336,10 @@ Run `npm run build` to create production ready build.
 ## 8. Running unit tests
 
 Run `npm run test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+
+## Versions
+|   Release branch  | npm package version | Angular Version |
+|:-----------------:|:-------------------:|:---------------:|
+|   release-6.0.0   |        6.0.0        |      Ng V13     |
+|     8.0.0_v15     |        8.0.0        |      Ng V15     |
