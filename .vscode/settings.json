@@ -15,5 +15,5 @@
   ],
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "editor.autoIndent": false
+  "editor.autoIndent": "advanced"
 }
