@@ -1,9 +1,9 @@
 {
   "name": "@project-sunbird/web-extensions",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "peerDependencies": {
-    "@angular/common": ">=13.3.12",
-    "@angular/core": ">=13.3.12",
+    "@angular/common": ">=16.2.12",
+    "@angular/core": ">=16.2.12",
     "prepublish": "npm run test"
   },
   "repository": {

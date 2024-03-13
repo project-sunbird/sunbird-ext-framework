@@ -1,6 +1,6 @@
 import {
   Directive, Input, Inject, Provider, ViewContainerRef,
-  ComponentFactoryResolver, ReflectiveInjector, OnDestroy, OnChanges, EventEmitter, Output, OnInit, ComponentRef
+  ComponentFactoryResolver, OnDestroy, OnChanges, EventEmitter, Output, OnInit, ComponentRef, Injector
 } from '@angular/core';
 import { PluginData } from './models';
 import { PluginService } from './plugin-service';
@@ -54,7 +54,7 @@ export class ExtensionPointDirective implements OnInit, OnChanges, OnDestroy {
     const componentFactory = this.componentResolver.resolveComponentFactory(pluginData.placement.component);
     const contextInjector = this.viewContainerRef.parentInjector;
     const providers = [{ provide: PluginData, useValue: pluginData }];
-    const childInjector = ReflectiveInjector.resolveAndCreate(providers, contextInjector);
+    const childInjector = Injector.create({ providers, parent: contextInjector });
     const componentRef: any = this.viewContainerRef.createComponent(componentFactory, this.viewContainerRef.length, childInjector);
     componentRef.instance.input = this.input;
     componentRef.instance.output = componentRef.instance.output || new EventEmitter();
