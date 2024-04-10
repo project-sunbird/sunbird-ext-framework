@@ -41,7 +41,7 @@
     "@types/express": "^4.11.1",
     "standard": "^10.0.3",
     "ts-node": "^4.1.0",
-    "typescript": "^2.7.1",
+    "typescript": "5.4.4",
     "typescript-eslint-parser": "^13.0.0",
     "@project-sunbird/ext-framework-server": "^0.1.6"
   }

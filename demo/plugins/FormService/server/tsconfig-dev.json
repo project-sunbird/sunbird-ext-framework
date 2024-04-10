@@ -3,7 +3,8 @@
         "module": "commonjs",
         "declaration": true,
         "outDir": "./../../../app/plugin-repo/@project-sunbird/form-service",
-        "target": "es6"
+        "target": "es6",
+        "ignoreDeprecations": "5.0"
     },
     "exclude": [
         "node_modules",

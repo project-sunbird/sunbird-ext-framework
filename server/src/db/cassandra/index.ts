@@ -29,7 +29,7 @@ export class CassandraDB {
     return new Promise(function (resolve, reject) {
       logger.info('cassandra connectionsToBeClosedCount', connectionsToBeClosedCount);
       if (!cassandraConnection.length) {
-        return resolve();
+        return resolve(null);
       }
       cassandraConnection.forEach(connection => {
         connection.close((err) => {
@@ -38,7 +38,7 @@ export class CassandraDB {
           }
           connectionsToBeClosedCount--;
           if (!connectionsToBeClosedCount) {
-            resolve();
+            resolve(null);
           }
         });
       });
